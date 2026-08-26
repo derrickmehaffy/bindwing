@@ -120,6 +120,8 @@
   .lv-item.sel{border-color:var(--hud);box-shadow:0 0 0 1px var(--glow);}
   .lv-item .lv-k{display:block;font:9px var(--mono);color:var(--muted);}
   .lv-item .lv-c{font-size:12px;}
+  .lv-item.live{border-color:var(--hud);box-shadow:0 0 0 2px var(--glow),0 0 16px -2px var(--glow);}
+  #liveBtn.on{color:var(--bound);border-color:var(--bound);box-shadow:0 0 0 1px var(--bound),0 0 12px -3px var(--bound);}
 
   @media (max-width:760px){
     header{gap:6px;}
@@ -141,7 +143,8 @@
 
 <header>
   <h1><span class="dot">⬢</span> Bindwing <span class="ver">v0.3</span></h1>
-  <div class="seg"><button id="to3d" class="on">3D</button><button id="to2d">2D</button></div>
+  <div class="seg"><button id="to3d">3D</button><button id="to2d" class="on">2D</button></div>
+  <button id="liveBtn" title="Read live input from your controller (localhost only)">🎮 Live</button>
   <button id="themeBtn" title="Toggle light / dark theme">◐</button>
   <span class="sep"></span>
   <label class="field"><span class="cap">Profile</span><input type="file" id="binds" accept=".binds"></label>
@@ -208,6 +211,7 @@ const typeOfKey = k => (/Axis$/.test(k) && !/^(Neg|Pos)_/.test(k)) ? 'Analogue' 
 
 /* ---------------- binding engine (shared logic with 2D editor) ---------------- */
 let xmlDoc = null, curDevice = '', curItem = null, deviceIndex = {};
+let liveOn = false, liveKeys = new Set(), prevBtns = {};   // Gamepad API live input
 
 $('#binds').addEventListener('change', ev => { const f=ev.target.files[0]; if(!f) return; const r=new FileReader(); r.onload=()=>loadBinds(r.result,f.name); r.readAsText(f); });
 
@@ -399,7 +403,8 @@ function clearMarkers(){ markers.forEach(m=>markerGroup.remove(m.mesh)); markers
 function markerKeys(mk){ if(mk.type==='hat') return ['Up','Down','Left','Right'].map(d=>mk.label+d);
   if(mk.type==='axis') return [mk.label,'Neg_'+mk.label,'Pos_'+mk.label]; return [mk.label]; }
 function markerBound(mk){ return markerKeys(mk).some(k=>bindingsFor(curDevice,k).length>0); }
-function markerColor(mk){ if(mk===selected) return 0xffffff; if(markerBound(mk)) return 0x37d17a;
+function markerColor(mk){ if(liveOn && markerKeys(mk).some(k=>liveKeys.has(curDevice+'|'+k))) return 0xffffff;
+  if(mk===selected) return 0xffffff; if(markerBound(mk)) return 0x37d17a;
   return mk.type==='axis'?0x58a6ff : mk.type==='hat'?0xc08cff : 0xff7a1a; }
 function refreshMarkers(){ markers.forEach(m=>m.mesh.material.color.setHex(markerColor(m))); }
 function subInputs(mk){ return mk.type==='hat' ? ['Up','Down','Left','Right'].map(d=>({key:mk.label+d,label:d,type:'Digital'}))
@@ -499,7 +504,56 @@ function mark2D(key){ const h=$('#view2d'); h.querySelectorAll('.lv-item.sel').f
   if(key){ const e=h.querySelector('.lv-item[data-key="'+(window.CSS&&CSS.escape?CSS.escape(key):key)+'"]'); if(e) e.classList.add('sel'); } }
 function refresh2D(){ if(stageView==='2d') render2D(); }
 
+/* ---------------- live input (Gamepad API — localhost/https only) ---------------- */
+const AXNAME=['X','Y','Z','RX','RY','RZ','U','V'];
+const HATDIR=[['Up'],['Up','Right'],['Right'],['Down','Right'],['Down'],['Down','Left'],['Left'],['Up','Left']];
+let gpBase={}, gpHats={};   // per-gamepad axis baselines + detected POV-hat axis indices
+function captureBaseline(){ gpBase={}; gpHats={};
+  (navigator.getGamepads?[...navigator.getGamepads()].filter(Boolean):[]).forEach(gp=>{
+    gpBase[gp.index]=gp.axes.map(v=>v); gpHats[gp.index]=new Set();
+    gp.axes.forEach((v,i)=>{ if(v>1.1) gpHats[gp.index].add(i); }); });   // neutral hat ≈ 1.286
+}
+function hatDirs(v){ if(v>1.1) return []; const s=Math.round((v+1)*3.5); return (s>=0&&s<=7)?HATDIR[s]:[]; }
+$('#liveBtn').onclick=()=>{ if(!navigator.getGamepads){ setStatus('Live input needs Chrome/Edge.'); return; }
+  liveOn=!liveOn; $('#liveBtn').classList.toggle('on',liveOn);
+  if(liveOn){ captureBaseline(); setStatus(window.isSecureContext ? 'Live on — press a button / move an axis to highlight it.' : '⚠ Live needs a secure context (use http://localhost).'); }
+  else { liveKeys.clear(); prevBtns={}; refreshMarkers(); updateLiveHighlights(); setStatus('Live input off.'); } };
+function gpDeviceId(gp){ const v=/vendor:\s*([0-9a-f]{4})/i.exec(gp.id), p=/product:\s*([0-9a-f]{4})/i.exec(gp.id);
+  return (v&&p) ? (v[1]+p[1]).toUpperCase() : null; }
+function ensureDeviceOption(id){ if(!id||!/^[0-9A-Fa-f]{8}$/.test(id)) return; const sel=$('#device');
+  if(![...sel.options].some(o=>o.value===id)) sel.add(new Option((idInfo[id]?.name||('Device '+id))+' ('+id+')', id)); }
+function pollGamepads(){ if(!liveOn) return;
+  const pads=navigator.getGamepads?[...navigator.getGamepads()].filter(Boolean):[];
+  const byDev={}; pads.forEach(gp=>{ const d=gpDeviceId(gp)||curDevice; if(d)(byDev[d]=byDev[d]||[]).push(gp); });
+  const oldLive=liveKeys, next=new Set(); let selKey=null, selDev=null;
+  Object.entries(byDev).forEach(([dev,gps])=>{ ensureDeviceOption(dev); gps.sort((a,b)=>b.index-a.index);   // VKB: primary buttons/axes live on the higher HID index
+    gps.forEach((gp,coll)=>{ const off=coll*32;          // 64/128-btn virtual pad = 2/4 collections of 32 → Joy_1-32, 33-64…
+      if(!gpBase[gp.index]){ gpBase[gp.index]=gp.axes.map(v=>v); gpHats[gp.index]=new Set(); gp.axes.forEach((v,i)=>{ if(v>1.1) gpHats[gp.index].add(i); }); }
+      const base=gpBase[gp.index], hats=gpHats[gp.index], pk=prevBtns[gp.index]||[];
+      gp.buttons.forEach((b,i)=>{ if(b.pressed){ const k='Joy_'+(off+i+1); next.add(dev+'|'+k); if(!pk[i]){ selKey=k; selDev=dev; } } });
+      prevBtns[gp.index]=gp.buttons.map(b=>b.pressed);
+      gp.axes.forEach((v,i)=>{ if(v>1.1) hats.add(i);     // read axes/hats from every collection (baseline-relative → dead dupes don't fire)
+        if(hats.has(i)){ const pn=[...hats].sort((a,b)=>a-b).indexOf(i)+1; hatDirs(v).forEach(d=> next.add(dev+'|Joy_POV'+pn+d)); }
+        else if(Math.abs(v-(base[i]??0))>0.35){ next.add(dev+'|Joy_'+(AXNAME[i]||('A'+i))+'Axis'); } });
+    });
+  });
+  if(!selKey){ const nk=[...next].find(k=>!oldLive.has(k)); if(nk){ const j=nk.indexOf('|'); selDev=nk.slice(0,j); selKey=nk.slice(j+1); } }
+  liveKeys=next;
+  if(selKey){ if(selDev && selDev!==curDevice && idInfo[selDev]){ const sel=$('#device');
+      if([...sel.options].some(o=>o.value===selDev)){ sel.value=selDev; curDevice=selDev; refresh2D(); } }
+    liveSelect(selKey); }
+  refreshMarkers(); updateLiveHighlights();
+}
+function liveSelect(key){ $('#subinputs').innerHTML=''; $('#curKey').innerHTML='<b>'+key+'</b> <span class="mut">(live)</span>';
+  selectItem(key, typeOfKey(key)); if(stageView==='2d') mark2D(key); setStatus('Live: '+key+' — pick a control to bind it.'); }
+function updateLiveHighlights(){ if(stageView!=='2d') return;
+  const host=$('#view2d'); host.querySelectorAll('.lv-item.live').forEach(e=>e.classList.remove('live'));
+  liveKeys.forEach(dk=>{ const idx=dk.indexOf('|'), dev=dk.slice(0,idx), key=dk.slice(idx+1);
+    if(dev===curDevice){ const e=host.querySelector('.lv-item[data-key="'+(window.CSS&&CSS.escape?CSS.escape(key):key)+'"]'); if(e) e.classList.add('live'); } });
+}
+
 function resize(){ const w=view.clientWidth,h=view.clientHeight; if(!w||!h) return; renderer.setSize(w,h,false); camera.aspect=w/h; camera.updateProjectionMatrix(); }
-new ResizeObserver(resize).observe(view); resize(); setMode('orbit');
-(function loop(){ requestAnimationFrame(loop); controls.update(); renderer.render(scene,camera); drawLabels(); })();
+new ResizeObserver(resize).observe(view); resize(); setMode('orbit'); setStage('2d');
+window.addEventListener('gamepadconnected', e=>{ if(liveOn) setStatus('Connected: '+e.gamepad.id); });
+(function loop(){ requestAnimationFrame(loop); pollGamepads(); controls.update(); renderer.render(scene,camera); drawLabels(); })();
 </script>

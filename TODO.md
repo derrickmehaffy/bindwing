@@ -7,7 +7,11 @@ _Add items here as we find them; we'll check them off as we go._
 - [ ]
 
 ## ✨ Editor polish (near-term)
+- [x] **Live controller input** (Gamepad API): press-to-highlight + press-to-bind, device auto-match/add, baseline axis detection, POV-hat decode, 64/128-button multi-collection merge
+- [x] 2D list is the default view
+- [ ] Live: make button-bank ordering **deterministic** — currently assumes higher HID index = primary bank; add auto-detect (by axis activity) or a per-device "swap banks" toggle
 - [ ] Conflict handling: option to **auto-replace** a same-mode conflict instead of only flagging it
+- [ ] **Author Elite modifiers in-app** (currently display-only) — pick a modifier button when binding, write `<Modifier>`
 - [ ] Show **physical button names** on markers/2D tiles (e.g. "Trigger", "Pinky") — source from EDRefCard item comments
 - [ ] Verify the viewport toolbar doesn't crowd the model on small/folded screens
 - [ ] Theme: confirm dark is the default on a fresh load; consider honoring `prefers-color-scheme`
