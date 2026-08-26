@@ -1,0 +1,416 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>ED Bind Editor — 3D</title>
+<style>
+  :root{
+    --space:#08090c; --panel:#0d1116; --panel2:#12171e;
+    --edge:#26221a; --edge-hot:#5a3512;
+    --hud:#ff7a1a; --hud-dim:#b3591a; --glow:rgba(255,122,26,.28);
+    --text:#f2e8d8; --muted:#8f8676;
+    --bound:#37d17a; --sel:#ffffff; --axis:#58a6ff; --hat:#c08cff;
+    --mono:ui-monospace,'Cascadia Code','Cascadia Mono',Consolas,'DejaVu Sans Mono',monospace;
+  }
+  *{box-sizing:border-box;} html,body{margin:0;height:100%;}
+  body{font:14px/1.4 system-ui,'Segoe UI',Roboto,sans-serif;background:var(--space);color:var(--text);display:flex;flex-direction:column;-webkit-tap-highlight-color:transparent;}
+  ::selection{background:var(--glow);}
+  :focus-visible{outline:1px solid var(--hud);outline-offset:1px;}
+  .mut{color:var(--muted);}
+
+  /* top bar — HUD frame */
+  header{display:flex;gap:8px;align-items:center;padding:8px 12px;background:linear-gradient(var(--panel),#0a0d12);
+    border-top:2px solid var(--hud);border-bottom:1px solid var(--edge);flex-wrap:wrap;}
+  h1{display:flex;align-items:baseline;gap:8px;margin:0 8px 0 0;font:600 12px/1 system-ui;text-transform:uppercase;letter-spacing:.2em;color:var(--hud);}
+  h1 .dot{font-size:13px;filter:drop-shadow(0 0 5px var(--glow));}
+  h1 .ver{font:10px var(--mono);letter-spacing:0;color:var(--muted);text-transform:none;}
+  .cap{font-size:9px;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);}
+  label.field{display:flex;align-items:center;gap:6px;}
+  .sep{width:1px;align-self:stretch;background:var(--edge-hot);opacity:.6;margin:0 3px;}
+
+  button,select,input[type=text],input[type=search]{background:var(--panel2);color:var(--text);border:1px solid var(--edge);border-radius:3px;padding:6px 9px;font:inherit;transition:border-color .12s,box-shadow .12s,color .12s;}
+  input[type=file]{color:var(--muted);font-size:12px;max-width:148px;}
+  button{cursor:pointer;font:600 11px/1.1 system-ui;text-transform:uppercase;letter-spacing:.05em;}
+  button:hover,select:hover{border-color:var(--hud-dim);}
+  button.on{color:var(--hud);border-color:var(--hud);box-shadow:0 0 0 1px var(--glow),0 0 12px -3px var(--glow);}
+  button.primary{background:var(--hud);color:#160a00;border-color:var(--hud);}
+  button.primary:disabled{background:transparent;color:var(--muted);border-color:var(--edge);cursor:not-allowed;}
+  #status{margin-left:auto;font:11px var(--mono);color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:40ch;}
+
+  #wrap{flex:1;display:grid;grid-template-columns:1fr 340px;min-height:0;}
+
+  /* viewport — reticle */
+  #view{position:relative;min-height:0;background:radial-gradient(130% 130% at 50% 35%,#0e1218,#08090c 72%);overflow:hidden;}
+  #cv{display:block;width:100%;height:100%;touch-action:none;}
+  .corner{position:absolute;width:26px;height:26px;border:2px solid var(--hud);opacity:.8;pointer-events:none;filter:drop-shadow(0 0 4px var(--glow));}
+  .corner.tl{top:12px;left:12px;border-right:0;border-bottom:0;}
+  .corner.tr{top:12px;right:12px;border-left:0;border-bottom:0;}
+  .corner.bl{bottom:12px;left:12px;border-right:0;border-top:0;}
+  .corner.br{bottom:12px;right:12px;border-left:0;border-top:0;}
+  #leaders{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;}
+  #leaders line{stroke:var(--hud-dim);stroke-width:1;opacity:.55;}
+  #labels{position:absolute;inset:0;pointer-events:none;}
+  .lab{position:absolute;transform:translate(-50%,-50%);background:rgba(8,9,12,.86);border:1px solid var(--edge-hot);color:var(--text);
+    font:10px/1.2 var(--mono);padding:2px 6px;border-radius:2px;white-space:nowrap;pointer-events:auto;cursor:pointer;transition:border-color .12s,box-shadow .12s;}
+  .lab:hover{border-color:var(--hud);}
+  .lab .k{color:var(--muted);}
+  .lab.bound{border-color:var(--bound);}
+  .lab.axis{border-color:var(--axis);} .lab.hat{border-color:var(--hat);}
+  .lab.sel{border-color:var(--hud);color:#fff;box-shadow:0 0 0 1px var(--glow),0 0 12px -2px var(--glow);}
+  #hint{position:absolute;left:14px;bottom:12px;max-width:62%;padding:5px 10px;background:rgba(8,9,12,.72);border-left:2px solid var(--hud-dim);color:var(--muted);font:11px var(--mono);}
+  #hint b{color:var(--text);font-weight:400;}
+
+  /* side panel — readout */
+  #side{background:var(--panel);border-left:1px solid var(--edge);display:flex;flex-direction:column;min-height:0;}
+  #side .pad{padding:12px 14px;border-bottom:1px solid var(--edge);}
+  .eyebrow{font-size:9px;text-transform:uppercase;letter-spacing:.14em;color:var(--muted);margin-bottom:5px;}
+  #curKey{font:600 15px var(--mono);color:var(--hud);}
+  #curKey .mut{font-weight:400;}
+  #curType{font:11px var(--mono);color:var(--muted);margin-top:3px;}
+  #subinputs{margin:9px 0 2px;display:flex;flex-wrap:wrap;gap:5px;}
+  .chip{background:var(--panel2);border:1px solid var(--edge);border-radius:3px;padding:4px 9px;font:11px var(--mono);color:var(--text);cursor:pointer;transition:border-color .12s,color .12s;}
+  .chip:hover{border-color:var(--hud-dim);}
+  .chip.bound{border-color:var(--bound);}
+  .chip.on{border-color:var(--hud);color:var(--hud);box-shadow:0 0 0 1px var(--glow);}
+  #assigned{margin-top:8px;}
+  .bindrow{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:6px 8px;background:var(--panel2);border:1px solid var(--edge);border-radius:3px;margin:5px 0;}
+  .bindrow small{color:var(--muted);font:10px var(--mono);}
+  .bindrow button{padding:2px 7px;font-size:12px;}
+  .bindrow button:hover{border-color:var(--hud);color:var(--hud);}
+  .bindrow.conflict{border-color:#e5484d;}
+  .bindrow.modifier{border-style:dashed;opacity:.9;}
+  .bindrow .nm{display:flex;align-items:center;flex-wrap:wrap;gap:5px;}
+  .warn{color:#e5484d;font:600 9px var(--mono);text-transform:uppercase;letter-spacing:.04em;}
+  .gtag{display:inline-block;font:600 9px var(--mono);text-transform:uppercase;letter-spacing:.04em;border:1px solid var(--edge);border-radius:2px;padding:1px 5px;margin-right:6px;}
+  #search{margin:10px 14px 6px;}
+  #picker{flex:1;overflow:auto;padding:2px 14px 40px;}
+  .grp{font:600 10px system-ui;text-transform:uppercase;letter-spacing:.1em;margin:14px 0 4px;position:sticky;top:0;background:var(--panel);padding:3px 0;border-bottom:1px solid var(--edge);}
+  .ctl{padding:6px 8px;border-radius:3px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:8px;transition:background .1s;}
+  .ctl:hover{background:var(--panel2);}
+  .ctl .t{color:var(--muted);font:9px var(--mono);text-transform:uppercase;letter-spacing:.05em;flex:none;}
+  .cn{display:flex;flex-direction:column;line-height:1.15;min-width:0;}
+  .cn .nm1{color:var(--text);}
+  .cn .key{font:9px var(--mono);color:var(--muted);letter-spacing:.02em;}
+  .empty{color:var(--muted);padding:20px 12px;text-align:center;font-size:13px;line-height:1.5;}
+  .empty kbd{font:inherit;background:var(--panel2);border:1px solid var(--edge);border-radius:3px;padding:0 5px;}
+
+  @media (max-width:760px){
+    header{gap:6px;}
+    button,select,input[type=text],input[type=search]{padding:8px 10px;font-size:12px;}
+    /* page scrolls; 3D is a fixed hero, panel flows full-length below */
+    html,body{height:auto;}
+    body{min-height:100vh;}
+    #wrap{display:block;}
+    #view{height:56vh;}
+    #side{border-left:none;border-top:1px solid var(--edge);}
+    #search{position:sticky;top:0;z-index:4;margin:0;border-radius:0;border-left:0;border-right:0;background:var(--panel);}
+    #picker{overflow:visible;padding:6px 14px 90px;}
+    #hint{display:none;} .corner{width:20px;height:20px;}
+    .ctl,.bindrow{padding:10px 8px;}
+  }
+  @media (prefers-reduced-motion:reduce){ *{transition:none!important;animation:none!important;} }
+</style>
+
+<header>
+  <h1><span class="dot">⬢</span> Bind Editor <span class="ver">v0.2</span></h1>
+  <label class="field"><span class="cap">Profile</span><input type="file" id="binds" accept=".binds"></label>
+  <label class="field"><span class="cap">Device</span><select id="device"><option value="">— load .binds —</option></select></label>
+  <button id="exportBinds" class="primary" disabled>Export .binds</button>
+  <span class="sep"></span>
+  <label class="field"><span class="cap">Model</span><input type="file" id="glb" accept=".glb,.gltf"></label>
+  <button id="modeOrbit" class="on">Orbit</button>
+  <button id="modePlace">Place</button>
+  <button id="reset" title="Re-center the camera on the model">Reset</button>
+  <button id="spin" title="Toggle auto-rotate">Spin</button>
+  <span class="sep"></span>
+  <label class="field"><span class="cap">Type</span><select id="ptype"><option value="button">Button</option><option value="hat">Hat</option><option value="axis">Axis</option></select></label>
+  <label class="field"><span class="cap">Label</span><input type="text" id="label" value="Joy_1" size="10"></label>
+  <button id="loadCoords" title="Load a previously exported 3D coords file">Load coords</button>
+  <input type="file" id="coordsFile" accept=".json" style="display:none">
+  <button id="exportCoords">Save coords</button>
+  <span id="status"></span>
+</header>
+
+<div id="wrap">
+  <div id="view">
+    <canvas id="cv"></canvas><svg id="leaders"></svg><div id="labels"></div>
+    <div class="corner tl"></div><div class="corner tr"></div><div class="corner bl"></div><div class="corner br"></div>
+    <div id="hint">Drag to orbit · pinch / scroll to zoom · two-finger drag to pan. <b>Place</b> markers, then <b>Orbit</b> and tap one to bind.</div>
+  </div>
+  <div id="side">
+    <div class="pad">
+      <div class="eyebrow">Selected input</div>
+      <div id="curKey">No input selected</div>
+      <div id="curType"></div>
+      <div id="subinputs"></div>
+      <div id="assigned"></div>
+    </div>
+    <input type="search" id="search" placeholder="Search controls — target, thrust, boost, gear…">
+    <div id="picker"><div class="empty">Tap a marker on the model, then choose a control to bind.</div></div>
+  </div>
+</div>
+
+<script src="data/data.js"></script>
+<script type="importmap">{ "imports": { "three": "./vendor/three.module.js" } }</script>
+<script type="module">
+import * as THREE from 'three';
+import { OrbitControls } from './vendor/jsm/controls/OrbitControls.js';
+import { GLTFLoader } from './vendor/jsm/loaders/GLTFLoader.js';
+
+const $ = s => document.querySelector(s);
+const D = window.ED_DATA;
+const ctlByKey = {}; D.controls.forEach(c => ctlByKey[c.control] = c);
+const GCOL = { Ship:'#58a6ff', SRV:'#e39a2c', OnFoot:'#2ea043', Fighter:'#bc8cff', Multicrew:'#d29922',
+  UI:'#8b949e', 'Galaxy map':'#f778ba', 'Head look':'#39c5cf', Camera:'#a5d6ff', Scanners:'#7ee787', Misc:'#8b949e', 'Holo-Me':'#8b949e' };
+const gcol = g => GCOL[g] || '#8b949e';
+const idInfo = {}; Object.values(D.devices).forEach(dev => (dev.handledDevices||[]).forEach(id => { if(!idInfo[id]) idInfo[id] = {name:dev.name, template:dev.template}; }));
+const setStatus = s => $('#status').textContent = s;
+const typeOfKey = k => (/Axis$/.test(k) && !/^(Neg|Pos)_/.test(k)) ? 'Analogue' : 'Digital';
+
+/* ---------------- binding engine (shared logic with 2D editor) ---------------- */
+let xmlDoc = null, curDevice = '', curItem = null, deviceIndex = {};
+
+$('#binds').addEventListener('change', ev => { const f=ev.target.files[0]; if(!f) return; const r=new FileReader(); r.onload=()=>loadBinds(r.result,f.name); r.readAsText(f); });
+
+function loadBinds(text, fname) {
+  xmlDoc = new DOMParser().parseFromString(text, 'application/xml');
+  if (xmlDoc.querySelector('parsererror')) { setStatus('❌ XML parse error'); return; }
+  deviceIndex = {}; const used = new Set();
+  xmlDoc.querySelectorAll('[Device]').forEach(el => { const id=el.getAttribute('Device'); if(/^[0-9A-Fa-f]{8}/.test(id)){ used.add(id); if(el.hasAttribute('DeviceIndex')) deviceIndex[id]=el.getAttribute('DeviceIndex'); } });
+  const sel=$('#device'); sel.innerHTML='';
+  [...used].forEach(id => sel.add(new Option(`${idInfo[id]?.name||id} (${id})`, id)));
+  $('#exportBinds').disabled=false;
+  curDevice = sel.value || [...used][0] || '';
+  setStatus(`Loaded ${fname}: ${used.size} device(s). Now load a 3D model for ${idInfo[curDevice]?.name||curDevice}.`);
+  refreshMarkers();
+}
+$('#device').addEventListener('change', e => { curDevice=e.target.value; refreshMarkers(); setStatus(`Device: ${idInfo[curDevice]?.name||curDevice}`); });
+
+function bindingsFor(id, key) {
+  const out=[]; if(!xmlDoc||!id) return out;
+  xmlDoc.querySelectorAll(`[Device="${id}"][Key="${key}"]`).forEach(el => {
+    const tag=el.tagName;
+    if(tag==='Primary'||tag==='Secondary'||tag==='Binding') out.push({control:el.parentElement.tagName, slot:tag, node:el});
+    else if(tag==='Modifier'){ const holder=el.parentElement, control=holder&&holder.parentElement&&holder.parentElement.tagName;
+      if(control) out.push({control, slot:'Modifier', node:el}); }
+  });
+  return out;
+}
+function selectItem(key, type) {
+  curItem = { key, type: type || typeOfKey(key) };
+  $('#curType').textContent = curItem.type==='Analogue' ? 'Axis input' : 'Button input';
+  renderAssigned(); renderPicker();
+}
+function renderAssigned() {
+  const box=$('#assigned'); box.innerHTML=''; if(!curItem) return;
+  const binds = bindingsFor(curDevice, curItem.key);
+  if(!binds.length){ box.innerHTML='<div class="mut" style="margin-top:8px">Nothing bound here yet — pick a control below.</div>'; return; }
+  // conflict = 2+ real bindings in the same mode/group on this one input
+  const gcount={}; binds.forEach(b=>{ if(b.slot!=='Modifier'){ const g=ctlByKey[b.control]?.group||'?'; gcount[g]=(gcount[g]||0)+1; } });
+  binds.forEach(b => {
+    const c=ctlByKey[b.control]; const g=c?.group||'—';
+    const isMod=b.slot==='Modifier';
+    const conflict=!isMod && gcount[g]>1;
+    const row=document.createElement('div'); row.className='bindrow'+(conflict?' conflict':'')+(isMod?' modifier':'');
+    row.innerHTML=`<span class="nm"><span class="gtag" style="color:${gcol(g)};border-color:${gcol(g)}">${g}</span><span class="cn"><span class="nm1">${c?c.name:b.control}</span><span class="key">${b.control}</span></span><small>(${isMod?'modifier':b.slot})</small>${conflict?'<span class="warn">⚠ conflict</span>':''}</span>`;
+    const rm=document.createElement('button'); rm.textContent='✕'; rm.title=isMod?'Remove modifier':'Unbind'; rm.onclick=()=>removeBinding(b); row.appendChild(rm); box.appendChild(row); });
+}
+const isAxis = c => c.type==='Analogue';
+$('#search').addEventListener('input', renderPicker);
+function renderPicker() {
+  const host=$('#picker'); host.innerHTML='';
+  if(!curItem){ host.innerHTML='<div class="empty">Select a marker to see controls.</div>'; return; }
+  const q=($('#search').value||'').toLowerCase(); const wantAxis=curItem.type==='Analogue';
+  let list=D.controls.filter(c => !q || c.name.toLowerCase().includes(q) || c.control.toLowerCase().includes(q) || c.group.toLowerCase().includes(q));
+  list.sort((a,b)=>(isAxis(b)===wantAxis)-(isAxis(a)===wantAxis) || a.group.localeCompare(b.group) || a.order-b.order);
+  let lastGrp=null;
+  list.slice(0,400).forEach(c => { if(c.group!==lastGrp){ lastGrp=c.group; const g=document.createElement('div'); g.className='grp'; g.textContent=c.group; g.style.color=gcol(c.group); host.appendChild(g); }
+    const d=document.createElement('div'); d.className='ctl'; d.innerHTML=`<span class="cn"><span class="nm1">${c.name}</span><span class="key">${c.control}</span></span><span class="t">${isAxis(c)?'axis':'button'}</span>`; d.onclick=()=>assign(c); host.appendChild(d); });
+}
+function ensureControl(control){ let el=xmlDoc.querySelector(control); if(!el){ el=xmlDoc.createElement(control); xmlDoc.documentElement.appendChild(el); } return el; }
+function ensureChild(parent,tag){ let c=parent.querySelector(tag); if(!c){ c=xmlDoc.createElement(tag); parent.appendChild(c); } return c; }
+function setBinding(control,slot,key){ const el=ensureControl(control); const node=ensureChild(el,slot); node.setAttribute('Device',curDevice); const di=deviceIndex[curDevice]; if(di!==undefined) node.setAttribute('DeviceIndex',di); node.setAttribute('Key',key); if(slot==='Binding'){ ensureChild(el,'Inverted').setAttribute('Value','0'); ensureChild(el,'Deadzone').setAttribute('Value','0.00000000'); } }
+function assign(c){ if(!curItem||!xmlDoc) return;
+  if(isAxis(c)) setBinding(c.control,'Binding',curItem.key);
+  else { const el=ensureControl(c.control); const pri=el.querySelector('Primary'); const slot=(!pri||pri.getAttribute('Device')==='{NoDevice}'||!pri.getAttribute('Device'))?'Primary':'Secondary'; setBinding(c.control,slot,curItem.key); }
+  renderAssigned(); refreshMarkers(); updateChipStates();
+  const g=c.group, same=bindingsFor(curDevice,curItem.key).filter(b=>b.slot!=='Modifier'&&ctlByKey[b.control]?.group===g).length;
+  setStatus(same>1 ? `⚠ ${c.name} bound — conflicts with another ${g} control on ${curItem.key}` : `Bound ${c.name} → ${curItem.key}`);
+}
+function removeBinding(b){
+  if(b.slot==='Modifier'){ b.node.remove(); }
+  else { b.node.setAttribute('Device','{NoDevice}'); b.node.setAttribute('Key',''); if(b.slot!=='Binding') b.node.removeAttribute('DeviceIndex'); }
+  renderAssigned(); refreshMarkers(); updateChipStates(); setStatus(`Removed ${ctlByKey[b.control]?.name||b.control}`); }
+$('#exportBinds').addEventListener('click', () => { if(!xmlDoc) return; const xml=new XMLSerializer().serializeToString(xmlDoc); const a=document.createElement('a'); a.href=URL.createObjectURL(new Blob([xml],{type:'application/xml'})); a.download='Custom.edited.binds'; a.click(); setStatus('Exported Custom.edited.binds — copy into ED\'s Bindings folder.'); });
+
+/* ---------------- 3D scene ---------------- */
+const view=$('#view'), canvas=$('#cv'), labelsEl=$('#labels'), leadersEl=$('#leaders');
+const renderer=new THREE.WebGLRenderer({canvas,antialias:true}); renderer.setPixelRatio(Math.min(devicePixelRatio,2));
+const scene=new THREE.Scene(); scene.background=new THREE.Color(0x08090c);
+const camera=new THREE.PerspectiveCamera(45,1,0.01,5000); camera.position.set(2,2,3);
+const controls=new OrbitControls(camera,renderer.domElement);
+controls.enableDamping=true; controls.dampingFactor=0.08; controls.enablePan=true;
+controls.rotateSpeed=0.9; controls.zoomSpeed=1.1; controls.panSpeed=0.9;
+controls.touches={ ONE:THREE.TOUCH.ROTATE, TWO:THREE.TOUCH.DOLLY_PAN };
+scene.add(new THREE.HemisphereLight(0xffffff,0x223344,1.1));
+const dl=new THREE.DirectionalLight(0xffffff,1.6); dl.position.set(3,6,4); scene.add(dl);
+const dl2=new THREE.DirectionalLight(0xffffff,.7); dl2.position.set(-4,2,-3); scene.add(dl2);
+const grid=new THREE.GridHelper(4,20,0x30363d,0x1c2128); scene.add(grid);
+
+let modelRoot=null, modelMeshes=[], markerRadius=0.03;
+const markerGroup=new THREE.Group(); scene.add(markerGroup);
+let markers=[], selected=null;   // marker: {label, type, mesh, pos}
+let placeholderAnchors={};       // demo-marker anchors on the stylized stick's features
+
+// Stylized VKB Gladiator NXT EVO (right-hand) — modelled from reference photos, not a scan
+function placeholder(){
+  const g=new THREE.Group();
+  const M=(c,r,m)=>new THREE.MeshStandardMaterial({color:c,roughness:r,metalness:m||0});
+  const matPlate=M(0x0f1114,.6,.2), matBase=M(0x1b1e23,.6,.2), matBody=M(0x24282e,.55,.2),
+        matGrip=M(0x2b3038,.9,.04), matDark=M(0x121418,.5,.15), matMetal=M(0x6a7078,.35,.85),
+        matRed=M(0xcc2f2f,.4,.15), matSilver=M(0xc2c6ca,.35,.7), matBtn=M(0x3b424a,.5,.15);
+  const add=(geo,mat,pos,rot)=>{ const m=new THREE.Mesh(geo,mat); if(pos)m.position.set(pos[0],pos[1],pos[2]); if(rot)m.rotation.set(rot[0],rot[1],rot[2]); g.add(m); return m; };
+  // --- base: wide mounting plate + vented wedge housing ---
+  add(new THREE.BoxGeometry(1.35,.045,1.02), matPlate, [0,.022,0]);
+  add(new THREE.BoxGeometry(.9,.3,.7), matBase, [0,.2,-.02]);
+  add(new THREE.BoxGeometry(.78,.15,.56), matBase, [0,.37,-.06]);           // raised gimbal housing (back)
+  for(let i=0;i<4;i++) add(new THREE.BoxGeometry(.012,.11,.02), matDark, [.18+i*.05,.16,.33]); // vents
+  [-.2,0,.2].forEach(x=> add(new THREE.CylinderGeometry(.055,.055,.05,20), matBody, [x,.13,.33],[Math.PI/2,0,0])); // 3 rotary dials
+  [-.15,0,.15].forEach(x=> add(new THREE.BoxGeometry(.07,.03,.05), matBtn, [x,.3,-.02]));       // F1/F2/F3
+  // --- gimbal clamp + shaft ---
+  add(new THREE.BoxGeometry(.2,.09,.16), matMetal, [0,.44,-.02]);
+  add(new THREE.BoxGeometry(.12,.045,.03), matMetal, [0,.44,.08]);          // adjust paddle
+  add(new THREE.CylinderGeometry(.055,.065,.16,20), matDark, [0,.54,-.01]);
+  // --- ergonomic grip: tall thin handle + small forward-leaning head ---
+  add(new THREE.CapsuleGeometry(.115,.5,8,20), matGrip, [0,.92,.04], [-.13,0,.03]);
+  add(new THREE.CapsuleGeometry(.11,.14,6,18), matBody, [0,1.26,.02], [1.15,0,.03]);   // head (beak forward)
+  // --- controls (right-hand grip) ---
+  add(new THREE.BoxGeometry(.055,.14,.04), matDark, [0,.9,.15], [.3,0,0]);    // two-stage trigger
+  add(new THREE.BoxGeometry(.05,.04,.03), matRed, [0,.83,.17], [.3,0,0]);     // trigger red tip
+  add(new THREE.BoxGeometry(.04,.13,.028), matRed, [.13,.98,.0], [.1,0,.28]); // red pinky paddle
+  add(new THREE.CylinderGeometry(.026,.026,.022,18), matSilver, [.135,1.06,.07], [0,0,Math.PI/2]); // side btn
+  add(new THREE.CylinderGeometry(.026,.026,.022,18), matSilver, [.135,.92,.05], [0,0,Math.PI/2]);  // side btn
+  add(new THREE.CylinderGeometry(.045,.05,.028,8), matDark, [-.05,1.34,.12], [0,.4,0]);  // coolie hat
+  add(new THREE.CylinderGeometry(.04,.045,.028,8), matDark, [.06,1.33,.05], [0,.4,0]);    // 2nd hat
+  add(new THREE.CylinderGeometry(.018,.024,.045,12), matDark, [0,1.35,-.03]);             // mini-stick
+  add(new THREE.SphereGeometry(.025,12,10), matDark, [0,1.38,-.03]);
+  add(new THREE.CylinderGeometry(.026,.026,.028,16), matRed, [-.03,1.29,.16]);            // red top button
+  placeholderAnchors={
+    Joy_1:new THREE.Vector3(0,.86,.22),      Joy_2:new THREE.Vector3(-.03,1.29,.24),
+    Joy_POV1:new THREE.Vector3(-.05,1.39,.16), Joy_4:new THREE.Vector3(.06,1.38,.08),
+    Joy_6:new THREE.Vector3(.19,1.06,.1),    Joy_9:new THREE.Vector3(.19,.92,.07),
+    Joy_15:new THREE.Vector3(.19,.98,0),     Joy_XAxis:new THREE.Vector3(-.28,.46,0),
+    Joy_YAxis:new THREE.Vector3(0,.44,.24) };
+  return g;
+}
+function frameCamera(){ if(!modelRoot) return; const box=new THREE.Box3().setFromObject(modelRoot); const size=box.getSize(new THREE.Vector3());
+  const maxDim=Math.max(size.x,size.y,size.z)||1; const dist=maxDim*2.2; camera.position.set(dist*0.6,dist*0.5,dist);
+  camera.near=maxDim/100; camera.far=maxDim*50; camera.updateProjectionMatrix(); controls.target.set(0,0,0); controls.update(); }
+function frameObject(obj){ const box=new THREE.Box3().setFromObject(obj); const size=box.getSize(new THREE.Vector3()); const center=box.getCenter(new THREE.Vector3());
+  const maxDim=Math.max(size.x,size.y,size.z)||1; obj.position.sub(center); markerRadius=maxDim*0.018; grid.position.y=-size.y/2; frameCamera(); }
+function resetView(){ frameCamera(); }
+function setModel(obj){ if(modelRoot) scene.remove(modelRoot); modelRoot=obj; scene.add(obj); modelMeshes=[]; obj.traverse(o=>{ if(o.isMesh) modelMeshes.push(o); }); frameObject(obj); }
+let isPlaceholder = true;
+setModel(placeholder());
+
+// Demo markers so the placeholder is instantly playable (keys the sample stick actually binds)
+function addDemoMarkers(){ clearMarkers();
+  const demo=[['Joy_1','button'],['Joy_2','button'],['Joy_4','button'],['Joy_6','button'],['Joy_9','button'],['Joy_15','button'],['Joy_XAxis','axis'],['Joy_YAxis','axis'],['Joy_POV1','hat']];
+  const n=demo.length, R=1.05, off=modelRoot?modelRoot.position:new THREE.Vector3();
+  demo.forEach(([k,t],i)=>{ let pos;
+    if(placeholderAnchors[k]) pos=placeholderAnchors[k].clone().add(off);
+    else { const phi=Math.acos(1-2*(i+0.5)/n), th=Math.PI*(1+Math.sqrt(5))*i;
+      pos=new THREE.Vector3(Math.sin(phi)*Math.cos(th), Math.cos(phi), Math.sin(phi)*Math.sin(th)).multiplyScalar(R); }
+    addMarker(k, pos, t); });
+}
+// Built-in sample profile so the app is usable with zero files loaded
+fetch('sample.binds').then(r=>r.ok?r.text():null).then(t=>{ if(!t) return;
+  loadBinds(t, 'sample.binds (built-in)');
+  const opt=[...$('#device').options].find(o=>o.value==='231D0200'); if(opt){ $('#device').value='231D0200'; curDevice='231D0200'; }
+  if(isPlaceholder) addDemoMarkers();
+  setStatus('Sample profile loaded — tap a marker to see its binding, drag to orbit.');
+}).catch(()=>{});
+
+const loader=new GLTFLoader();
+$('#glb').addEventListener('change', ev=>{ const f=ev.target.files[0]; if(!f) return; const r=new FileReader();
+  r.onload=()=>loader.parse(r.result,'',g=>{ clearMarkers(); isPlaceholder=false; setModel(g.scene); setStatus('Loaded model '+f.name+'. Switch to Place and click each button.'); }, e=>alert('GLB error: '+e)); r.readAsArrayBuffer(f); });
+
+let mode='orbit';
+$('#modeOrbit').onclick=()=>setMode('orbit'); $('#modePlace').onclick=()=>setMode('place');
+function setMode(m){ mode=m; controls.enabled=(m==='orbit'); $('#modeOrbit').classList.toggle('on',m==='orbit'); $('#modePlace').classList.toggle('on',m==='place'); view.style.cursor=m==='place'?'crosshair':'grab'; }
+$('#reset').onclick=resetView;
+$('#spin').onclick=()=>{ controls.autoRotate=!controls.autoRotate; controls.autoRotateSpeed=1.5; $('#spin').classList.toggle('on',controls.autoRotate); };
+
+const ray=new THREE.Raycaster(), ndc=new THREE.Vector2();
+function pick(ev,objs){ const r=canvas.getBoundingClientRect(); ndc.x=((ev.clientX-r.left)/r.width)*2-1; ndc.y=-((ev.clientY-r.top)/r.height)*2+1; ray.setFromCamera(ndc,camera); return ray.intersectObjects(objs,true); }
+canvas.addEventListener('click', ev=>{
+  if(mode==='place'){ const hit=pick(ev,modelMeshes)[0]; if(!hit) return; const t=$('#ptype').value;
+    addMarker(($('#label').value.trim()||('Joy_'+(markers.length+1))), hit.point.clone(), t); $('#label').value=nextLabel(t,$('#label').value); }
+  else { const hit=pick(ev,markers.map(m=>m.mesh))[0]; const mk=hit?markers.find(m=>m.mesh===hit.object):null; selectMarker(mk); }
+});
+const AXORDER=['Joy_XAxis','Joy_YAxis','Joy_ZAxis','Joy_RXAxis','Joy_RYAxis','Joy_RZAxis','Joy_UAxis','Joy_VAxis'];
+function nextLabel(type,cur){ if(type==='axis'){ const i=AXORDER.indexOf(cur); return i<0?'Joy_XAxis':AXORDER[(i+1)%AXORDER.length]; }
+  const m=cur.match(/^(.*?)(\d+)$/); return m? m[1]+(parseInt(m[2])+1) : cur; }
+$('#ptype').addEventListener('change', ()=>{ const t=$('#ptype').value; $('#label').value = t==='axis'?'Joy_XAxis' : t==='hat'?'Joy_POV1' : 'Joy_1'; });
+
+function addMarker(label,pos,type){ type=type||'button';
+  const mesh=new THREE.Mesh(new THREE.SphereGeometry(markerRadius,16,12), new THREE.MeshBasicMaterial({color:0xff7a1a}));
+  mesh.position.copy(pos); markerGroup.add(mesh); const mk={label,type,mesh,pos}; markers.push(mk); refreshMarkers(); return mk; }
+function clearMarkers(){ markers.forEach(m=>markerGroup.remove(m.mesh)); markers=[]; selected=null; $('#subinputs').innerHTML=''; }
+function markerKeys(mk){ if(mk.type==='hat') return ['Up','Down','Left','Right'].map(d=>mk.label+d);
+  if(mk.type==='axis') return [mk.label,'Neg_'+mk.label,'Pos_'+mk.label]; return [mk.label]; }
+function markerBound(mk){ return markerKeys(mk).some(k=>bindingsFor(curDevice,k).length>0); }
+function markerColor(mk){ if(mk===selected) return 0xffffff; if(markerBound(mk)) return 0x37d17a;
+  return mk.type==='axis'?0x58a6ff : mk.type==='hat'?0xc08cff : 0xff7a1a; }
+function refreshMarkers(){ markers.forEach(m=>m.mesh.material.color.setHex(markerColor(m))); }
+function subInputs(mk){ return mk.type==='hat' ? ['Up','Down','Left','Right'].map(d=>({key:mk.label+d,label:d,type:'Digital'}))
+  : mk.type==='axis' ? [{key:mk.label,label:'Axis',type:'Analogue'},{key:'Neg_'+mk.label,label:'– half',type:'Digital'},{key:'Pos_'+mk.label,label:'+ half',type:'Digital'}]
+  : [{key:mk.label,label:'Button',type:'Digital'}]; }
+function updateChipStates(){ const box=$('#subinputs'); if(!box) return; [...box.children].forEach(b=>b.classList.toggle('bound', bindingsFor(curDevice,b.dataset.key).length>0)); }
+function selectMarker(mk){ selected=mk; refreshMarkers();
+  if(!mk){ curItem=null; $('#subinputs').innerHTML=''; $('#curKey').textContent='No input selected'; $('#curType').textContent=''; $('#assigned').innerHTML=''; renderPicker(); return; }
+  $('#curKey').innerHTML=`<b>${mk.label}</b> <span class="mut">(${mk.type})</span>`;
+  const subs=subInputs(mk), box=$('#subinputs'); box.innerHTML='';
+  subs.forEach(s=>{ const b=document.createElement('button'); b.className='chip'; b.textContent=s.label; b.dataset.key=s.key;
+    b.onclick=()=>{ [...box.children].forEach(c=>c.classList.remove('on')); b.classList.add('on'); selectItem(s.key,s.type); }; box.appendChild(b); });
+  updateChipStates();
+  const first=subs.find(s=>bindingsFor(curDevice,s.key).length)||subs[0]; const bi=subs.indexOf(first);
+  box.children[bi].classList.add('on'); selectItem(first.key, first.type);
+}
+
+$('#exportCoords').onclick=()=>{ const out={}; markers.forEach(m=>out[m.label]={x:+m.pos.x.toFixed(4),y:+m.pos.y.toFixed(4),z:+m.pos.z.toFixed(4),type:m.type}); const a=document.createElement('a'); a.href=URL.createObjectURL(new Blob([JSON.stringify(out,null,1)],{type:'application/json'})); a.download=(curDevice||'device')+'-3d-coords.json'; a.click(); };
+$('#loadCoords').onclick=()=>$('#coordsFile').click();
+$('#coordsFile').addEventListener('change', ev=>{ const f=ev.target.files[0]; if(!f) return; const r=new FileReader(); r.onload=()=>{ try{ const obj=JSON.parse(r.result); isPlaceholder=false; clearMarkers(); for(const [label,p] of Object.entries(obj)) addMarker(label,new THREE.Vector3(p.x,p.y,p.z),p.type||'button'); setStatus('Loaded '+markers.length+' markers.'); }catch(e){ alert('coords JSON error: '+e); } }; r.readAsText(f); });
+
+const tmp=new THREE.Vector3(), org=new THREE.Vector3();
+const SVGNS='http://www.w3.org/2000/svg';
+function labelText(m){ if(m.type==='button'){ const b=bindingsFor(curDevice,m.label); return b.length?(m.label+' · '+(ctlByKey[b[0].control]?.name||b[0].control)):m.label; }
+  return m.label + (m.type==='hat'?' ⬧hat':' ⇄axis'); }
+function drawLabels(){ const r=canvas.getBoundingClientRect();
+  while(labelsEl.children.length<markers.length){ const d=document.createElement('div'); d.className='lab'; d.onclick=()=>selectMarker(d._m); labelsEl.appendChild(d); }
+  while(labelsEl.children.length>markers.length) labelsEl.removeChild(labelsEl.lastChild);
+  while(leadersEl.children.length<markers.length) leadersEl.appendChild(document.createElementNS(SVGNS,'line'));
+  while(leadersEl.children.length>markers.length) leadersEl.removeChild(leadersEl.lastChild);
+  org.set(0,0,0).project(camera); const cx=(org.x*0.5+0.5)*r.width, cy=(-org.y*0.5+0.5)*r.height;
+  const md=Math.min(r.width,r.height), OFF=md*0.10, minR=md*0.30;
+  // pass 1 — project markers; push labels onto a ring clear of the model, leader lines back to the dot
+  const P=[];
+  markers.forEach((m,i)=>{ tmp.copy(m.pos).project(camera); const behind=tmp.z>1;
+    const mx=(tmp.x*0.5+0.5)*r.width, my=(-tmp.y*0.5+0.5)*r.height;
+    let dx=mx-cx, dy=my-cy, len=Math.hypot(dx,dy); if(len<1){ dx=0; dy=-1; len=1; }
+    const R2=Math.max(len+OFF, minR);
+    const txt=labelText(m);
+    P.push({i,m,mx,my,lx:cx+dx/len*R2,ly:cy+dy/len*R2,hw:txt.length*3.3+7,hh:9,txt,behind}); });
+  // pass 2 — greedy vertical de-collision for near-stacked labels
+  const vis=P.filter(p=>!p.behind).sort((a,b)=>a.ly-b.ly);
+  for(let a=0;a<vis.length;a++) for(let b=0;b<a;b++){ const p=vis[a],q=vis[b];
+    if(Math.abs(p.lx-q.lx)<p.hw+q.hw && Math.abs(p.ly-q.ly)<p.hh+q.hh+3) p.ly=q.ly+q.hh+p.hh+4; }
+  // pass 3 — apply
+  P.forEach(p=>{ const div=labelsEl.children[p.i], line=leadersEl.children[p.i];
+    div.style.display=line.style.display=p.behind?'none':''; div._m=p.m;
+    div.className='lab'+(markerBound(p.m)?' bound':'')+(p.m===selected?' sel':'')+(p.m.type==='axis'?' axis':p.m.type==='hat'?' hat':'');
+    div.textContent=p.txt; div.style.left=p.lx+'px'; div.style.top=p.ly+'px';
+    line.setAttribute('x1',p.mx); line.setAttribute('y1',p.my); line.setAttribute('x2',p.lx); line.setAttribute('y2',p.ly); }); }
+
+function resize(){ const w=view.clientWidth,h=view.clientHeight; renderer.setSize(w,h,false); camera.aspect=w/h; camera.updateProjectionMatrix(); }
+new ResizeObserver(resize).observe(view); resize(); setMode('orbit');
+(function loop(){ requestAnimationFrame(loop); controls.update(); renderer.render(scene,camera); drawLabels(); })();
+</script>

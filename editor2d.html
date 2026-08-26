@@ -1,0 +1,322 @@
+<meta charset="utf-8">
+<title>ED Bind Editor</title>
+<style>
+  :root { --bg:#0d1117; --panel:#161b22; --line:#30363d; --fg:#e6edf3; --mut:#8b949e;
+          --accent:#e39a2c; --bound:#2ea043; --conflict:#d29922; --sel:#388bfd; }
+  * { box-sizing:border-box; }
+  body { margin:0; font:14px/1.4 system-ui,Segoe UI,Roboto,sans-serif; background:var(--bg); color:var(--fg); }
+  header { display:flex; gap:10px; align-items:center; padding:8px 12px; background:var(--panel);
+           border-bottom:1px solid var(--line); position:sticky; top:0; z-index:5; flex-wrap:wrap; }
+  header h1 { font-size:15px; margin:0 12px 0 0; font-weight:600; }
+  select, button, input[type=search] { background:#0d1117; color:var(--fg); border:1px solid var(--line);
+           border-radius:6px; padding:6px 9px; font:inherit; }
+  button { cursor:pointer; } button:hover { border-color:var(--accent); }
+  button.primary { background:var(--accent); color:#1a1200; border-color:var(--accent); font-weight:600; }
+  .muted { color:var(--mut); }
+  #wrap { display:grid; grid-template-columns:1fr 340px; gap:0; height:calc(100vh - 49px); }
+  #stage { position:relative; overflow:auto; background:#010409; }
+  #devWrap { position:relative; display:inline-block; min-width:100%; }
+  #devImg { display:block; max-width:100%; height:auto; }
+  .hot { position:absolute; transform:translate(-50%,-50%); border:1.5px solid var(--mut);
+         background:rgba(13,17,23,.82); color:var(--fg); border-radius:5px; padding:2px 5px;
+         font-size:11px; white-space:nowrap; cursor:pointer; max-width:220px; overflow:hidden;
+         text-overflow:ellipsis; line-height:1.25; }
+  .hot .k { color:var(--mut); font-size:9px; display:block; }
+  .hot.bound { border-color:var(--bound); }
+  .hot.axis { border-style:dashed; }
+  .hot.conflict { border-color:var(--conflict); }
+  .hot.sel { outline:2px solid var(--sel); z-index:3; }
+  #side { background:var(--panel); border-left:1px solid var(--line); display:flex; flex-direction:column; }
+  #side .pad { padding:10px 12px; border-bottom:1px solid var(--line); }
+  #curKey { font-weight:600; } #curType { font-size:12px; }
+  #assigned { margin:6px 0 0; }
+  .bindrow { display:flex; justify-content:space-between; align-items:center; gap:6px;
+             padding:4px 6px; background:#0d1117; border:1px solid var(--line); border-radius:5px; margin:4px 0; }
+  .bindrow small { color:var(--mut); }
+  .bindrow button { padding:2px 6px; font-size:12px; }
+  #picker { flex:1; overflow:auto; padding:6px 12px 40px; }
+  .grp { color:var(--accent); font-size:11px; text-transform:uppercase; letter-spacing:.04em;
+         margin:12px 0 3px; position:sticky; top:0; background:var(--panel); padding:2px 0; }
+  .ctl { padding:5px 7px; border-radius:5px; cursor:pointer; display:flex; justify-content:space-between; gap:8px; }
+  .ctl:hover { background:#0d1117; } .ctl.an { } .ctl .t { color:var(--mut); font-size:10px; }
+  .slotbtns { display:flex; gap:6px; margin:6px 0; }
+  .empty { color:var(--mut); padding:20px; text-align:center; }
+  kbd { background:#0d1117; border:1px solid var(--line); border-bottom-width:2px; border-radius:4px; padding:0 5px; font:inherit; }
+  #listview { padding:12px; overflow:auto; height:100%; }
+  #listview .lvgroup { color:var(--accent); font-size:11px; text-transform:uppercase; letter-spacing:.04em; margin:14px 0 6px; }
+  #listview .lvgrid { display:grid; grid-template-columns:repeat(auto-fill,minmax(155px,1fr)); gap:6px; }
+  .lvitem { border:1px solid var(--line); border-radius:6px; padding:6px 8px; cursor:pointer; background:#0d1117; }
+  .lvitem:hover { border-color:var(--accent); }
+  .lvitem.bound { border-color:var(--bound); }
+  .lvitem.conflict { border-color:var(--conflict); }
+  .lvitem.sel { outline:2px solid var(--sel); }
+  .lvitem .k { color:var(--mut); font-size:10px; display:block; }
+  .lvitem .c { font-size:12px; }
+</style>
+
+<header>
+  <h1>🎮 ED Bind Editor <span class="muted" style="font-weight:400">v0.1</span></h1>
+  <label class="muted">Profile: <input type="file" id="file" accept=".binds"></label>
+  <label class="muted">Device:
+    <select id="device"><option value="">— load a .binds first —</option></select>
+  </label>
+  <button id="export" class="primary" disabled>⬇ Export .binds</button>
+  <span id="status" class="muted"></span>
+</header>
+
+<div id="wrap">
+  <div id="stage"><div id="devWrap"><img id="devImg" alt=""><div id="hots"></div></div><div id="listview" style="display:none"></div></div>
+  <div id="side">
+    <div class="pad">
+      <div id="curKey" class="muted">Select a control on the device</div>
+      <div id="curType" class="muted"></div>
+      <div id="assigned"></div>
+      <div class="slotbtns" id="slotbtns" style="display:none">
+        <span class="muted" style="align-self:center">Assign selected control as:</span>
+      </div>
+    </div>
+    <input type="search" id="search" placeholder="Search controls… (e.g. target, thrust, boost)"
+           style="margin:8px 12px" oninput="renderPicker()">
+    <div id="picker"><div class="empty">Load your <kbd>.binds</kbd>, pick a device, then click a button/axis on the image.</div></div>
+  </div>
+</div>
+
+<script src="data/data.js"></script>
+<script>
+const D = window.ED_DATA;
+const ctlByKey = {}; D.controls.forEach(c => ctlByKey[c.control] = c);
+// Elite device id -> {name, template}
+const idInfo = {};
+Object.values(D.devices).forEach(dev => (dev.handledDevices||[]).forEach(id => {
+  if (!idInfo[id]) idInfo[id] = { name: dev.name, template: dev.template };
+}));
+
+let xmlDoc = null;           // parsed .binds DOM
+let curDevice = '';          // selected elite id
+let curItem = null;          // {key, type}
+let deviceIndex = {};        // elite id -> DeviceIndex string seen in file
+let viewMode = 'image';      // 'image' (visual template) | 'list' (generated inventory)
+const $ = s => document.querySelector(s);
+
+$('#file').addEventListener('change', ev => {
+  const f = ev.target.files[0]; if (!f) return;
+  const r = new FileReader();
+  r.onload = () => { loadBinds(r.result, f.name); };
+  r.readAsText(f);
+});
+
+function loadBinds(text, fname) {
+  xmlDoc = new DOMParser().parseFromString(text, 'application/xml');
+  if (xmlDoc.querySelector('parsererror')) { setStatus('❌ XML parse error'); return; }
+  // discover devices used + their DeviceIndex, restricted to ones we can render (have coords+image)
+  deviceIndex = {};
+  const used = new Set();
+  xmlDoc.querySelectorAll('[Device]').forEach(el => {
+    const id = el.getAttribute('Device');
+    if (/^[0-9A-Fa-f]{8}/.test(id)) {
+      used.add(id);
+      if (el.hasAttribute('DeviceIndex')) deviceIndex[id] = el.getAttribute('DeviceIndex');
+    }
+  });
+  const sel = $('#device'); sel.innerHTML = '';
+  const renderable = [...used].filter(id => D.coords[id]);
+  const unrenderable = [...used].filter(id => !D.coords[id]);
+  renderable.forEach(id => sel.add(new Option(`${idInfo[id]?.name||id}  (${id})`, id)));
+  unrenderable.forEach(id => sel.add(new Option(`${idInfo[id]?.name||('Unknown '+id)}  (${id}) — no layout yet`, id, false, false)));
+  $('#export').disabled = false;
+  setStatus(`Loaded ${fname}: ${used.size} device(s) — ${renderable.length} renderable`);
+  if (renderable.length) { sel.value = renderable[0]; selectDevice(renderable[0]); }
+}
+
+$('#device').addEventListener('change', e => selectDevice(e.target.value));
+
+function selectDevice(id) {
+  curDevice = id; curItem = null; $('#slotbtns').style.display='none'; $('#assigned').innerHTML=''; $('#curKey').textContent='Select a control on the device';
+  const tmpl = idInfo[id]?.template;
+  if (D.coords[id] && tmpl) {
+    viewMode = 'image'; $('#listview').style.display='none'; $('#devWrap').style.display='inline-block';
+    const img = $('#devImg'); img.src = `images/${tmpl}.jpg`; img.onload = renderHots; if (img.complete) renderHots();
+  } else {
+    viewMode = 'list'; renderListView(id);
+  }
+  renderPicker();
+}
+
+// Build a generous input inventory for devices without a visual layout,
+// unioned with anything actually bound to the device in the loaded file.
+function buildInventory(id) {
+  const items = []; const seen = new Set();
+  const add = (key, type) => { if (!seen.has(key)) { seen.add(key); items.push({key, type}); } };
+  ['X','Y','Z','RX','RY','RZ','U','V'].forEach(a => { add('Joy_'+a+'Axis','Analogue'); });
+  for (let i=1;i<=64;i++) add('Joy_'+i,'Digital');
+  for (let h=1;h<=2;h++) ['Up','Down','Left','Right'].forEach(d => add('Joy_'+ (h===1?'POV1':'POV2') +d,'Digital'));
+  ['X','Y','Z','RX','RY','RZ','U','V'].forEach(a => { add('Neg_Joy_'+a+'Axis','Digital'); add('Pos_Joy_'+a+'Axis','Digital'); });
+  if (xmlDoc) xmlDoc.querySelectorAll(`[Device="${id}"]`).forEach(el => {
+    const k = el.getAttribute('Key'); if (!k) return;
+    add(k, (/Axis$/.test(k) && !/^(Neg|Pos)_/.test(k)) ? 'Analogue' : 'Digital');
+  });
+  return items;
+}
+
+function renderListView(id) {
+  $('#devWrap').style.display='none';
+  const lv = $('#listview'); lv.style.display='block'; lv.innerHTML='';
+  const groups = {'Axes':[], 'Buttons':[], 'Hat / POV':[], 'Axis as button':[]};
+  buildInventory(id).forEach(it => {
+    if (it.type==='Analogue') groups['Axes'].push(it);
+    else if (/^(Neg|Pos)_/.test(it.key)) groups['Axis as button'].push(it);
+    else if (/POV/.test(it.key)) groups['Hat / POV'].push(it);
+    else groups['Buttons'].push(it);
+  });
+  for (const [gname, arr] of Object.entries(groups)) {
+    if (!arr.length) continue;
+    const g = document.createElement('div'); g.className='lvgroup'; g.textContent = `${gname} (${arr.length})`; lv.appendChild(g);
+    const grid = document.createElement('div'); grid.className='lvgrid';
+    arr.forEach(it => {
+      const binds = bindingsFor(id, it.key);
+      const d = document.createElement('div');
+      d.className = 'lvitem' + (binds.length?' bound':'') + (binds.length>1?' conflict':'');
+      d.dataset.key = it.key;
+      const label = binds.length ? binds.map(b=>ctlByKey[b.control]?.name||b.control).join(' / ') : '—';
+      d.innerHTML = `<span class="k">${it.key}</span><span class="c">${label}</span>`;
+      d.onclick = () => selectItem(it.key, it, d);
+      grid.appendChild(d);
+    });
+    lv.appendChild(grid);
+  }
+}
+
+function refreshView() { if (viewMode==='image') renderHots(); else renderListView(curDevice); reselect(); }
+
+function bindingsFor(id, key) {
+  // returns [{control, slot}] where a Primary/Secondary/Binding targets this device+key
+  const out = [];
+  if (!xmlDoc) return out;
+  xmlDoc.querySelectorAll(`[Device="${id}"][Key="${key}"]`).forEach(el => {
+    const slot = el.tagName;                     // Primary | Secondary | Binding
+    const control = el.parentElement.tagName;
+    out.push({ control, slot });
+  });
+  return out;
+}
+
+function renderHots() {
+  const host = $('#hots'); host.innerHTML='';
+  const img = $('#devImg'); const W = img.naturalWidth||3840, H = img.naturalHeight||2160;
+  const items = D.coords[curDevice] || {};
+  for (const [key, it] of Object.entries(items)) {
+    if (key === 'displayName') continue;
+    const binds = bindingsFor(curDevice, key);
+    const el = document.createElement('div');
+    el.className = 'hot' + (it.Type==='Analogue'?' axis':'') + (binds.length?' bound':'') + (binds.length>1?' conflict':'');
+    el.style.left = (it.x / W * 100) + '%';
+    el.style.top  = (it.y / H * 100) + '%';
+    const label = binds.length ? binds.map(b=>ctlByKey[b.control]?.name||b.control).join(' / ') : '—';
+    el.innerHTML = `<span class="k">${key}</span>${label}`;
+    el.dataset.key = key;
+    el.onclick = () => selectItem(key, it, el);
+    host.appendChild(el);
+  }
+}
+
+function selectItem(key, it, el) {
+  const type = it.Type || it.type;
+  curItem = { key, type };
+  document.querySelectorAll('.hot.sel,.lvitem.sel').forEach(h=>h.classList.remove('sel'));
+  el && el.classList.add('sel');
+  $('#curKey').innerHTML = `Input <b>${key}</b>`;
+  $('#curType').textContent = type==='Analogue' ? 'Axis' : 'Button';
+  renderAssigned();
+  renderPicker();
+}
+
+function renderAssigned() {
+  const box = $('#assigned'); box.innerHTML='';
+  const binds = bindingsFor(curDevice, curItem.key);
+  if (!binds.length) { box.innerHTML = '<div class="muted" style="margin-top:6px">Not bound. Pick a control below to assign.</div>'; return; }
+  binds.forEach(b => {
+    const row = document.createElement('div'); row.className='bindrow';
+    row.innerHTML = `<span>${ctlByKey[b.control]?.name||b.control} <small>(${b.slot})</small></span>`;
+    const rm = document.createElement('button'); rm.textContent='✕';
+    rm.title='Unbind'; rm.onclick=()=>{ unbind(b.control, b.slot); };
+    row.appendChild(rm); box.appendChild(row);
+  });
+}
+
+function renderPicker() {
+  const host = $('#picker'); host.innerHTML='';
+  if (!curItem) { host.innerHTML='<div class="empty">Click a button or axis on the device.</div>'; return; }
+  const q = ($('#search').value||'').toLowerCase();
+  const wantAxis = curItem.type==='Analogue';
+  // sensible ordering: matching-type controls first
+  let list = D.controls.filter(c => !q || c.name.toLowerCase().includes(q) || c.control.toLowerCase().includes(q) || c.group.toLowerCase().includes(q));
+  list.sort((a,b) => (isAxis(b)===wantAxis)-(isAxis(a)===wantAxis) || a.group.localeCompare(b.group) || a.order-b.order);
+  let lastGrp=null;
+  list.slice(0, 400).forEach(c => {
+    if (c.group !== lastGrp) { lastGrp=c.group; const g=document.createElement('div'); g.className='grp'; g.textContent=c.group; host.appendChild(g); }
+    const d=document.createElement('div'); d.className='ctl';
+    d.innerHTML = `<span>${c.name}</span><span class="t">${isAxis(c)?'axis':'button'}</span>`;
+    d.onclick = ()=>assign(c);
+    host.appendChild(d);
+  });
+}
+const isAxis = c => c.type==='Analogue';
+
+function assign(c) {
+  if (!curItem) return;
+  const analogue = isAxis(c);
+  if (analogue) setBinding(c.control, 'Binding', curItem.key);
+  else {
+    // choose Primary if empty else Secondary
+    const el = ensureControl(c.control);
+    const pri = el.querySelector('Primary');
+    const slot = (!pri || pri.getAttribute('Device')==='{NoDevice}' || !pri.getAttribute('Device')) ? 'Primary' : 'Secondary';
+    setBinding(c.control, slot, curItem.key);
+  }
+  refreshView(); setStatus(`Bound ${c.name} → ${curItem.key}`);
+}
+
+function ensureControl(control) {
+  let el = xmlDoc.querySelector(control);
+  if (!el) { el = xmlDoc.createElement(control); xmlDoc.documentElement.appendChild(el); }
+  return el;
+}
+function ensureChild(parent, tag) {
+  let c = parent.querySelector(tag);
+  if (!c) { c = xmlDoc.createElement(tag); parent.appendChild(c); }
+  return c;
+}
+function setBinding(control, slot, key) {
+  const el = ensureControl(control);
+  const node = ensureChild(el, slot);
+  node.setAttribute('Device', curDevice);
+  const di = deviceIndex[curDevice]; if (di!==undefined) node.setAttribute('DeviceIndex', di);
+  node.setAttribute('Key', key);
+  if (slot==='Binding') { ensureChild(el,'Inverted').setAttribute('Value','0'); ensureChild(el,'Deadzone').setAttribute('Value','0.00000000'); }
+}
+function unbind(control, slot) {
+  const el = xmlDoc.querySelector(control); if (!el) return;
+  const node = el.querySelector(slot); if (!node) return;
+  if (slot==='Binding') { node.setAttribute('Device','{NoDevice}'); node.setAttribute('Key',''); }
+  else { node.setAttribute('Device','{NoDevice}'); node.removeAttribute('DeviceIndex'); node.setAttribute('Key',''); }
+  refreshView(); setStatus(`Unbound ${control}`);
+}
+function reselect() {
+  if (!curItem) return;
+  renderAssigned();
+  document.querySelectorAll('.hot.sel,.lvitem.sel').forEach(e=>e.classList.remove('sel'));
+  const e = document.querySelector(`.hot[data-key="${curItem.key}"], .lvitem[data-key="${curItem.key}"]`);
+  if (e) e.classList.add('sel');
+}
+
+$('#export').addEventListener('click', () => {
+  if (!xmlDoc) return;
+  const xml = new XMLSerializer().serializeToString(xmlDoc);
+  const blob = new Blob([xml], {type:'application/xml'});
+  const a = document.createElement('a'); a.href=URL.createObjectURL(blob);
+  a.download = 'Custom.edited.binds'; a.click();
+  setStatus('Exported Custom.edited.binds — copy into ED\'s Bindings folder to use.');
+});
+
+function setStatus(s){ $('#status').textContent = s; }
+</script>

@@ -1,0 +1,612 @@
+{
+ "HotasCougar": {
+  "name": "HotasCougar",
+  "template": "hotascougar",
+  "handledDevices": [
+   "044F0400"
+  ],
+  "keyDevices": []
+ },
+ "LogitechExtreme3DPro": {
+  "name": "LogitechExtreme3DPro",
+  "template": "extreme3dpro",
+  "handledDevices": [
+   "LogitechExtreme3DPro"
+  ],
+  "keyDevices": []
+ },
+ "Logitech710WirelessGamepad": {
+  "name": "Logitech710WirelessGamepad",
+  "template": "f710",
+  "handledDevices": [
+   "Logitech710WirelessGamepad"
+  ],
+  "keyDevices": []
+ },
+ "LogitechGTWheel": {
+  "name": "LogitechGTWheel",
+  "template": "gtwheel",
+  "handledDevices": [
+   "046DC29A"
+  ],
+  "keyDevices": []
+ },
+ "LogitechG940": {
+  "name": "LogitechG940",
+  "template": "g940",
+  "handledDevices": [
+   "LogitechG940Joystick",
+   "LogitechG940Throttle"
+  ],
+  "keyDevices": []
+ },
+ "T16000M": {
+  "name": "T16000M",
+  "template": "t16000m",
+  "handledDevices": [
+   "T16000M"
+  ],
+  "keyDevices": []
+ },
+ "T16000MFCS": {
+  "name": "T16000MFCS",
+  "template": "t16000mfcs",
+  "handledDevices": [
+   "T16000MFCS",
+   "T16000MTHROTTLE"
+  ],
+  "keyDevices": []
+ },
+ "TCASidestickLeft": {
+  "name": "TCASidestickLeft",
+  "template": "tca-left",
+  "handledDevices": [
+   "044F0405"
+  ],
+  "keyDevices": []
+ },
+ "TCASidestickRight": {
+  "name": "TCASidestickRight",
+  "template": "tca-right",
+  "handledDevices": [
+   "044F0406"
+  ],
+  "keyDevices": []
+ },
+ "TFlightHOTASX": {
+  "name": "TFlightHOTASX",
+  "template": "hotasx",
+  "handledDevices": [
+   "ThrustMasterTFlightHOTASX"
+  ],
+  "keyDevices": []
+ },
+ "ThrustMasterHOTAS4": {
+  "name": "ThrustMasterHOTAS4",
+  "template": "hotas4",
+  "handledDevices": [
+   "ThrustMasterHOTAS4",
+   "TFlightHotasOne"
+  ],
+  "keyDevices": []
+ },
+ "T-Rudder": {
+  "name": "T-Rudder",
+  "template": "tfrp",
+  "handledDevices": [
+   "T-Rudder"
+  ],
+  "keyDevices": []
+ },
+ "TPR-Rudder": {
+  "name": "TPR-Rudder",
+  "template": "tpr-rudder",
+  "handledDevices": [
+   "044FB68F"
+  ],
+  "keyDevices": []
+ },
+ "TFlightStickX": {
+  "name": "TFlightStickX",
+  "template": "stickx",
+  "handledDevices": [
+   "044FB106"
+  ],
+  "keyDevices": []
+ },
+ "Warthog": {
+  "name": "Warthog",
+  "template": "warthog",
+  "handledDevices": [
+   "ThrustMasterWarthogJoystick",
+   "ThrustMasterWarthogThrottle",
+   "ThrustMasterWarthogCombined"
+  ],
+  "keyDevices": []
+ },
+ "CobraM5": {
+  "name": "CobraM5",
+  "template": "cobram5",
+  "handledDevices": [
+   "11C05603",
+   "11C05605"
+  ],
+  "keyDevices": []
+ },
+ "Gladiator": {
+  "name": "Gladiator",
+  "template": "gladiator",
+  "handledDevices": [
+   "231D0121"
+  ],
+  "keyDevices": []
+ },
+ "Cougar": {
+  "name": "Cougar",
+  "template": "cougar",
+  "handledDevices": [
+   "044FB351",
+   "044FB352"
+  ],
+  "keyDevices": []
+ },
+ "SaitekFLY5": {
+  "name": "SaitekFLY5",
+  "template": "fly5",
+  "handledDevices": [
+   "SaitekFLY5",
+   "06A30836"
+  ],
+  "keyDevices": []
+ },
+ "SaitekX45": {
+  "name": "SaitekX45",
+  "template": "x45",
+  "handledDevices": [
+   "SaitekX45"
+  ],
+  "keyDevices": []
+ },
+ "SaitekX52": {
+  "name": "SaitekX52",
+  "template": "x52",
+  "handledDevices": [
+   "SaitekX52"
+  ],
+  "keyDevices": []
+ },
+ "SaitekX52Pro": {
+  "name": "SaitekX52Pro",
+  "template": "x52pro",
+  "handledDevices": [
+   "SaitekX52Pro"
+  ],
+  "keyDevices": []
+ },
+ "SaitekX55": {
+  "name": "SaitekX55",
+  "template": "x55",
+  "handledDevices": [
+   "SaitekX55Joystick",
+   "SaitekX55Throttle"
+  ],
+  "keyDevices": []
+ },
+ "SaitekX56": {
+  "name": "SaitekX56",
+  "template": "x56",
+  "handledDevices": [
+   "SaitekX56Joystick",
+   "SaitekX56Throttle",
+   "07382221",
+   "0738A221"
+  ],
+  "keyDevices": []
+ },
+ "SaitekProFlightPedals": {
+  "name": "SaitekProFlightPedals",
+  "template": "proflightpedals",
+  "handledDevices": [
+   "SaitekProFlightRudderPedals",
+   "06A30765"
+  ],
+  "keyDevices": []
+ },
+ "SaitekProFlightCombatPedals": {
+  "name": "SaitekProFlightCombatPedals",
+  "template": "proflightcombatpedals",
+  "handledDevices": [
+   "SaitekProFlightCombatRudderPedals"
+  ],
+  "keyDevices": []
+ },
+ "CHFighterStick": {
+  "name": "CHFighterStick",
+  "template": "chfighter",
+  "handledDevices": [
+   "CHFighterStick",
+   "068EC0F3",
+   "CHProThrottle1",
+   "CHProThrottle2",
+   "068EC010"
+  ],
+  "keyDevices": [
+   "CHFighterStick",
+   "068EC0F3"
+  ]
+ },
+ "CHCombatStick": {
+  "name": "CHCombatStick",
+  "template": "chcombat",
+  "handledDevices": [
+   "CHCombatStick",
+   "CHProThrottle1",
+   "CHProThrottle2",
+   "068EC010"
+  ],
+  "keyDevices": [
+   "CHCombatStick"
+  ]
+ },
+ "CHProThrottle": {
+  "name": "CHProThrottle",
+  "template": "chfighter",
+  "handledDevices": [
+   "CHProThrottle1",
+   "CHProThrottle2",
+   "068EC010"
+  ],
+  "keyDevices": []
+ },
+ "CHThrottleQuadrant": {
+  "name": "CHThrottleQuadrant",
+  "template": "chquadrant",
+  "handledDevices": [
+   "068E00FA"
+  ],
+  "keyDevices": []
+ },
+ "CHProFlightThrottleQuadrant": {
+  "name": "CHProFlightThrottleQuadrant",
+  "template": "chproflightquadrant",
+  "handledDevices": [
+   "06A30C2D"
+  ],
+  "keyDevices": []
+ },
+ "CHProPedals": {
+  "name": "CHProPedals",
+  "template": "chpropedals",
+  "handledDevices": [
+   "CHProPedals",
+   "068E00F2"
+  ],
+  "keyDevices": []
+ },
+ "SidePanelControlDeck": {
+  "name": "SidePanelControlDeck",
+  "template": "sidepanelcontroldeck",
+  "handledDevices": [
+   "07382218"
+  ],
+  "keyDevices": []
+ },
+ "XBox": {
+  "name": "XBox",
+  "template": "xbox",
+  "handledDevices": [
+   "XB360 Pad",
+   "045E02FF",
+   "045E02DD",
+   "28DE11FF",
+   "045E02E0",
+   "045E02FD"
+  ],
+  "keyDevices": []
+ },
+ "XBoxElite": {
+  "name": "XBoxElite",
+  "template": "xboxelite",
+  "handledDevices": [
+   "045E02E3",
+   "045E0B22"
+  ],
+  "keyDevices": []
+ },
+ "GamePad": {
+  "name": "GamePad",
+  "template": "xbox",
+  "handledDevices": [
+   "GamePad"
+  ],
+  "keyDevices": []
+ },
+ "Sabretooth": {
+  "name": "Sabretooth",
+  "template": "sabretooth",
+  "handledDevices": [
+   "1689FE00"
+  ],
+  "keyDevices": []
+ },
+ "LogitechG940Pedals": {
+  "name": "LogitechG940Pedals",
+  "template": "g940pedals",
+  "handledDevices": [
+   "LogitechG940Pedals"
+  ],
+  "keyDevices": []
+ },
+ "SlawBF109Pedals": {
+  "name": "SlawBF109Pedals",
+  "template": "slawbf109pedals",
+  "handledDevices": [
+   "SlawFlightControlRudder"
+  ],
+  "keyDevices": []
+ },
+ "MFGCrosswind": {
+  "name": "MFGCrosswind",
+  "template": "crosswind",
+  "handledDevices": [
+   "16D00A38",
+   "85640203"
+  ],
+  "keyDevices": []
+ },
+ "DS4": {
+  "name": "DS4",
+  "template": "ds4",
+  "handledDevices": [
+   "DS4",
+   "DualShock4"
+  ],
+  "keyDevices": []
+ },
+ "VPC-WarBRD-DELTA-Left": {
+  "name": "VPC-WarBRD-DELTA-Left",
+  "template": "vpc-warbrd-delta-left",
+  "handledDevices": [
+   "03EB2042"
+  ],
+  "keyDevices": []
+ },
+ "VPC-WarBRD-DELTA-Right": {
+  "name": "VPC-WarBRD-DELTA-Right",
+  "template": "vpc-warbrd-delta-right",
+  "handledDevices": [
+   "03EB2044"
+  ],
+  "keyDevices": []
+ },
+ "VPC-ALPHA-Left": {
+  "name": "VPC-ALPHA-Left",
+  "template": "vpc-alpha-left",
+  "handledDevices": [
+   "03EB2046",
+   "334483EB",
+   "334480CB",
+   "3344C0CB"
+  ],
+  "keyDevices": []
+ },
+ "VPC-ALPHA-Right": {
+  "name": "VPC-ALPHA-Right",
+  "template": "vpc-alpha-right",
+  "handledDevices": [
+   "03EB2048",
+   "334443EB",
+   "334440CB",
+   "334400CB",
+   "3344412F"
+  ],
+  "keyDevices": []
+ },
+ "VPC-ALPHA-Left-Custom": {
+  "name": "VPC-ALPHA-Left-Custom",
+  "template": "vpc-alpha-left",
+  "handledDevices": [
+   "03EB9901"
+  ],
+  "keyDevices": []
+ },
+ "VPC-ALPHA-Right-Custom": {
+  "name": "VPC-ALPHA-Right-Custom",
+  "template": "vpc-alpha-right",
+  "handledDevices": [
+   "03EB9902"
+  ],
+  "keyDevices": []
+ },
+ "VPC-ALPHA-Prime-Left": {
+  "name": "VPC-ALPHA-Prime-Left",
+  "template": "vpc-alpha-prime-left",
+  "handledDevices": [
+   "334483F3",
+   "3344838F",
+   "334403F3",
+   "3344038F",
+   "334443F5"
+  ],
+  "keyDevices": []
+ },
+ "VPC-ALPHA-Prime-Right": {
+  "name": "VPC-ALPHA-Prime-Right",
+  "template": "vpc-alpha-prime-right",
+  "handledDevices": [
+   "334443F4",
+   "33444390",
+   "3344C3F3",
+   "334483F4",
+   "334403F4",
+   "334440D4",
+   "33440390"
+  ],
+  "keyDevices": []
+ },
+ "VPC-FLNKR-Right": {
+  "name": "VPC-FLNKR-Right",
+  "template": "vpc-flnkr-grip",
+  "handledDevices": [
+   "33444393"
+  ],
+  "keyDevices": []
+ },
+ "VPC-MongoosT-50CM2-Throttle": {
+  "name": "VPC-MongoosT-50CM2-Throttle",
+  "template": "vpc-mongoost-50cm2-throttle",
+  "handledDevices": [
+   "33448195"
+  ],
+  "keyDevices": []
+ },
+ "VPC-MongoosT-50CM3-Throttle": {
+  "name": "VPC-MongoosT-50CM3-Throttle",
+  "template": "vpc-mongoost-50cm3-throttle",
+  "handledDevices": [
+   "33448197",
+   "33440197",
+   "33448198",
+   "VPCThrottle"
+  ],
+  "keyDevices": []
+ },
+ "VPC-MongoosT-50CM3-Throttle-32B": {
+  "name": "VPC-MongoosT-50CM3-Throttle-32B",
+  "template": "vpc-mongoost-50cm3-throttle-32b",
+  "handledDevices": [
+   "VPC-MongoosT-50CM3-Throttle-32B0",
+   "VPC-MongoosT-50CM3-Throttle-32B1",
+   "VPC-MongoosT-50CM3-Throttle-32B2"
+  ],
+  "keyDevices": [
+   "VPC-MongoosT-50CM3-Throttle-32B0",
+   "VPC-MongoosT-50CM3-Throttle-32B1",
+   "VPC-MongoosT-50CM3-Throttle-32B2"
+  ]
+ },
+ "VPC-MongoosT-50CM3-Throttle-32B-No-Shift": {
+  "name": "VPC-MongoosT-50CM3-Throttle-32B-No-Shift",
+  "template": "vpc-mongoost-50cm3-throttle-32b-no-shift",
+  "handledDevices": [
+   "VPC-MongoosT-50CM3-Throttle-32B-NS0",
+   "VPC-MongoosT-50CM3-Throttle-32B-NS1"
+  ],
+  "keyDevices": [
+   "VPC-MongoosT-50CM3-Throttle-32B-NS0",
+   "VPC-MongoosT-50CM3-Throttle-32B-NS1"
+  ]
+ },
+ "VPC-Control-Panel-2": {
+  "name": "VPC-Control-Panel-2",
+  "template": "vpc-controlpanel2",
+  "handledDevices": [
+   "3344825A"
+  ],
+  "keyDevices": []
+ },
+ "VKB-Kosmosima-SCG-Left": {
+  "name": "VKB-Kosmosima-SCG-Left",
+  "template": "vkb-kosmosima-scg-left",
+  "handledDevices": [
+   "231D0127"
+  ],
+  "keyDevices": []
+ },
+ "VKB-Kosmosima-SCG-Right": {
+  "name": "VKB-Kosmosima-SCG-Right",
+  "template": "vkb-kosmosima-scg-right",
+  "handledDevices": [
+   "231D0126"
+  ],
+  "keyDevices": []
+ },
+ "VKB-Gladiator-NXT-Premium-Right": {
+  "name": "VKB-Gladiator-NXT-Premium-Right",
+  "template": "vkb-gladiator-nxt-premium-right",
+  "handledDevices": [
+   "231D0200"
+  ],
+  "keyDevices": []
+ },
+ "VKB-Gladiator-NXT-Premium-Left": {
+  "name": "VKB-Gladiator-NXT-Premium-Left",
+  "template": "vkb-gladiator-nxt-premium-left",
+  "handledDevices": [
+   "231D0201"
+  ],
+  "keyDevices": []
+ },
+ "VKB-Gladiator-NXT-Premium-Right-OTA": {
+  "name": "VKB-Gladiator-NXT-Premium-Right-OTA",
+  "template": "vkb-gladiator-nxt-premium-right-ota",
+  "handledDevices": [
+   "231D3200"
+  ],
+  "keyDevices": []
+ },
+ "VKB-Gladiator-NXT-Premium-Left-OTA": {
+  "name": "VKB-Gladiator-NXT-Premium-Left-OTA",
+  "template": "vkb-gladiator-nxt-premium-left-ota",
+  "handledDevices": [
+   "231D3201"
+  ],
+  "keyDevices": []
+ },
+ "VKB-STECS-VC1": {
+  "name": "VKB-STECS-VC1",
+  "template": "vkb-stecs-1",
+  "handledDevices": [
+   "231D012D::0"
+  ],
+  "keyDevices": []
+ },
+ "VKB-STECS-VC2": {
+  "name": "VKB-STECS-VC2",
+  "template": "vkb-stecs-2",
+  "handledDevices": [
+   "231D012D::1"
+  ],
+  "keyDevices": []
+ },
+ "VKB-GNX-WWII-Throttle": {
+  "name": "VKB-GNX-WWII-Throttle",
+  "template": "vkb-gnx-ww2-throttle",
+  "handledDevices": [
+   "231D2214"
+  ],
+  "keyDevices": []
+ },
+ "Winwing-Orion-Throttle-2-F18-Handle": {
+  "name": "Winwing-Orion-Throttle-2-F18-Handle",
+  "template": "winwing-orion-throttle2-f18-handle",
+  "handledDevices": [
+   "4098BE62"
+  ],
+  "keyDevices": []
+ },
+ "Winwing-Ursa-Minor-Fighter-Right": {
+  "name": "Winwing-Ursa-Minor-Fighter-Right",
+  "template": "winwing-ursa-minor-fighter-right",
+  "handledDevices": [
+   "4098BC2A"
+  ],
+  "keyDevices": []
+ },
+ "Winwing-Ursa-Minor-Fighter-Left": {
+  "name": "Winwing-Ursa-Minor-Fighter-Left",
+  "template": "winwing-ursa-minor-fighter-left",
+  "handledDevices": [
+   "4098BC29"
+  ],
+  "keyDevices": []
+ },
+ "Keyboard": {
+  "name": "Keyboard",
+  "template": "keyboard",
+  "handledDevices": [
+   "Keyboard"
+  ],
+  "keyDevices": []
+ }
+}

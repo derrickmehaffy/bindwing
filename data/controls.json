@@ -1,0 +1,3782 @@
+[
+ {
+  "control": "CamTranslateUp",
+  "name": "GalMap Up",
+  "group": "Galaxy map",
+  "category": "UI",
+  "order": 1,
+  "type": "Digital",
+  "hasAnalogue": true
+ },
+ {
+  "control": "CamTranslateDown",
+  "name": "GalMap Down",
+  "group": "Galaxy map",
+  "category": "UI",
+  "order": 2,
+  "type": "Digital",
+  "hasAnalogue": true
+ },
+ {
+  "control": "CamTranslateLeft",
+  "name": "GalMap Left",
+  "group": "Galaxy map",
+  "category": "UI",
+  "order": 3,
+  "type": "Digital",
+  "hasAnalogue": true
+ },
+ {
+  "control": "CamTranslateRight",
+  "name": "GalMap Right",
+  "group": "Galaxy map",
+  "category": "UI",
+  "order": 4,
+  "type": "Digital",
+  "hasAnalogue": true
+ },
+ {
+  "control": "CamTranslateForward",
+  "name": "GalMap Forward",
+  "group": "Galaxy map",
+  "category": "UI",
+  "order": 5,
+  "type": "Digital",
+  "hasAnalogue": true
+ },
+ {
+  "control": "CamTranslateBackward",
+  "name": "GalMap Backward",
+  "group": "Galaxy map",
+  "category": "UI",
+  "order": 6,
+  "type": "Digital",
+  "hasAnalogue": true
+ },
+ {
+  "control": "CamTranslateXAxis",
+  "name": "GalMap X",
+  "group": "Galaxy map",
+  "category": "UI",
+  "order": 7,
+  "type": "Analogue",
+  "hasAnalogue": false
+ },
+ {
+  "control": "CamTranslateYAxis",
+  "name": "GalMap Y",
+  "group": "Galaxy map",
+  "category": "UI",
+  "order": 8,
+  "type": "Analogue",
+  "hasAnalogue": false
+ },
+ {
+  "control": "CamTranslateZAxis",
+  "name": "GalMap Z",
+  "group": "Galaxy map",
+  "category": "UI",
+  "order": 9,
+  "type": "Analogue",
+  "hasAnalogue": false
+ },
+ {
+  "control": "CamTranslateZHold",
+  "name": "GalMap Z Hold",
+  "group": "Galaxy map",
+  "category": "UI",
+  "order": 10,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "CamPitchAxis",
+  "name": "GalMap Pitch",
+  "group": "Galaxy map",
+  "category": "UI",
+  "order": 11,
+  "type": "Analogue",
+  "hasAnalogue": false
+ },
+ {
+  "control": "CamPitchUp",
+  "name": "GalMap Pitch Up",
+  "group": "Galaxy map",
+  "category": "UI",
+  "order": 12,
+  "type": "Digital",
+  "hasAnalogue": true
+ },
+ {
+  "control": "CamPitchDown",
+  "name": "GalMap Pitch Down",
+  "group": "Galaxy map",
+  "category": "UI",
+  "order": 13,
+  "type": "Digital",
+  "hasAnalogue": true
+ },
+ {
+  "control": "CamYawAxis",
+  "name": "GalMap Yaw",
+  "group": "Galaxy map",
+  "category": "UI",
+  "order": 14,
+  "type": "Analogue",
+  "hasAnalogue": false
+ },
+ {
+  "control": "CamYawLeft",
+  "name": "GalMap Yaw Left",
+  "group": "Galaxy map",
+  "category": "UI",
+  "order": 15,
+  "type": "Digital",
+  "hasAnalogue": true
+ },
+ {
+  "control": "CamYawRight",
+  "name": "GalMap Yaw Right",
+  "group": "Galaxy map",
+  "category": "UI",
+  "order": 16,
+  "type": "Digital",
+  "hasAnalogue": true
+ },
+ {
+  "control": "CamZoomAxis",
+  "name": "GalMap Zoom",
+  "group": "Galaxy map",
+  "category": "UI",
+  "order": 17,
+  "type": "Analogue",
+  "hasAnalogue": false
+ },
+ {
+  "control": "CamZoomIn",
+  "name": "GalMap Zoom In",
+  "group": "Galaxy map",
+  "category": "UI",
+  "order": 18,
+  "type": "Digital",
+  "hasAnalogue": true
+ },
+ {
+  "control": "CamZoomOut",
+  "name": "GalMap Zoom Out",
+  "group": "Galaxy map",
+  "category": "UI",
+  "order": 19,
+  "type": "Digital",
+  "hasAnalogue": true
+ },
+ {
+  "control": "GalaxyMapHome",
+  "name": "GalMap Home",
+  "group": "Galaxy map",
+  "category": "UI",
+  "order": 20,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "RadarRangeAxis",
+  "name": "Sensor Range",
+  "group": "Misc",
+  "category": "Navigation",
+  "order": 1,
+  "type": "Analogue",
+  "hasAnalogue": false
+ },
+ {
+  "control": "RadarDecreaseRange",
+  "name": "Dec Sensor Range",
+  "group": "Misc",
+  "category": "Navigation",
+  "order": 2,
+  "type": "Digital",
+  "hasAnalogue": true
+ },
+ {
+  "control": "RadarIncreaseRange",
+  "name": "Inc Sensor Range",
+  "group": "Misc",
+  "category": "Navigation",
+  "order": 3,
+  "type": "Digital",
+  "hasAnalogue": true
+ },
+ {
+  "control": "MicrophoneMute",
+  "name": "Microphone",
+  "group": "Misc",
+  "category": "General",
+  "order": 4,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "HMDReset",
+  "name": "Reset HMD",
+  "group": "Misc",
+  "category": "General",
+  "order": 5,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "OculusReset",
+  "name": "Reset Oculus",
+  "group": "Misc",
+  "category": "General",
+  "order": 6,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "Pause",
+  "name": "Main Menu",
+  "group": "Misc",
+  "category": "General",
+  "order": 8,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "FriendsMenu",
+  "name": "Friends",
+  "group": "Misc",
+  "category": "General",
+  "order": 9,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "CommanderCreator_Undo",
+  "name": "Undo Holo-Me",
+  "group": "Holo-Me",
+  "category": "General",
+  "order": 10,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "CommanderCreator_Redo",
+  "name": "Redo Holo-Me",
+  "group": "Holo-Me",
+  "category": "General",
+  "order": 11,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "CommanderCreator_Rotation_MouseToggle",
+  "name": "Toggle Holo-Me Rotation",
+  "group": "Holo-Me",
+  "category": "General",
+  "order": 12,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "CommanderCreator_Rotation",
+  "name": "Rotate Holo-Me",
+  "group": "Holo-Me",
+  "category": "General",
+  "order": 13,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "NightVisionToggle",
+  "name": "Night Vision",
+  "group": "Misc",
+  "category": "General",
+  "order": 14,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "OpenCodexGoToDiscovery",
+  "name": "Codex",
+  "group": "Misc",
+  "category": "General",
+  "order": 15,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "GalnetAudio_Play_Pause",
+  "name": "Play/Pause Audio",
+  "group": "Misc",
+  "category": "General",
+  "order": 16,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "GalnetAudio_SkipForward",
+  "name": "Next Audio Track",
+  "group": "Misc",
+  "category": "General",
+  "order": 17,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "GalnetAudio_SkipBackward",
+  "name": "Prev Audio Track",
+  "group": "Misc",
+  "category": "General",
+  "order": 18,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "GalnetAudio_ClearQueue",
+  "name": "Clear Audio Queue",
+  "group": "Misc",
+  "category": "General",
+  "order": 19,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "HeadLookPitchAxis",
+  "name": "Look Up/Down",
+  "group": "Head look",
+  "category": "Navigation",
+  "order": 1,
+  "type": "Analogue",
+  "hasAnalogue": false
+ },
+ {
+  "control": "HeadLookPitchAxisRaw",
+  "name": "Look Up/Down",
+  "group": "Head look",
+  "category": "Navigation",
+  "order": 2,
+  "type": "Analogue",
+  "hasAnalogue": false
+ },
+ {
+  "control": "HeadLookPitchUp",
+  "name": "Look Up",
+  "group": "Head look",
+  "category": "Navigation",
+  "order": 3,
+  "type": "Digital",
+  "hasAnalogue": true
+ },
+ {
+  "control": "HeadLookPitchDown",
+  "name": "Look Down",
+  "group": "Head look",
+  "category": "Navigation",
+  "order": 4,
+  "type": "Digital",
+  "hasAnalogue": true
+ },
+ {
+  "control": "HeadLookYawAxis",
+  "name": "Look Left/Right",
+  "group": "Head look",
+  "category": "Navigation",
+  "order": 5,
+  "type": "Analogue",
+  "hasAnalogue": false
+ },
+ {
+  "control": "HeadLookYawAxisRaw",
+  "name": "Look Left/Right",
+  "group": "Head look",
+  "category": "Navigation",
+  "order": 6,
+  "type": "Analogue",
+  "hasAnalogue": false
+ },
+ {
+  "control": "HeadLookYawLeft",
+  "name": "Look Left",
+  "group": "Head look",
+  "category": "Navigation",
+  "order": 7,
+  "type": "Digital",
+  "hasAnalogue": true
+ },
+ {
+  "control": "HeadLookYawRight",
+  "name": "Look Right",
+  "group": "Head look",
+  "category": "Navigation",
+  "order": 8,
+  "type": "Digital",
+  "hasAnalogue": true
+ },
+ {
+  "control": "HeadLookReset",
+  "name": "Reset Headlook",
+  "group": "Head look",
+  "category": "Navigation",
+  "order": 9,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "SteeringAxis",
+  "name": "SRV Steer",
+  "group": "SRV",
+  "category": "Navigation",
+  "order": 1,
+  "type": "Analogue",
+  "hasAnalogue": false
+ },
+ {
+  "control": "SteerLeftButton",
+  "name": "Steer Left",
+  "group": "SRV",
+  "category": "Navigation",
+  "order": 2,
+  "type": "Digital",
+  "hasAnalogue": true
+ },
+ {
+  "control": "SteerRightButton",
+  "name": "Steer Right",
+  "group": "SRV",
+  "category": "Navigation",
+  "order": 3,
+  "type": "Digital",
+  "hasAnalogue": true
+ },
+ {
+  "control": "DriveSpeedAxis",
+  "name": "Speed",
+  "group": "SRV",
+  "category": "Navigation",
+  "order": 4,
+  "type": "Analogue",
+  "hasAnalogue": false
+ },
+ {
+  "control": "IncreaseSpeedButtonPartial",
+  "name": "Inc Speed",
+  "group": "SRV",
+  "category": "Navigation",
+  "order": 5,
+  "type": "Digital",
+  "hasAnalogue": true
+ },
+ {
+  "control": "DecreaseSpeedButtonPartial",
+  "name": "Dec Speed",
+  "group": "SRV",
+  "category": "Navigation",
+  "order": 6,
+  "type": "Digital",
+  "hasAnalogue": true
+ },
+ {
+  "control": "IncreaseSpeedButtonMax",
+  "name": "Maximum Speed",
+  "group": "SRV",
+  "category": "Navigation",
+  "order": 7,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "DecreaseSpeedButtonMax",
+  "name": "Zero Speed",
+  "group": "SRV",
+  "category": "Navigation",
+  "order": 8,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "BuggyPitchAxis",
+  "name": "Pitch",
+  "group": "SRV",
+  "category": "Navigation",
+  "order": 9,
+  "type": "Analogue",
+  "hasAnalogue": false
+ },
+ {
+  "control": "BuggyPitchUpButton",
+  "name": "Pitch Up",
+  "group": "SRV",
+  "category": "Navigation",
+  "order": 11,
+  "type": "Digital",
+  "hasAnalogue": true
+ },
+ {
+  "control": "BuggyPitchDownButton",
+  "name": "Pitch Down",
+  "group": "SRV",
+  "category": "Navigation",
+  "order": 12,
+  "type": "Digital",
+  "hasAnalogue": true
+ },
+ {
+  "control": "BuggyRollLeft",
+  "name": "Roll Left",
+  "group": "SRV",
+  "category": "Navigation",
+  "order": 13,
+  "type": "Digital",
+  "hasAnalogue": true
+ },
+ {
+  "control": "BuggyRollAxisRaw",
+  "name": "Roll",
+  "group": "SRV",
+  "category": "Navigation",
+  "order": 14,
+  "type": "Analogue",
+  "hasAnalogue": false
+ },
+ {
+  "control": "BuggyRollLeftButton",
+  "name": "Roll Left",
+  "group": "SRV",
+  "category": "Navigation",
+  "order": 15,
+  "type": "Digital",
+  "hasAnalogue": true
+ },
+ {
+  "control": "BuggyRollRight",
+  "name": "Roll Right",
+  "group": "SRV",
+  "category": "Navigation",
+  "order": 16,
+  "type": "Digital",
+  "hasAnalogue": true
+ },
+ {
+  "control": "BuggyRollRightButton",
+  "name": "Roll Right",
+  "group": "SRV",
+  "category": "Navigation",
+  "order": 17,
+  "type": "Digital",
+  "hasAnalogue": true
+ },
+ {
+  "control": "AutoBreakBuggyButton",
+  "name": "Handbrake",
+  "group": "SRV",
+  "category": "Navigation",
+  "order": 18,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "BuggyToggleReverseThrottleInput",
+  "name": "Reverse",
+  "group": "SRV",
+  "category": "Navigation",
+  "order": 19,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "VerticalThrustersButton",
+  "name": "Vertical Thrusters",
+  "group": "SRV",
+  "category": "Navigation",
+  "order": 20,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "ToggleDriveAssist",
+  "name": "Drive Assist",
+  "group": "SRV",
+  "category": "Navigation",
+  "order": 21,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "HeadlightsBuggyButton",
+  "name": "Lights",
+  "group": "SRV",
+  "category": "Navigation",
+  "order": 22,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "ToggleCargoScoop_Buggy",
+  "name": "Cargo Scoop",
+  "group": "SRV",
+  "category": "Navigation",
+  "order": 23,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "RecallDismissShip",
+  "name": "Recall/Dismiss Ship",
+  "group": "SRV",
+  "category": "Navigation",
+  "order": 24,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "SelectTarget_Buggy",
+  "name": "Target Ahead",
+  "group": "SRV",
+  "category": "Combat",
+  "order": 101,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "ToggleBuggyTurretButton",
+  "name": "Turret Mode",
+  "group": "SRV",
+  "category": "Combat",
+  "order": 102,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "BuggyPrimaryFireButton",
+  "name": "Primary Weapons",
+  "group": "SRV",
+  "category": "Combat",
+  "order": 103,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "BuggySecondaryFireButton",
+  "name": "Secondary Weapons",
+  "group": "SRV",
+  "category": "Combat",
+  "order": 104,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "BuggyTurretPitchAxisRaw",
+  "name": "Turret Pitch",
+  "group": "SRV",
+  "category": "Combat",
+  "order": 106,
+  "type": "Analogue",
+  "hasAnalogue": false
+ },
+ {
+  "control": "BuggyTurretPitchDownButton",
+  "name": "Turret Down",
+  "group": "SRV",
+  "category": "Combat",
+  "order": 107,
+  "type": "Digital",
+  "hasAnalogue": true
+ },
+ {
+  "control": "BuggyTurretPitchUpButton",
+  "name": "Turret Up",
+  "group": "SRV",
+  "category": "Combat",
+  "order": 108,
+  "type": "Digital",
+  "hasAnalogue": true
+ },
+ {
+  "control": "BuggyTurretYawAxisRaw",
+  "name": "Turret Yaw",
+  "group": "SRV",
+  "category": "Combat",
+  "order": 110,
+  "type": "Analogue",
+  "hasAnalogue": false
+ },
+ {
+  "control": "BuggyTurretYawLeftButton",
+  "name": "Turret Left",
+  "group": "SRV",
+  "category": "Combat",
+  "order": 111,
+  "type": "Digital",
+  "hasAnalogue": true
+ },
+ {
+  "control": "BuggyTurretYawRightButton",
+  "name": "Turret Right",
+  "group": "SRV",
+  "category": "Combat",
+  "order": 112,
+  "type": "Digital",
+  "hasAnalogue": true
+ },
+ {
+  "control": "BuggyCycleFireGroupNext",
+  "name": "Next Fire Group",
+  "group": "SRV",
+  "category": "Combat",
+  "order": 113,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "BuggyCycleFireGroupPrevious",
+  "name": "Prev Fire Group",
+  "group": "SRV",
+  "category": "Combat",
+  "order": 114,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "ResetPowerDistribution_Buggy",
+  "name": "RST",
+  "group": "SRV",
+  "category": "Combat",
+  "order": 201,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "IncreaseEnginesPower_Buggy",
+  "name": "ENG",
+  "group": "SRV",
+  "category": "Combat",
+  "order": 202,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "IncreaseSystemsPower_Buggy",
+  "name": "SYS",
+  "group": "SRV",
+  "category": "Combat",
+  "order": 203,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "IncreaseWeaponsPower_Buggy",
+  "name": "WEP",
+  "group": "SRV",
+  "category": "Combat",
+  "order": 204,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "GalaxyMapOpen_Buggy",
+  "name": "GalMap",
+  "group": "SRV",
+  "category": "Navigation",
+  "order": 301,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "SystemMapOpen_Buggy",
+  "name": "SysMap",
+  "group": "SRV",
+  "category": "Navigation",
+  "order": 302,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "FocusCommsPanel_Buggy",
+  "name": "Comms Panel",
+  "group": "SRV",
+  "category": "",
+  "order": 401,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "FocusLeftPanel_Buggy",
+  "name": "Nav Panel",
+  "group": "SRV",
+  "category": "",
+  "order": 402,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "FocusRadarPanel_Buggy",
+  "name": "Role Panel",
+  "group": "SRV",
+  "category": "",
+  "order": 403,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "FocusRightPanel_Buggy",
+  "name": "Systems Panel",
+  "group": "SRV",
+  "category": "",
+  "order": 404,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "QuickCommsPanel_Buggy",
+  "name": "Quick Comms",
+  "group": "SRV",
+  "category": "",
+  "order": 405,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "UIFocus_Buggy",
+  "name": "UI Focus",
+  "group": "SRV",
+  "category": "",
+  "order": 406,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "PlayerHUDModeToggle_Buggy",
+  "name": "HUD Mode",
+  "group": "SRV",
+  "category": "",
+  "order": 407,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "EjectAllCargo_Buggy",
+  "name": "Eject All Cargo",
+  "group": "SRV",
+  "category": "",
+  "order": 501,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "HeadLookToggle_Buggy",
+  "name": "Toggle Headlook",
+  "group": "SRV",
+  "category": "",
+  "order": 502,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "OpenCodexGoToDiscovery_Buggy",
+  "name": "Codex",
+  "group": "SRV",
+  "category": "",
+  "order": 503,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "PitchAxisRaw",
+  "name": "Pitch",
+  "group": "Ship",
+  "category": "Navigation",
+  "order": 52,
+  "type": "Analogue",
+  "hasAnalogue": false
+ },
+ {
+  "control": "PitchUpButton",
+  "name": "Pitch Up",
+  "group": "Ship",
+  "category": "Navigation",
+  "order": 3,
+  "type": "Digital",
+  "hasAnalogue": true
+ },
+ {
+  "control": "PitchDownButton",
+  "name": "Pitch Down",
+  "group": "Ship",
+  "category": "Navigation",
+  "order": 4,
+  "type": "Digital",
+  "hasAnalogue": true
+ },
+ {
+  "control": "RollAxisRaw",
+  "name": "Roll",
+  "group": "Ship",
+  "category": "Navigation",
+  "order": 51,
+  "type": "Analogue",
+  "hasAnalogue": false
+ },
+ {
+  "control": "RollLeftButton",
+  "name": "Roll Left",
+  "group": "Ship",
+  "category": "Navigation",
+  "order": 7,
+  "type": "Digital",
+  "hasAnalogue": true
+ },
+ {
+  "control": "RollRightButton",
+  "name": "Roll Right",
+  "group": "Ship",
+  "category": "Navigation",
+  "order": 8,
+  "type": "Digital",
+  "hasAnalogue": true
+ },
+ {
+  "control": "YawAxisRaw",
+  "name": "Yaw",
+  "group": "Ship",
+  "category": "Navigation",
+  "order": 50,
+  "type": "Analogue",
+  "hasAnalogue": false
+ },
+ {
+  "control": "YawLeftButton",
+  "name": "Yaw Left",
+  "group": "Ship",
+  "category": "Navigation",
+  "order": 11,
+  "type": "Digital",
+  "hasAnalogue": true
+ },
+ {
+  "control": "YawRightButton",
+  "name": "Yaw Right",
+  "group": "Ship",
+  "category": "Navigation",
+  "order": 12,
+  "type": "Digital",
+  "hasAnalogue": true
+ },
+ {
+  "control": "YawToRollButton",
+  "name": "Yaw To Roll",
+  "group": "Ship",
+  "category": "Navigation",
+  "order": 13,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "ThrottleAxis",
+  "name": "Throttle",
+  "group": "Ship",
+  "category": "Navigation",
+  "order": 14,
+  "type": "Analogue",
+  "hasAnalogue": false
+ },
+ {
+  "control": "SetSpeed100",
+  "name": "100% Throttle",
+  "group": "Ship",
+  "category": "Navigation",
+  "order": 16,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "SetSpeed75",
+  "name": "75% Throttle",
+  "group": "Ship",
+  "category": "Navigation",
+  "order": 17,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "SetSpeed50",
+  "name": "50% Throttle",
+  "group": "Ship",
+  "category": "Navigation",
+  "order": 18,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "SetSpeed25",
+  "name": "25% Throttle",
+  "group": "Ship",
+  "category": "Navigation",
+  "order": 19,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "SetSpeedZero",
+  "name": "All Stop",
+  "group": "Ship",
+  "category": "Navigation",
+  "order": 20,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "SetSpeedMinus25",
+  "name": "25% Reverse",
+  "group": "Ship",
+  "category": "Navigation",
+  "order": 21,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "SetSpeedMinus50",
+  "name": "50% Reverse",
+  "group": "Ship",
+  "category": "Navigation",
+  "order": 22,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "SetSpeedMinus75",
+  "name": "75% Reverse",
+  "group": "Ship",
+  "category": "Navigation",
+  "order": 23,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "SetSpeedMinus100",
+  "name": "100% Reverse",
+  "group": "Ship",
+  "category": "Navigation",
+  "order": 24,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "AheadThrust",
+  "name": "Forward Thrust",
+  "group": "Ship",
+  "category": "Navigation",
+  "order": 25,
+  "type": "Analogue",
+  "hasAnalogue": false
+ },
+ {
+  "control": "ForwardKey",
+  "name": "Forward Thrust",
+  "group": "Ship",
+  "category": "Navigation",
+  "order": 26,
+  "type": "Digital",
+  "hasAnalogue": true
+ },
+ {
+  "control": "ForwardThrustButton",
+  "name": "Forward Thrust",
+  "group": "Ship",
+  "category": "Navigation",
+  "order": 27,
+  "type": "Digital",
+  "hasAnalogue": true
+ },
+ {
+  "control": "BackwardKey",
+  "name": "Reverse Thrust",
+  "group": "Ship",
+  "category": "Navigation",
+  "order": 28,
+  "type": "Digital",
+  "hasAnalogue": true
+ },
+ {
+  "control": "BackwardThrustButton",
+  "name": "Reverse thrust",
+  "group": "Ship",
+  "category": "Navigation",
+  "order": 29,
+  "type": "Digital",
+  "hasAnalogue": true
+ },
+ {
+  "control": "VerticalThrustRaw",
+  "name": "Vertical Thrust",
+  "group": "Ship",
+  "category": "Navigation",
+  "order": 31,
+  "type": "Analogue",
+  "hasAnalogue": false
+ },
+ {
+  "control": "UpThrustButton",
+  "name": "Thrust Up",
+  "group": "Ship",
+  "category": "Navigation",
+  "order": 32,
+  "type": "Digital",
+  "hasAnalogue": true
+ },
+ {
+  "control": "DownThrustButton",
+  "name": "Thrust Down",
+  "group": "Ship",
+  "category": "Navigation",
+  "order": 33,
+  "type": "Digital",
+  "hasAnalogue": true
+ },
+ {
+  "control": "LateralThrustRaw",
+  "name": "Lateral Thrust",
+  "group": "Ship",
+  "category": "Navigation",
+  "order": 35,
+  "type": "Analogue",
+  "hasAnalogue": false
+ },
+ {
+  "control": "LeftThrustButton",
+  "name": "Thrust Left",
+  "group": "Ship",
+  "category": "Navigation",
+  "order": 36,
+  "type": "Digital",
+  "hasAnalogue": true
+ },
+ {
+  "control": "RightThrustButton",
+  "name": "Thrust Right",
+  "group": "Ship",
+  "category": "Navigation",
+  "order": 37,
+  "type": "Digital",
+  "hasAnalogue": true
+ },
+ {
+  "control": "ToggleReverseThrottleInput",
+  "name": "Reverse",
+  "group": "Ship",
+  "category": "Navigation",
+  "order": 38,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "ToggleFlightAssist",
+  "name": "Flight Assist",
+  "group": "Ship",
+  "category": "Navigation",
+  "order": 39,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "UseBoostJuice",
+  "name": "Boost",
+  "group": "Ship",
+  "category": "Navigation",
+  "order": 40,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "ToggleButtonUpInput",
+  "name": "Silent Running",
+  "group": "Ship",
+  "category": "Navigation",
+  "order": 41,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "ToggleCargoScoop",
+  "name": "Cargo Scoop",
+  "group": "Ship",
+  "category": "Navigation",
+  "order": 42,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "ShipSpotLightToggle",
+  "name": "Lights",
+  "group": "Ship",
+  "category": "Navigation",
+  "order": 43,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "UseAlternateFlightValuesToggle",
+  "name": "Alternate Controls",
+  "group": "Ship",
+  "category": "Navigation",
+  "order": 44,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "PitchAxisAlternate",
+  "name": "Pitch (Alt)",
+  "group": "Ship",
+  "category": "Navigation",
+  "order": 45,
+  "type": "Analogue",
+  "hasAnalogue": false
+ },
+ {
+  "control": "RollAxisAlternate",
+  "name": "Roll (Alt)",
+  "group": "Ship",
+  "category": "Navigation",
+  "order": 46,
+  "type": "Analogue",
+  "hasAnalogue": false
+ },
+ {
+  "control": "YawAxisAlternate",
+  "name": "Yaw (Alt)",
+  "group": "Ship",
+  "category": "Navigation",
+  "order": 47,
+  "type": "Analogue",
+  "hasAnalogue": false
+ },
+ {
+  "control": "VerticalThrustAlternate",
+  "name": "Vertical Thrust (Alt)",
+  "group": "Ship",
+  "category": "Navigation",
+  "order": 48,
+  "type": "Analogue",
+  "hasAnalogue": false
+ },
+ {
+  "control": "LateralThrustAlternate",
+  "name": "Lateral Thrust (Alt)",
+  "group": "Ship",
+  "category": "Navigation",
+  "order": 49,
+  "type": "Analogue",
+  "hasAnalogue": false
+ },
+ {
+  "control": "SelectTarget",
+  "name": "Target Ahead",
+  "group": "Ship",
+  "category": "Combat",
+  "order": 101,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "SelectHighestThreat",
+  "name": "Highest Threat",
+  "group": "Ship",
+  "category": "Combat",
+  "order": 102,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "CycleNextTarget",
+  "name": "Next Contact",
+  "group": "Ship",
+  "category": "Combat",
+  "order": 103,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "CyclePreviousTarget",
+  "name": "Prev Contact",
+  "group": "Ship",
+  "category": "Combat",
+  "order": 104,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "CycleNextHostileTarget",
+  "name": "Next Hostile",
+  "group": "Ship",
+  "category": "Combat",
+  "order": 105,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "CyclePreviousHostileTarget",
+  "name": "Prev Hostile",
+  "group": "Ship",
+  "category": "Combat",
+  "order": 106,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "DeployHardpointToggle",
+  "name": "Hardpoints",
+  "group": "Ship",
+  "category": "Combat",
+  "order": 107,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "PrimaryFire",
+  "name": "Fire 1",
+  "group": "Ship",
+  "category": "Combat",
+  "order": 108,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "SecondaryFire",
+  "name": "Fire 2",
+  "group": "Ship",
+  "category": "Combat",
+  "order": 109,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "CycleFireGroupNext",
+  "name": "Next Fire Group",
+  "group": "Ship",
+  "category": "Combat",
+  "order": 110,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "CycleFireGroupPrevious",
+  "name": "Prev Fire Group",
+  "group": "Ship",
+  "category": "Combat",
+  "order": 111,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "CycleNextSubsystem",
+  "name": "Next Subsystem",
+  "group": "Ship",
+  "category": "Combat",
+  "order": 112,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "CyclePreviousSubsystem",
+  "name": "Prev Subsystem",
+  "group": "Ship",
+  "category": "Combat",
+  "order": 113,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "FireChaffLauncher",
+  "name": "Chaff",
+  "group": "Ship",
+  "category": "Combat",
+  "order": 114,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "DeployHeatSink",
+  "name": "Heatsink",
+  "group": "Ship",
+  "category": "Combat",
+  "order": 116,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "UseShieldCell",
+  "name": "SCB",
+  "group": "Ship",
+  "category": "Combat",
+  "order": 117,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "ChargeECM",
+  "name": "ECM",
+  "group": "Ship",
+  "category": "Combat",
+  "order": 118,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "TriggerFieldNeutraliser",
+  "name": "Field Neutraliser",
+  "group": "Ship",
+  "category": "Combat",
+  "order": 119,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "ResetPowerDistribution",
+  "name": "RST",
+  "group": "Ship",
+  "category": "Combat",
+  "order": 201,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "IncreaseEnginesPower",
+  "name": "ENG",
+  "group": "Ship",
+  "category": "Combat",
+  "order": 202,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "IncreaseSystemsPower",
+  "name": "SYS",
+  "group": "Ship",
+  "category": "Combat",
+  "order": 203,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "IncreaseWeaponsPower",
+  "name": "WEP",
+  "group": "Ship",
+  "category": "Combat",
+  "order": 204,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "OrderRequestDock",
+  "name": "Dock SLF",
+  "group": "Fighter",
+  "category": "Combat",
+  "order": 251,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "OrderDefensiveBehaviour",
+  "name": "Be Defensive",
+  "group": "Fighter",
+  "category": "Combat",
+  "order": 252,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "OrderAggressiveBehaviour",
+  "name": "Be Aggressive",
+  "group": "Fighter",
+  "category": "Combat",
+  "order": 253,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "OrderFocusTarget",
+  "name": "Attack My Target",
+  "group": "Fighter",
+  "category": "Combat",
+  "order": 253,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "OrderHoldFire",
+  "name": "Hold Fire",
+  "group": "Fighter",
+  "category": "Combat",
+  "order": 254,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "OrderHoldPosition",
+  "name": "Hold Position",
+  "group": "Fighter",
+  "category": "Combat",
+  "order": 256,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "OrderFollow",
+  "name": "Follow",
+  "group": "Fighter",
+  "category": "Combat",
+  "order": 257,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "OpenOrders",
+  "name": "Crew Orders",
+  "group": "Fighter",
+  "category": "Combat",
+  "order": 258,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "MultiCrewToggleMode",
+  "name": "Multicrew Mode",
+  "group": "Multicrew",
+  "category": "General",
+  "order": 280,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "MultiCrewThirdPersonPitchAxisRaw",
+  "name": "Pitch",
+  "group": "Multicrew",
+  "category": "General",
+  "order": 281,
+  "type": "Analogue",
+  "hasAnalogue": false
+ },
+ {
+  "control": "MultiCrewThirdPersonPitchUpButton",
+  "name": "Pitch Up",
+  "group": "Multicrew",
+  "category": "General",
+  "order": 282,
+  "type": "Digital",
+  "hasAnalogue": true
+ },
+ {
+  "control": "MultiCrewThirdPersonPitchDownButton",
+  "name": "Pitch Down",
+  "group": "Multicrew",
+  "category": "General",
+  "order": 283,
+  "type": "Digital",
+  "hasAnalogue": true
+ },
+ {
+  "control": "MultiCrewThirdPersonYawAxisRaw",
+  "name": "Yaw",
+  "group": "Multicrew",
+  "category": "General",
+  "order": 284,
+  "type": "Analogue",
+  "hasAnalogue": false
+ },
+ {
+  "control": "MultiCrewThirdPersonYawLeftButton",
+  "name": "Yaw Left",
+  "group": "Multicrew",
+  "category": "General",
+  "order": 285,
+  "type": "Digital",
+  "hasAnalogue": true
+ },
+ {
+  "control": "MultiCrewThirdPersonYawRightButton",
+  "name": "Yaw Right",
+  "group": "Multicrew",
+  "category": "General",
+  "order": 286,
+  "type": "Digital",
+  "hasAnalogue": true
+ },
+ {
+  "control": "MultiCrewThirdPersonFovAxisRaw",
+  "name": "Field of View",
+  "group": "Multicrew",
+  "category": "General",
+  "order": 287,
+  "type": "Analogue",
+  "hasAnalogue": false
+ },
+ {
+  "control": "MultiCrewThirdPersonFovOutButton",
+  "name": "Field of View Out",
+  "group": "Multicrew",
+  "category": "General",
+  "order": 288,
+  "type": "Digital",
+  "hasAnalogue": true
+ },
+ {
+  "control": "MultiCrewThirdPersonFovInButton",
+  "name": "Field of View In",
+  "group": "Multicrew",
+  "category": "General",
+  "order": 289,
+  "type": "Digital",
+  "hasAnalogue": true
+ },
+ {
+  "control": "MultiCrewPrimaryFire",
+  "name": "Fire 1",
+  "group": "Multicrew",
+  "category": "General",
+  "order": 290,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "MultiCrewSecondaryFire",
+  "name": "Fire 2",
+  "group": "Multicrew",
+  "category": "General",
+  "order": 292,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "MultiCrewPrimaryUtilityFire",
+  "name": "Primary Utility",
+  "group": "Multicrew",
+  "category": "General",
+  "order": 292,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "MultiCrewSecondaryUtilityFire",
+  "name": "Secondary Utility",
+  "group": "Multicrew",
+  "category": "General",
+  "order": 293,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "MultiCrewCockpitUICycleForward",
+  "name": "UI Forward",
+  "group": "Multicrew",
+  "category": "General",
+  "order": 294,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "MultiCrewCockpitUICycleBackward",
+  "name": "UI Backward",
+  "group": "Multicrew",
+  "category": "General",
+  "order": 295,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "GalaxyMapOpen",
+  "name": "Galaxy Map",
+  "group": "Ship",
+  "category": "Navigation",
+  "order": 301,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "SystemMapOpen",
+  "name": "System Map",
+  "group": "Ship",
+  "category": "Navigation",
+  "order": 302,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "HyperSuperCombination",
+  "name": "Hyperspace/Supercruise",
+  "group": "Ship",
+  "category": "Navigation",
+  "order": 303,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "Hyperspace",
+  "name": "Hyperspace",
+  "group": "Ship",
+  "category": "Navigation",
+  "order": 304,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "EngageSupercruise",
+  "name": "Supercruise",
+  "group": "Ship",
+  "category": "Navigation",
+  "order": 305,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "Supercruise",
+  "name": "Supercruise",
+  "group": "Ship",
+  "category": "Navigation",
+  "order": 306,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "TargetNextRouteSystem",
+  "name": "Next Jump Dest",
+  "group": "Ship",
+  "category": "Navigation",
+  "order": 307,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "TargetWingman0",
+  "name": "Wingman 1",
+  "group": "Ship",
+  "category": "",
+  "order": 401,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "TargetWingman1",
+  "name": "Wingman 2",
+  "group": "Ship",
+  "category": "",
+  "order": 402,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "TargetWingman2",
+  "name": "Wingman 3",
+  "group": "Ship",
+  "category": "",
+  "order": 403,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "SelectTargetsTarget",
+  "name": "Wingman's target",
+  "group": "Ship",
+  "category": "",
+  "order": 404,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "WingNavLock",
+  "name": "Wingman Navlock",
+  "group": "Ship",
+  "category": "",
+  "order": 405,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "UIFocus",
+  "name": "UI Focus",
+  "group": "Ship",
+  "category": "",
+  "order": 501,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "FocusCommsPanel",
+  "name": "Comms Panel",
+  "group": "Ship",
+  "category": "",
+  "order": 502,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "QuickCommsPanel",
+  "name": "Quick Comms",
+  "group": "Ship",
+  "category": "",
+  "order": 503,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "FocusLeftPanel",
+  "name": "Nav Panel",
+  "group": "Ship",
+  "category": "",
+  "order": 504,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "FocusRightPanel",
+  "name": "Systems Panel",
+  "group": "Ship",
+  "category": "",
+  "order": 505,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "FocusRadarPanel",
+  "name": "Role Panel",
+  "group": "Ship",
+  "category": "",
+  "order": 506,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "PlayerHUDModeToggle",
+  "name": "HUD Mode",
+  "group": "Ship",
+  "category": "General",
+  "order": 507,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "LandingGearToggle",
+  "name": "Landing Gear",
+  "group": "Ship",
+  "category": "Navigation",
+  "order": 601,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "PitchAxis_Landing",
+  "name": "Pitch (Lndg)",
+  "group": "Ship",
+  "category": "Navigation",
+  "order": 602,
+  "type": "Analogue",
+  "hasAnalogue": false
+ },
+ {
+  "control": "PitchUpButton_Landing",
+  "name": "Pitch Up (Lndg)",
+  "group": "Ship",
+  "category": "Navigation",
+  "order": 603,
+  "type": "Digital",
+  "hasAnalogue": true
+ },
+ {
+  "control": "PitchDownButton_Landing",
+  "name": "Pitch Down (Lndg)",
+  "group": "Ship",
+  "category": "Navigation",
+  "order": 604,
+  "type": "Digital",
+  "hasAnalogue": true
+ },
+ {
+  "control": "RollAxis_Landing",
+  "name": "Roll (Lndg)",
+  "group": "Ship",
+  "category": "Navigation",
+  "order": 605,
+  "type": "Analogue",
+  "hasAnalogue": false
+ },
+ {
+  "control": "RollLeftButton_Landing",
+  "name": "Roll Left (Lndg)",
+  "group": "Ship",
+  "category": "Navigation",
+  "order": 606,
+  "type": "Digital",
+  "hasAnalogue": true
+ },
+ {
+  "control": "RollRightButton_Landing",
+  "name": "Roll Right (Lndg)",
+  "group": "Ship",
+  "category": "Navigation",
+  "order": 607,
+  "type": "Digital",
+  "hasAnalogue": true
+ },
+ {
+  "control": "YawAxis_Landing",
+  "name": "Yaw",
+  "group": "Ship",
+  "category": "Navigation",
+  "order": 608,
+  "type": "Analogue",
+  "hasAnalogue": false
+ },
+ {
+  "control": "YawLeftButton_Landing",
+  "name": "Yaw Left (Lndg)",
+  "group": "Ship",
+  "category": "Navigation",
+  "order": 609,
+  "type": "Digital",
+  "hasAnalogue": true
+ },
+ {
+  "control": "YawRightButton_Landing",
+  "name": "Yaw Right (Lndg)",
+  "group": "Ship",
+  "category": "Navigation",
+  "order": 610,
+  "type": "Digital",
+  "hasAnalogue": true
+ },
+ {
+  "control": "AheadThrust_Landing",
+  "name": "Forward Thrust (Lndg)",
+  "group": "Ship",
+  "category": "Navigation",
+  "order": 611,
+  "type": "Analogue",
+  "hasAnalogue": false
+ },
+ {
+  "control": "ForwardThrustButton_Landing",
+  "name": "Forward Thrust (Lndg)",
+  "group": "Ship",
+  "category": "Navigation",
+  "order": 612,
+  "type": "Digital",
+  "hasAnalogue": true
+ },
+ {
+  "control": "BackwardThrustButton_Landing",
+  "name": "Reverse Thrust (Lndg)",
+  "group": "Ship",
+  "category": "Navigation",
+  "order": 613,
+  "type": "Digital",
+  "hasAnalogue": true
+ },
+ {
+  "control": "VerticalThrust_Landing",
+  "name": "Vertical Thrust (Lndg)",
+  "group": "Ship",
+  "category": "Navigation",
+  "order": 614,
+  "type": "Analogue",
+  "hasAnalogue": false
+ },
+ {
+  "control": "UpThrustButton_Landing",
+  "name": "Thrust Up (Lndg)",
+  "group": "Ship",
+  "category": "Navigation",
+  "order": 615,
+  "type": "Digital",
+  "hasAnalogue": true
+ },
+ {
+  "control": "DownThrustButton_Landing",
+  "name": "Thrust Down (Lndg)",
+  "group": "Ship",
+  "category": "Navigation",
+  "order": 616,
+  "type": "Digital",
+  "hasAnalogue": true
+ },
+ {
+  "control": "LateralThrust_Landing",
+  "name": "Lateral Thrust (Lndg)",
+  "group": "Ship",
+  "category": "Navigation",
+  "order": 617,
+  "type": "Analogue",
+  "hasAnalogue": false
+ },
+ {
+  "control": "LeftThrustButton_Landing",
+  "name": "Thrust Left (Lndg)",
+  "group": "Ship",
+  "category": "Navigation",
+  "order": 618,
+  "type": "Digital",
+  "hasAnalogue": true
+ },
+ {
+  "control": "RightThrustButton_Landing",
+  "name": "Thrust Right (Lndg)",
+  "group": "Ship",
+  "category": "Navigation",
+  "order": 619,
+  "type": "Digital",
+  "hasAnalogue": true
+ },
+ {
+  "control": "DisableRotationCorrectToggle",
+  "name": "Rotational Correction",
+  "group": "Ship",
+  "category": "Navigation",
+  "order": 620,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "ExplorationFSSEnter",
+  "name": "Enter FSS",
+  "group": "Scanners",
+  "category": "General",
+  "order": 1,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "ExplorationFSSCameraPitch",
+  "name": "FSS Pitch ",
+  "group": "Scanners",
+  "category": "General",
+  "order": 2,
+  "type": "Analogue",
+  "hasAnalogue": false
+ },
+ {
+  "control": "ExplorationFSSCameraPitchIncreaseButton",
+  "name": "FSS Pitch Up ",
+  "group": "Scanners",
+  "category": "General",
+  "order": 3,
+  "type": "Digital",
+  "hasAnalogue": true
+ },
+ {
+  "control": "ExplorationFSSCameraPitchDecreaseButton",
+  "name": "FSS Pitch Down ",
+  "group": "Scanners",
+  "category": "General",
+  "order": 4,
+  "type": "Digital",
+  "hasAnalogue": true
+ },
+ {
+  "control": "ExplorationFSSCameraYaw",
+  "name": "FSS Yaw ",
+  "group": "Scanners",
+  "category": "General",
+  "order": 5,
+  "type": "Analogue",
+  "hasAnalogue": false
+ },
+ {
+  "control": "ExplorationFSSCameraYawIncreaseButton",
+  "name": "FSS Yaw Right ",
+  "group": "Scanners",
+  "category": "General",
+  "order": 6,
+  "type": "Digital",
+  "hasAnalogue": true
+ },
+ {
+  "control": "ExplorationFSSCameraYawDecreaseButton",
+  "name": "FSS Yaw Left ",
+  "group": "Scanners",
+  "category": "General",
+  "order": 7,
+  "type": "Digital",
+  "hasAnalogue": true
+ },
+ {
+  "control": "ExplorationFSSZoomIn",
+  "name": "Zoom FSS In",
+  "group": "Scanners",
+  "category": "General",
+  "order": 8,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "ExplorationFSSZoomOut",
+  "name": "Zoom FSS Out",
+  "group": "Scanners",
+  "category": "General",
+  "order": 9,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "ExplorationFSSMiniZoomIn",
+  "name": "Step Zoom FSS In",
+  "group": "Scanners",
+  "category": "General",
+  "order": 10,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "ExplorationFSSMiniZoomOut",
+  "name": "Step Zoom FSS Out",
+  "group": "Scanners",
+  "category": "General",
+  "order": 11,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "ExplorationFSSRadioTuningX_Raw",
+  "name": "FSS Tuning",
+  "group": "Scanners",
+  "category": "General",
+  "order": 12,
+  "type": "Analogue",
+  "hasAnalogue": false
+ },
+ {
+  "control": "ExplorationFSSRadioTuningX_Increase",
+  "name": "FSS Tune Right",
+  "group": "Scanners",
+  "category": "General",
+  "order": 13,
+  "type": "Digital",
+  "hasAnalogue": true
+ },
+ {
+  "control": "ExplorationFSSRadioTuningX_Decrease",
+  "name": "FSS Tune Left",
+  "group": "Scanners",
+  "category": "General",
+  "order": 14,
+  "type": "Digital",
+  "hasAnalogue": true
+ },
+ {
+  "control": "ExplorationFSSRadioTuningAbsoluteX",
+  "name": "FSS Tuning",
+  "group": "Scanners",
+  "category": "General",
+  "order": 15,
+  "type": "Analogue",
+  "hasAnalogue": false
+ },
+ {
+  "control": "ExplorationFSSDiscoveryScan",
+  "name": "FSS Honk",
+  "group": "Scanners",
+  "category": "General",
+  "order": 16,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "ExplorationFSSQuit",
+  "name": "Exit FSS",
+  "group": "Scanners",
+  "category": "General",
+  "order": 17,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "ExplorationFSSTarget",
+  "name": "Target FSS",
+  "group": "Scanners",
+  "category": "General",
+  "order": 18,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "ExplorationFSSShowHelp",
+  "name": "FSS Help",
+  "group": "Scanners",
+  "category": "General",
+  "order": 19,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "ExplorationSAAChangeScannedAreaViewToggle",
+  "name": "Toggle Planet Front/Back",
+  "group": "Scanners",
+  "category": "General",
+  "order": 20,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "ExplorationSAAExitThirdPerson",
+  "name": "Exit DSS",
+  "group": "Scanners",
+  "category": "General",
+  "order": 21,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "ExplorationSAANextGenus",
+  "name": "Next Signal (DSS)",
+  "group": "Scanners",
+  "category": "General",
+  "order": 22,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "ExplorationSAAPreviousGenus",
+  "name": "Prev Signal (DSS)",
+  "group": "Scanners",
+  "category": "General",
+  "order": 23,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "SAAThirdPersonPitchAxisRaw",
+  "name": "Pitch (DSS)",
+  "group": "Scanners",
+  "category": "General",
+  "order": 281,
+  "type": "Analogue",
+  "hasAnalogue": false
+ },
+ {
+  "control": "SAAThirdPersonPitchUpButton",
+  "name": "Pitch Up (DSS)",
+  "group": "Scanners",
+  "category": "General",
+  "order": 282,
+  "type": "Digital",
+  "hasAnalogue": true
+ },
+ {
+  "control": "SAAThirdPersonPitchDownButton",
+  "name": "Pitch Down (DSS)",
+  "group": "Scanners",
+  "category": "General",
+  "order": 283,
+  "type": "Digital",
+  "hasAnalogue": true
+ },
+ {
+  "control": "SAAThirdPersonYawAxisRaw",
+  "name": "DSS Yaw",
+  "group": "Scanners",
+  "category": "General",
+  "order": 284,
+  "type": "Analogue",
+  "hasAnalogue": false
+ },
+ {
+  "control": "SAAThirdPersonYawLeftButton",
+  "name": "Yaw Left (DSS)",
+  "group": "Scanners",
+  "category": "General",
+  "order": 285,
+  "type": "Digital",
+  "hasAnalogue": true
+ },
+ {
+  "control": "SAAThirdPersonYawRightButton",
+  "name": "Yaw Right (DSS)",
+  "group": "Scanners",
+  "category": "General",
+  "order": 286,
+  "type": "Digital",
+  "hasAnalogue": true
+ },
+ {
+  "control": "SAAThirdPersonFovAxisRaw",
+  "name": "DSS Field of View",
+  "group": "Scanners",
+  "category": "General",
+  "order": 287,
+  "type": "Analogue",
+  "hasAnalogue": false
+ },
+ {
+  "control": "SAAThirdPersonFovOutButton",
+  "name": "DSS Field of View Out",
+  "group": "Scanners",
+  "category": "General",
+  "order": 288,
+  "type": "Digital",
+  "hasAnalogue": true
+ },
+ {
+  "control": "SAAThirdPersonFovInButton",
+  "name": "DSS Field of View In",
+  "group": "Scanners",
+  "category": "General",
+  "order": 289,
+  "type": "Digital",
+  "hasAnalogue": true
+ },
+ {
+  "control": "ExplorationSAAShowHelp",
+  "name": "DSS Help",
+  "group": "Scanners",
+  "category": "General",
+  "order": 290,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "EjectAllCargo",
+  "name": "Eject All Cargo",
+  "group": "Ship",
+  "category": "General",
+  "order": 701,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "HeadLookToggle",
+  "name": "Toggle Headlook",
+  "group": "Ship",
+  "category": "General",
+  "order": 702,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "OrbitLinesToggle",
+  "name": "Orbit Lines",
+  "group": "Ship",
+  "category": "General",
+  "order": 703,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "ShowPGScoreSummaryInput",
+  "name": "CQC Score",
+  "group": "Ship",
+  "category": "General",
+  "order": 704,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "MouseReset",
+  "name": "Reset Mouse",
+  "group": "Ship",
+  "category": "General",
+  "order": 705,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "WeaponColourToggle",
+  "name": "Weapon Colour",
+  "group": "Ship",
+  "category": "General",
+  "order": 706,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "EngineColourToggle",
+  "name": "Engine Colour",
+  "group": "Ship",
+  "category": "General",
+  "order": 707,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "BlockMouseDecay",
+  "name": "Block Mouse Decay",
+  "group": "Ship",
+  "category": "General",
+  "order": 708,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "PhotoCameraToggle",
+  "name": "External Cam",
+  "group": "Camera",
+  "category": "Camera",
+  "order": 801,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "PhotoCameraToggle_Buggy",
+  "name": "External Cam",
+  "group": "Camera",
+  "category": "Camera",
+  "order": 802,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "ToggleFreeCam",
+  "name": "Free Cam",
+  "group": "Camera",
+  "category": "General",
+  "order": 803,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "QuitCamera",
+  "name": "Exit free Cam",
+  "group": "Camera",
+  "category": "General",
+  "order": 804,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "VanityCameraOne",
+  "name": "Cam - Cockpit Front",
+  "group": "Camera",
+  "category": "General",
+  "order": 805,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "VanityCameraTwo",
+  "name": "Cam - Cockpit Back",
+  "group": "Camera",
+  "category": "General",
+  "order": 806,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "VanityCameraThree",
+  "name": "Cam - Commander 1",
+  "group": "Camera",
+  "category": "General",
+  "order": 808,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "VanityCameraFour",
+  "name": "Cam - Commander 2",
+  "group": "Camera",
+  "category": "General",
+  "order": 808,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "VanityCameraFive",
+  "name": "Cam - Co-Pilot 1",
+  "group": "Camera",
+  "category": "General",
+  "order": 809,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "VanityCameraSix",
+  "name": "Cam - Co-Pilot 2",
+  "group": "Camera",
+  "category": "General",
+  "order": 810,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "VanityCameraSeven",
+  "name": "Cam - Front",
+  "group": "Camera",
+  "category": "General",
+  "order": 811,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "VanityCameraEight",
+  "name": "Cam - Back",
+  "group": "Camera",
+  "category": "General",
+  "order": 812,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "VanityCameraNine",
+  "name": "Cam - Low",
+  "group": "Camera",
+  "category": "General",
+  "order": 813,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "VanityCameraScrollRight",
+  "name": "Next Cam",
+  "group": "Camera",
+  "category": "General",
+  "order": 814,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "VanityCameraScrollLeft",
+  "name": "Prev Cam",
+  "group": "Camera",
+  "category": "General",
+  "order": 815,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "FreeCamToggleHUD",
+  "name": "Toggle HUD",
+  "group": "Camera",
+  "category": "General",
+  "order": 816,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "FreeCamSpeedInc",
+  "name": "Inc Cam Speed",
+  "group": "Camera",
+  "category": "General",
+  "order": 817,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "FreeCamSpeedDec",
+  "name": "Dec Cam Speed",
+  "group": "Camera",
+  "category": "General",
+  "order": 818,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "FreeCamZoomIn",
+  "name": "Zoom In",
+  "group": "Camera",
+  "category": "General",
+  "order": 819,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "FreeCamZoomOut",
+  "name": "Zoom Out",
+  "group": "Camera",
+  "category": "General",
+  "order": 820,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "MoveFreeCamX",
+  "name": "Cam X",
+  "group": "Camera",
+  "category": "General",
+  "order": 821,
+  "type": "Analogue",
+  "hasAnalogue": false
+ },
+ {
+  "control": "MoveFreeCamLeft",
+  "name": "Cam Left",
+  "group": "Camera",
+  "category": "General",
+  "order": 822,
+  "type": "Digital",
+  "hasAnalogue": true
+ },
+ {
+  "control": "MoveFreeCamRight",
+  "name": "Cam Right",
+  "group": "Camera",
+  "category": "General",
+  "order": 823,
+  "type": "Digital",
+  "hasAnalogue": true
+ },
+ {
+  "control": "MoveFreeCamY",
+  "name": "Cam Y",
+  "group": "Camera",
+  "category": "General",
+  "order": 824,
+  "type": "Analogue",
+  "hasAnalogue": false
+ },
+ {
+  "control": "MoveFreeCamUp",
+  "name": "Cam Up",
+  "group": "Camera",
+  "category": "General",
+  "order": 825,
+  "type": "Digital",
+  "hasAnalogue": true
+ },
+ {
+  "control": "MoveFreeCamDown",
+  "name": "Cam Down",
+  "group": "Camera",
+  "category": "General",
+  "order": 826,
+  "type": "Digital",
+  "hasAnalogue": true
+ },
+ {
+  "control": "MoveFreeCamZ",
+  "name": "Cam Z",
+  "group": "Camera",
+  "category": "General",
+  "order": 827,
+  "type": "Analogue",
+  "hasAnalogue": false
+ },
+ {
+  "control": "MoveFreeCamForward",
+  "name": "Cam Forwards",
+  "group": "Camera",
+  "category": "General",
+  "order": 828,
+  "type": "Digital",
+  "hasAnalogue": true
+ },
+ {
+  "control": "MoveFreeCamBackwards",
+  "name": "Cam Backwards",
+  "group": "Camera",
+  "category": "General",
+  "order": 829,
+  "type": "Digital",
+  "hasAnalogue": true
+ },
+ {
+  "control": "PitchCamera",
+  "name": "Cam Pitch",
+  "group": "Camera",
+  "category": "General",
+  "order": 830,
+  "type": "Analogue",
+  "hasAnalogue": false
+ },
+ {
+  "control": "PitchCameraUp",
+  "name": "Cam Pitch Up",
+  "group": "Camera",
+  "category": "General",
+  "order": 831,
+  "type": "Digital",
+  "hasAnalogue": true
+ },
+ {
+  "control": "PitchCameraDown",
+  "name": "Cam Pitch Down",
+  "group": "Camera",
+  "category": "General",
+  "order": 832,
+  "type": "Digital",
+  "hasAnalogue": true
+ },
+ {
+  "control": "RollCamera",
+  "name": "Cam Roll",
+  "group": "Camera",
+  "category": "General",
+  "order": 833,
+  "type": "Analogue",
+  "hasAnalogue": false
+ },
+ {
+  "control": "RollCameraLeft",
+  "name": "Cam Roll Left",
+  "group": "Camera",
+  "category": "General",
+  "order": 834,
+  "type": "Digital",
+  "hasAnalogue": true
+ },
+ {
+  "control": "RollCameraRight",
+  "name": "Cam Roll Right",
+  "group": "Camera",
+  "category": "General",
+  "order": 835,
+  "type": "Digital",
+  "hasAnalogue": true
+ },
+ {
+  "control": "YawCamera",
+  "name": "Cam Yaw",
+  "group": "Camera",
+  "category": "General",
+  "order": 836,
+  "type": "Analogue",
+  "hasAnalogue": false
+ },
+ {
+  "control": "YawCameraLeft",
+  "name": "Cam Yaw Left",
+  "group": "Camera",
+  "category": "General",
+  "order": 837,
+  "type": "Digital",
+  "hasAnalogue": true
+ },
+ {
+  "control": "YawCameraRight",
+  "name": "Cam Yaw Right",
+  "group": "Camera",
+  "category": "General",
+  "order": 838,
+  "type": "Digital",
+  "hasAnalogue": true
+ },
+ {
+  "control": "ToggleRotationLock",
+  "name": "Cam Rotation Lock",
+  "group": "Camera",
+  "category": "General",
+  "order": 839,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "ToggleReverseThrottleInputFreeCam",
+  "name": "Cam Reverse",
+  "group": "Camera",
+  "category": "General",
+  "order": 840,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "FixCameraRelativeToggle",
+  "name": "Lock to Vehicle",
+  "group": "Camera",
+  "category": "General",
+  "order": 841,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "FixCameraWorldToggle",
+  "name": "Lock to World",
+  "group": "Camera",
+  "category": "General",
+  "order": 842,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "ToggleAdvanceMode",
+  "name": "Advanced Cam",
+  "group": "Camera",
+  "category": "General",
+  "order": 843,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "FStopInc",
+  "name": "Inc Blur",
+  "group": "Camera",
+  "category": "General",
+  "order": 844,
+  "type": "Digital",
+  "hasAnalogue": true
+ },
+ {
+  "control": "FStopDec",
+  "name": "Dec Blur",
+  "group": "Camera",
+  "category": "General",
+  "order": 845,
+  "type": "Digital",
+  "hasAnalogue": true
+ },
+ {
+  "control": "FocusDistanceInc",
+  "name": "Focus Further",
+  "group": "Camera",
+  "category": "General",
+  "order": 846,
+  "type": "Digital",
+  "hasAnalogue": true
+ },
+ {
+  "control": "FocusDistanceDec",
+  "name": "Focus Nearer",
+  "group": "Camera",
+  "category": "General",
+  "order": 847,
+  "type": "Digital",
+  "hasAnalogue": true
+ },
+ {
+  "control": "VanityCameraTen",
+  "name": "Cam - Back Low",
+  "group": "Camera",
+  "category": "General",
+  "order": 848,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "MoveFreeCamUpAxis",
+  "name": "Cam Up Axis",
+  "group": "Camera",
+  "category": "General",
+  "order": 849,
+  "type": "Analogue",
+  "hasAnalogue": false
+ },
+ {
+  "control": "MoveFreeCamDownAxis",
+  "name": "Cam Down Axis",
+  "group": "Camera",
+  "category": "General",
+  "order": 850,
+  "type": "Analogue",
+  "hasAnalogue": false
+ },
+ {
+  "control": "ToggleVanityCamera",
+  "name": "External Cam",
+  "group": "Camera",
+  "category": "Camera",
+  "order": 851,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "ToggleVanityCamera_Buggy",
+  "name": "External Cam",
+  "group": "Camera",
+  "category": "Camera",
+  "order": 852,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "StoreEnableRotation",
+  "name": "Store Cam Rotation",
+  "group": "Camera",
+  "category": "Camera",
+  "order": 901,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "StorePitchCamera",
+  "name": "Store Cam Pitch",
+  "group": "Camera",
+  "category": "Camera",
+  "order": 902,
+  "type": "Analogue",
+  "hasAnalogue": false
+ },
+ {
+  "control": "StorePitchCameraUp",
+  "name": "Store Cam Pitch Up",
+  "group": "Camera",
+  "category": "Camera",
+  "order": 903,
+  "type": "Digital",
+  "hasAnalogue": true
+ },
+ {
+  "control": "StorePitchCameraDown",
+  "name": "Store Cam Pitch Down",
+  "group": "Camera",
+  "category": "Camera",
+  "order": 904,
+  "type": "Digital",
+  "hasAnalogue": true
+ },
+ {
+  "control": "StoreYawCamera",
+  "name": "Store Cam Yaw",
+  "group": "Camera",
+  "category": "Camera",
+  "order": 905,
+  "type": "Analogue",
+  "hasAnalogue": false
+ },
+ {
+  "control": "StoreYawCameraLeft",
+  "name": "Store Cam Yaw Left",
+  "group": "Camera",
+  "category": "Camera",
+  "order": 906,
+  "type": "Digital",
+  "hasAnalogue": true
+ },
+ {
+  "control": "StoreYawCameraRight",
+  "name": "Store Cam Yaw Right",
+  "group": "Camera",
+  "category": "Camera",
+  "order": 907,
+  "type": "Digital",
+  "hasAnalogue": true
+ },
+ {
+  "control": "StoreCamZoomIn",
+  "name": "Store Cam Zoom In",
+  "group": "Camera",
+  "category": "Camera",
+  "order": 908,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "StoreCamZoomOut",
+  "name": "Store Cam Zoom Out",
+  "group": "Camera",
+  "category": "Camera",
+  "order": 909,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "StoreToggle",
+  "name": "Store Toggle Preview",
+  "group": "Camera",
+  "category": "Camera",
+  "order": 910,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "UI_Up",
+  "name": "UI Up",
+  "group": "UI",
+  "category": "UI",
+  "order": 1,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "UI_Down",
+  "name": "UI Down",
+  "group": "UI",
+  "category": "UI",
+  "order": 2,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "UI_Left",
+  "name": "UI Left",
+  "group": "UI",
+  "category": "UI",
+  "order": 3,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "UI_Right",
+  "name": "UI Right",
+  "group": "UI",
+  "category": "UI",
+  "order": 4,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "CycleNextPanel",
+  "name": "Next Panel",
+  "group": "UI",
+  "category": "UI",
+  "order": 5,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "CyclePreviousPanel",
+  "name": "Prev Panel",
+  "group": "UI",
+  "category": "UI",
+  "order": 6,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "UI_Select",
+  "name": "UI Select",
+  "group": "UI",
+  "category": "UI",
+  "order": 7,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "UI_Back",
+  "name": "UI Back",
+  "group": "UI",
+  "category": "UI",
+  "order": 8,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "UI_Toggle",
+  "name": "UI Toggle",
+  "group": "UI",
+  "category": "UI",
+  "order": 9,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "CycleNextPage",
+  "name": "Next Page",
+  "group": "UI",
+  "category": "UI",
+  "order": 10,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "CyclePreviousPage",
+  "name": "Prev Page",
+  "group": "UI",
+  "category": "UI",
+  "order": 11,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "HumanoidForwardAxis",
+  "name": "Fwd/Back",
+  "group": "OnFoot",
+  "category": "Navigation",
+  "order": 4,
+  "type": "Analogue",
+  "hasAnalogue": false
+ },
+ {
+  "control": "HumanoidForwardButton",
+  "name": "Fwd",
+  "group": "OnFoot",
+  "category": "Navigation",
+  "order": 5,
+  "type": "Digital",
+  "hasAnalogue": true
+ },
+ {
+  "control": "HumanoidBackwardButton",
+  "name": "Back",
+  "group": "OnFoot",
+  "category": "Navigation",
+  "order": 6,
+  "type": "Digital",
+  "hasAnalogue": true
+ },
+ {
+  "control": "HumanoidPitchAxis",
+  "name": "Pitch",
+  "group": "OnFoot",
+  "category": "Navigation",
+  "order": 9,
+  "type": "Analogue",
+  "hasAnalogue": false
+ },
+ {
+  "control": "HumanoidPitchUpButton",
+  "name": "Pitch Up",
+  "group": "OnFoot",
+  "category": "Navigation",
+  "order": 11,
+  "type": "Digital",
+  "hasAnalogue": true
+ },
+ {
+  "control": "HumanoidPitchDownButton",
+  "name": "Pitch Down",
+  "group": "OnFoot",
+  "category": "Navigation",
+  "order": 12,
+  "type": "Digital",
+  "hasAnalogue": true
+ },
+ {
+  "control": "HumanoidStrafeAxis",
+  "name": "Strafe",
+  "group": "OnFoot",
+  "category": "Navigation",
+  "order": 13,
+  "type": "Analogue",
+  "hasAnalogue": false
+ },
+ {
+  "control": "HumanoidStrafeLeftButton",
+  "name": "Strafe Left",
+  "group": "OnFoot",
+  "category": "Navigation",
+  "order": 14,
+  "type": "Digital",
+  "hasAnalogue": true
+ },
+ {
+  "control": "HumanoidStrafeRightButton",
+  "name": "Strafe Right",
+  "group": "OnFoot",
+  "category": "Navigation",
+  "order": 15,
+  "type": "Digital",
+  "hasAnalogue": true
+ },
+ {
+  "control": "HumanoidRotateAxis",
+  "name": "Turn",
+  "group": "OnFoot",
+  "category": "Navigation",
+  "order": 16,
+  "type": "Analogue",
+  "hasAnalogue": false
+ },
+ {
+  "control": "HumanoidRotateLeftButton",
+  "name": "Turn Left",
+  "group": "OnFoot",
+  "category": "Navigation",
+  "order": 17,
+  "type": "Digital",
+  "hasAnalogue": true
+ },
+ {
+  "control": "HumanoidRotateRightButton",
+  "name": "Turn Right",
+  "group": "OnFoot",
+  "category": "Navigation",
+  "order": 18,
+  "type": "Digital",
+  "hasAnalogue": true
+ },
+ {
+  "control": "HumanoidPrimaryFireButton",
+  "name": "Fire",
+  "group": "OnFoot",
+  "category": "Combat",
+  "order": 100,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "HumanoidActivateSuitAbilityButton",
+  "name": "Suit Tool",
+  "group": "OnFoot",
+  "category": "Combat",
+  "order": 101,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "HumanoidConflictContextualUI",
+  "name": "Combat UI",
+  "group": "OnFoot",
+  "category": "Combat",
+  "order": 102,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "HumanoidConflictContextualUIButton",
+  "name": "Combat UI",
+  "group": "OnFoot",
+  "category": "Combat",
+  "order": 103,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "HumanoidCrouchButton",
+  "name": "Crouch",
+  "group": "OnFoot",
+  "category": "Combat",
+  "order": 104,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "HumanoidHideWeaponButton",
+  "name": "Holster",
+  "group": "OnFoot",
+  "category": "Combat",
+  "order": 105,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "HumanoidJumpButton",
+  "name": "Jump",
+  "group": "OnFoot",
+  "category": "Combat",
+  "order": 106,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "HumanoidMeleeButton",
+  "name": "Melee",
+  "group": "OnFoot",
+  "category": "Combat",
+  "order": 107,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "HumanoidOpenAccessPanelButton",
+  "name": "Open Access Panel",
+  "group": "OnFoot",
+  "category": "Combat",
+  "order": 108,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "HumanoidPrimaryInteractButton",
+  "name": "Interact",
+  "group": "OnFoot",
+  "category": "Combat",
+  "order": 109,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "HumanoidPulseScanButton",
+  "name": "Pulse Scan",
+  "group": "OnFoot",
+  "category": "Combat",
+  "order": 110,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "HumanoidReloadButton",
+  "name": "Reload",
+  "group": "OnFoot",
+  "category": "Combat",
+  "order": 111,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "HumanoidSecondaryInteractButton",
+  "name": "Interact 2",
+  "group": "OnFoot",
+  "category": "Combat",
+  "order": 112,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "HumanoidSelectNextGrenadeTypeButton",
+  "name": "Next Grenade",
+  "group": "OnFoot",
+  "category": "Combat",
+  "order": 113,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "HumanoidSelectNextWeaponButton",
+  "name": "Next WEP",
+  "group": "OnFoot",
+  "category": "Combat",
+  "order": 114,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "HumanoidSelectPreviousGrenadeTypeButton",
+  "name": "Prev Grenade",
+  "group": "OnFoot",
+  "category": "Combat",
+  "order": 115,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "HumanoidSelectPreviousWeaponButton",
+  "name": "Prev WEP",
+  "group": "OnFoot",
+  "category": "Combat",
+  "order": 116,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "HumanoidSelectPrimaryWeaponButton",
+  "name": "WEP 1",
+  "group": "OnFoot",
+  "category": "Combat",
+  "order": 117,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "HumanoidSelectSecondaryWeaponButton",
+  "name": "WEP 2",
+  "group": "OnFoot",
+  "category": "Combat",
+  "order": 118,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "HumanoidSelectUtilityWeaponButton",
+  "name": "Select Util",
+  "group": "OnFoot",
+  "category": "Combat",
+  "order": 119,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "HumanoidSprintButton",
+  "name": "Sprint",
+  "group": "OnFoot",
+  "category": "Combat",
+  "order": 120,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "HumanoidSwitchToCompAnalyser",
+  "name": "Comp Analyser",
+  "group": "OnFoot",
+  "category": "Combat",
+  "order": 121,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "HumanoidSwitchToRechargeTool",
+  "name": "Recharge Tool",
+  "group": "OnFoot",
+  "category": "Combat",
+  "order": 122,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "HumanoidSwitchToSuitTool",
+  "name": "Suit Tool",
+  "group": "OnFoot",
+  "category": "Combat",
+  "order": 123,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "HumanoidSwitchWeapon",
+  "name": "Switch WEP",
+  "group": "OnFoot",
+  "category": "Combat",
+  "order": 124,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "HumanoidThrowGrenadeButton",
+  "name": "Throw Grenade",
+  "group": "OnFoot",
+  "category": "Combat",
+  "order": 125,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "HumanoidToggleFlashlightButton",
+  "name": "Flashlight",
+  "group": "OnFoot",
+  "category": "Combat",
+  "order": 126,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "HumanoidToggleJumpAssistModuleButton",
+  "name": "Jump Assist",
+  "group": "OnFoot",
+  "category": "Combat",
+  "order": 127,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "HumanoidToggleMissionHelpPanelButton",
+  "name": "Mission Help",
+  "group": "OnFoot",
+  "category": "Combat",
+  "order": 128,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "HumanoidToggleNightVisionButton",
+  "name": "Night Vision",
+  "group": "OnFoot",
+  "category": "Combat",
+  "order": 129,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "HumanoidToggleShieldBoosterModuleButton",
+  "name": "Shield Boost",
+  "group": "OnFoot",
+  "category": "Combat",
+  "order": 130,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "HumanoidToggleShieldsButton",
+  "name": "Shields",
+  "group": "OnFoot",
+  "category": "Combat",
+  "order": 131,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "HumanoidToggleToolModeButton",
+  "name": "Tool Mode",
+  "group": "OnFoot",
+  "category": "Combat",
+  "order": 132,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "HumanoidToggleWeaponBoosterModuleButton",
+  "name": "Weapon Booster",
+  "group": "OnFoot",
+  "category": "Combat",
+  "order": 134,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "HumanoidZoomButton",
+  "name": "ZoomButton",
+  "group": "OnFoot",
+  "category": "Combat",
+  "order": 135,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "HumanoidWalkButton",
+  "name": "Walk",
+  "group": "OnFoot",
+  "category": "Combat",
+  "order": 136,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "HumanoidHealthPack",
+  "name": "Health Pack",
+  "group": "OnFoot",
+  "category": "Combat",
+  "order": 137,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "HumanoidBattery",
+  "name": "Battery Pack",
+  "group": "OnFoot",
+  "category": "Combat",
+  "order": 138,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "HumanoidSelectFragGrenade",
+  "name": "Frag Grenade",
+  "group": "OnFoot",
+  "category": "Combat",
+  "order": 139,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "HumanoidSelectShieldGrenade",
+  "name": "Shield Grenade",
+  "group": "OnFoot",
+  "category": "Combat",
+  "order": 140,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "HumanoidSelectEMPGrenade",
+  "name": "EMP Grenade",
+  "group": "OnFoot",
+  "category": "Combat",
+  "order": 141,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "HumanoidClearAuthorityLevel",
+  "name": "Clear Auth Lvl",
+  "group": "OnFoot",
+  "category": "Combat",
+  "order": 142,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "HumanoidResetPowerDistributionButton",
+  "name": "RST",
+  "group": "OnFoot",
+  "category": "Combat",
+  "order": 201,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "HumanoidIncreaseEnginesPowerButton",
+  "name": "ENG",
+  "group": "OnFoot",
+  "category": "Combat",
+  "order": 202,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "HumanoidIncreaseSystemsPowerButton",
+  "name": "SYS",
+  "group": "OnFoot",
+  "category": "Combat",
+  "order": 203,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "HumanoidIncreaseWeaponsPowerButton",
+  "name": "WEP",
+  "group": "OnFoot",
+  "category": "Combat",
+  "order": 204,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "GalaxyMapOpen_Humanoid",
+  "name": "GalMap",
+  "group": "OnFoot",
+  "category": "Navigation",
+  "order": 301,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "SystemMapOpen_Humanoid",
+  "name": "SysMap",
+  "group": "OnFoot",
+  "category": "Navigation",
+  "order": 302,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "FocusCommsPanel_Humanoid",
+  "name": "Comms Panel",
+  "group": "OnFoot",
+  "category": "",
+  "order": 401,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "QuickCommsPanel_Humanoid",
+  "name": "Quick Comms",
+  "group": "OnFoot",
+  "category": "",
+  "order": 405,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "HumanoidItemWheelButton",
+  "name": "Item Wheel",
+  "group": "OnFoot",
+  "category": "",
+  "order": 701,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "HumanoidItemWheelButton_XAxis",
+  "name": "Item L/R",
+  "group": "OnFoot",
+  "category": "Navigation",
+  "order": 702,
+  "type": "Analogue",
+  "hasAnalogue": false
+ },
+ {
+  "control": "HumanoidItemWheelButton_XLeft",
+  "name": "Item Left",
+  "group": "OnFoot",
+  "category": "Navigation",
+  "order": 703,
+  "type": "Digital",
+  "hasAnalogue": true
+ },
+ {
+  "control": "HumanoidItemWheelButton_XRight",
+  "name": "Item Right",
+  "group": "OnFoot",
+  "category": "Navigation",
+  "order": 704,
+  "type": "Digital",
+  "hasAnalogue": true
+ },
+ {
+  "control": "HumanoidItemWheelButton_YAxis",
+  "name": "Item Up/Dn",
+  "group": "OnFoot",
+  "category": "Navigation",
+  "order": 705,
+  "type": "Analogue",
+  "hasAnalogue": false
+ },
+ {
+  "control": "HumanoidItemWheelButton_YDown",
+  "name": "Item Down",
+  "group": "OnFoot",
+  "category": "Navigation",
+  "order": 706,
+  "type": "Digital",
+  "hasAnalogue": true
+ },
+ {
+  "control": "HumanoidItemWheelButton_YUp",
+  "name": "Item Up",
+  "group": "OnFoot",
+  "category": "Navigation",
+  "order": 707,
+  "type": "Digital",
+  "hasAnalogue": true
+ },
+ {
+  "control": "HumanoidEmoteWheelButton",
+  "name": "Emote Wheel",
+  "group": "OnFoot",
+  "category": "",
+  "order": 708,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "HumanoidUtilityWheelCycleMode",
+  "name": "Utility Wheel",
+  "group": "OnFoot",
+  "category": "",
+  "order": 710,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "HumanoidEmoteSlot1",
+  "name": "Emote 1",
+  "group": "OnFoot",
+  "category": "",
+  "order": 711,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "HumanoidEmoteSlot2",
+  "name": "Emote 2",
+  "group": "OnFoot",
+  "category": "",
+  "order": 712,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "HumanoidEmoteSlot3",
+  "name": "Emote 3",
+  "group": "OnFoot",
+  "category": "",
+  "order": 713,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "HumanoidEmoteSlot4",
+  "name": "Emote 4",
+  "group": "OnFoot",
+  "category": "",
+  "order": 714,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "HumanoidEmoteSlot5",
+  "name": "Emote 5",
+  "group": "OnFoot",
+  "category": "",
+  "order": 715,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "HumanoidEmoteSlot6",
+  "name": "Emote 6",
+  "group": "OnFoot",
+  "category": "",
+  "order": 716,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "HumanoidEmoteSlot7",
+  "name": "Emote 7",
+  "group": "OnFoot",
+  "category": "",
+  "order": 717,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "HumanoidEmoteSlot8",
+  "name": "Emote 8",
+  "group": "OnFoot",
+  "category": "",
+  "order": 718,
+  "type": "Digital",
+  "hasAnalogue": false
+ },
+ {
+  "control": "PhotoCameraToggle_Humanoid",
+  "name": "External Cam",
+  "group": "Camera",
+  "category": "Camera",
+  "order": 801,
+  "type": "Digital",
+  "hasAnalogue": false
+ }
+]

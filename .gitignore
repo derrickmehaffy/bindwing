@@ -1,0 +1,17 @@
+# Personal bindings — keep your real config out of the repo
+Custom.4.2.binds
+
+# Third-party reference material / device art — not ours to redistribute.
+# data/ JSON is regenerated with tools/extract.py from an EDRefCard clone;
+# images/ likewise. See CREDITS.md and DEVICES.md.
+ref/
+images/
+
+# Logs, temp, editor/OS cruft
+*.log
+_check*
+*.tmp
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
