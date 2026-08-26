@@ -8,7 +8,14 @@
     --hud:#ff7a1a; --hud-dim:#b3591a; --glow:rgba(255,122,26,.28);
     --text:#f2e8d8; --muted:#8f8676;
     --bound:#37d17a; --sel:#ffffff; --axis:#58a6ff; --hat:#c08cff;
+    --view1:#0e1218; --view2:#08090c; --overlay:rgba(8,9,12,.86);
     --mono:ui-monospace,'Cascadia Code','Cascadia Mono',Consolas,'DejaVu Sans Mono',monospace;
+  }
+  html[data-theme=light]{
+    --space:#ece9e2; --panel:#ffffff; --panel2:#f1ede4;
+    --edge:#d9d2c4; --edge-hot:#e0ab6d; --hud:#c25812; --hud-dim:#9c470f; --glow:rgba(194,88,18,.16);
+    --text:#241f18; --muted:#6f6a5c; --bound:#1a8f4a; --sel:#111111; --axis:#1f6feb; --hat:#8250df;
+    --view1:#f3efe6; --view2:#e3dccd; --overlay:rgba(255,255,255,.9);
   }
   *{box-sizing:border-box;} html,body{margin:0;height:100%;}
   body{font:14px/1.4 system-ui,'Segoe UI',Roboto,sans-serif;background:var(--space);color:var(--text);display:flex;flex-direction:column;-webkit-tap-highlight-color:transparent;}
@@ -17,7 +24,7 @@
   .mut{color:var(--muted);}
 
   /* top bar — HUD frame */
-  header{display:flex;gap:8px;align-items:center;padding:8px 12px;background:linear-gradient(var(--panel),#0a0d12);
+  header{display:flex;gap:8px;align-items:center;padding:8px 12px;background:linear-gradient(var(--panel),var(--panel2));
     border-top:2px solid var(--hud);border-bottom:1px solid var(--edge);flex-wrap:wrap;}
   h1{display:flex;align-items:baseline;gap:8px;margin:0 8px 0 0;font:600 12px/1 system-ui;text-transform:uppercase;letter-spacing:.2em;color:var(--hud);}
   h1 .dot{font-size:13px;filter:drop-shadow(0 0 5px var(--glow));}
@@ -38,7 +45,9 @@
   #wrap{flex:1;display:grid;grid-template-columns:1fr 340px;min-height:0;}
 
   /* viewport — reticle */
-  #view{position:relative;min-height:0;background:radial-gradient(130% 130% at 50% 35%,#0e1218,#08090c 72%);overflow:hidden;}
+  #stage{position:relative;min-height:0;}
+  #view{position:absolute;inset:0;background:radial-gradient(130% 130% at 50% 35%,var(--view1),var(--view2) 72%);overflow:hidden;}
+  #view2d{position:absolute;inset:0;overflow:auto;background:var(--space);padding:12px 14px 40px;}
   #cv{display:block;width:100%;height:100%;touch-action:none;}
   .corner{position:absolute;width:26px;height:26px;border:2px solid var(--hud);opacity:.8;pointer-events:none;filter:drop-shadow(0 0 4px var(--glow));}
   .corner.tl{top:12px;left:12px;border-right:0;border-bottom:0;}
@@ -48,14 +57,14 @@
   #leaders{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;}
   #leaders line{stroke:var(--hud-dim);stroke-width:1;opacity:.55;}
   #labels{position:absolute;inset:0;pointer-events:none;}
-  .lab{position:absolute;transform:translate(-50%,-50%);background:rgba(8,9,12,.86);border:1px solid var(--edge-hot);color:var(--text);
+  .lab{position:absolute;transform:translate(-50%,-50%);background:var(--overlay);border:1px solid var(--edge-hot);color:var(--text);
     font:10px/1.2 var(--mono);padding:2px 6px;border-radius:2px;white-space:nowrap;pointer-events:auto;cursor:pointer;transition:border-color .12s,box-shadow .12s;}
   .lab:hover{border-color:var(--hud);}
   .lab .k{color:var(--muted);}
   .lab.bound{border-color:var(--bound);}
   .lab.axis{border-color:var(--axis);} .lab.hat{border-color:var(--hat);}
-  .lab.sel{border-color:var(--hud);color:#fff;box-shadow:0 0 0 1px var(--glow),0 0 12px -2px var(--glow);}
-  #hint{position:absolute;left:14px;bottom:12px;max-width:62%;padding:5px 10px;background:rgba(8,9,12,.72);border-left:2px solid var(--hud-dim);color:var(--muted);font:11px var(--mono);}
+  .lab.sel{border-color:var(--hud);box-shadow:0 0 0 1px var(--glow),0 0 12px -2px var(--glow);}
+  #hint{position:absolute;left:14px;bottom:12px;max-width:62%;padding:5px 10px;background:var(--overlay);border-left:2px solid var(--hud-dim);color:var(--muted);font:11px var(--mono);}
   #hint b{color:var(--text);font-weight:400;}
 
   /* side panel — readout */
@@ -92,6 +101,26 @@
   .empty{color:var(--muted);padding:20px 12px;text-align:center;font-size:13px;line-height:1.5;}
   .empty kbd{font:inherit;background:var(--panel2);border:1px solid var(--edge);border-radius:3px;padding:0 5px;}
 
+  /* segmented 3D/2D toggle + theme button */
+  .seg{display:inline-flex;border:1px solid var(--edge);border-radius:4px;overflow:hidden;}
+  .seg button{border:0;border-radius:0;background:transparent;padding:6px 12px;}
+  .seg button.on{background:var(--hud);color:#160a00;box-shadow:none;}
+  #themeBtn{padding:6px 9px;font-size:13px;line-height:1;}
+  /* viewport control overlay (3D controls live here, not the header) */
+  #vtools{position:absolute;top:12px;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;gap:6px;align-items:center;z-index:3;pointer-events:none;max-width:calc(100% - 24px);}
+  #vtools .vgrp{display:flex;gap:6px;align-items:center;flex-wrap:wrap;justify-content:center;background:var(--overlay);border:1px solid var(--edge);border-radius:6px;padding:6px 8px;pointer-events:auto;}
+  #vtools input[type=file]{max-width:120px;}
+  #placeTools{display:none;}
+  /* 2D list view */
+  #view2d .lv-h{color:var(--hud);font:600 10px system-ui;text-transform:uppercase;letter-spacing:.1em;margin:14px 0 5px;}
+  #view2d .lv-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(168px,1fr));gap:6px;}
+  .lv-item{border:1px solid var(--edge);border-radius:4px;padding:7px 9px;cursor:pointer;background:var(--panel2);transition:border-color .12s;}
+  .lv-item:hover{border-color:var(--hud-dim);}
+  .lv-item.bound{border-color:var(--bound);}
+  .lv-item.sel{border-color:var(--hud);box-shadow:0 0 0 1px var(--glow);}
+  .lv-item .lv-k{display:block;font:9px var(--mono);color:var(--muted);}
+  .lv-item .lv-c{font-size:12px;}
+
   @media (max-width:760px){
     header{gap:6px;}
     button,select,input[type=text],input[type=search]{padding:8px 10px;font-size:12px;}
@@ -99,7 +128,8 @@
     html,body{height:auto;}
     body{min-height:100vh;}
     #wrap{display:block;}
-    #view{height:56vh;}
+    #stage{height:56vh;}
+    #vtools .vgrp{padding:5px 6px;gap:5px;}
     #side{border-left:none;border-top:1px solid var(--edge);}
     #search{position:sticky;top:0;z-index:4;margin:0;border-radius:0;border-left:0;border-right:0;background:var(--panel);}
     #picker{overflow:visible;padding:6px 14px 90px;}
@@ -110,30 +140,41 @@
 </style>
 
 <header>
-  <h1><span class="dot">⬢</span> Bind Editor <span class="ver">v0.2</span></h1>
+  <h1><span class="dot">⬢</span> Bindwing <span class="ver">v0.3</span></h1>
+  <div class="seg"><button id="to3d" class="on">3D</button><button id="to2d">2D</button></div>
+  <button id="themeBtn" title="Toggle light / dark theme">◐</button>
+  <span class="sep"></span>
   <label class="field"><span class="cap">Profile</span><input type="file" id="binds" accept=".binds"></label>
   <label class="field"><span class="cap">Device</span><select id="device"><option value="">— load .binds —</option></select></label>
   <button id="exportBinds" class="primary" disabled>Export .binds</button>
-  <span class="sep"></span>
-  <label class="field"><span class="cap">Model</span><input type="file" id="glb" accept=".glb,.gltf"></label>
-  <button id="modeOrbit" class="on">Orbit</button>
-  <button id="modePlace">Place</button>
-  <button id="reset" title="Re-center the camera on the model">Reset</button>
-  <button id="spin" title="Toggle auto-rotate">Spin</button>
-  <span class="sep"></span>
-  <label class="field"><span class="cap">Type</span><select id="ptype"><option value="button">Button</option><option value="hat">Hat</option><option value="axis">Axis</option></select></label>
-  <label class="field"><span class="cap">Label</span><input type="text" id="label" value="Joy_1" size="10"></label>
-  <button id="loadCoords" title="Load a previously exported 3D coords file">Load coords</button>
-  <input type="file" id="coordsFile" accept=".json" style="display:none">
-  <button id="exportCoords">Save coords</button>
   <span id="status"></span>
 </header>
 
 <div id="wrap">
-  <div id="view">
-    <canvas id="cv"></canvas><svg id="leaders"></svg><div id="labels"></div>
-    <div class="corner tl"></div><div class="corner tr"></div><div class="corner bl"></div><div class="corner br"></div>
-    <div id="hint">Drag to orbit · pinch / scroll to zoom · two-finger drag to pan. <b>Place</b> markers, then <b>Orbit</b> and tap one to bind.</div>
+  <div id="stage">
+    <div id="view">
+      <canvas id="cv"></canvas><svg id="leaders"></svg><div id="labels"></div>
+      <div class="corner tl"></div><div class="corner tr"></div><div class="corner bl"></div><div class="corner br"></div>
+      <div id="vtools">
+        <div class="vgrp">
+          <button id="modeOrbit" class="on">Orbit</button>
+          <button id="modePlace">Place</button>
+          <button id="reset" title="Re-center the camera on the model">Reset</button>
+          <button id="spin" title="Toggle auto-rotate">Spin</button>
+          <span class="sep"></span>
+          <label class="field"><span class="cap">Model</span><input type="file" id="glb" accept=".glb,.gltf"></label>
+        </div>
+        <div class="vgrp" id="placeTools">
+          <label class="field"><span class="cap">Type</span><select id="ptype"><option value="button">Button</option><option value="hat">Hat</option><option value="axis">Axis</option></select></label>
+          <label class="field"><span class="cap">Label</span><input type="text" id="label" value="Joy_1" size="9"></label>
+          <button id="loadCoords" title="Load a previously exported 3D coords file">Load coords</button>
+          <input type="file" id="coordsFile" accept=".json" style="display:none">
+          <button id="exportCoords">Save coords</button>
+        </div>
+      </div>
+      <div id="hint">Drag to orbit · pinch / scroll to zoom · two-finger drag to pan. <b>Place</b> markers, then <b>Orbit</b> and tap one to bind.</div>
+    </div>
+    <div id="view2d" style="display:none"></div>
   </div>
   <div id="side">
     <div class="pad">
@@ -144,7 +185,7 @@
       <div id="assigned"></div>
     </div>
     <input type="search" id="search" placeholder="Search controls — target, thrust, boost, gear…">
-    <div id="picker"><div class="empty">Tap a marker on the model, then choose a control to bind.</div></div>
+    <div id="picker"><div class="empty">Select an input (a marker in 3D, a tile in 2D), then choose a control to bind.</div></div>
   </div>
 </div>
 
@@ -179,10 +220,10 @@ function loadBinds(text, fname) {
   [...used].forEach(id => sel.add(new Option(`${idInfo[id]?.name||id} (${id})`, id)));
   $('#exportBinds').disabled=false;
   curDevice = sel.value || [...used][0] || '';
-  setStatus(`Loaded ${fname}: ${used.size} device(s). Now load a 3D model for ${idInfo[curDevice]?.name||curDevice}.`);
-  refreshMarkers();
+  setStatus(`Loaded ${fname}: ${used.size} device(s).`);
+  refreshMarkers(); refresh2D();
 }
-$('#device').addEventListener('change', e => { curDevice=e.target.value; refreshMarkers(); setStatus(`Device: ${idInfo[curDevice]?.name||curDevice}`); });
+$('#device').addEventListener('change', e => { curDevice=e.target.value; refreshMarkers(); refresh2D(); setStatus(`Device: ${idInfo[curDevice]?.name||curDevice}`); });
 
 function bindingsFor(id, key) {
   const out=[]; if(!xmlDoc||!id) return out;
@@ -217,7 +258,7 @@ const isAxis = c => c.type==='Analogue';
 $('#search').addEventListener('input', renderPicker);
 function renderPicker() {
   const host=$('#picker'); host.innerHTML='';
-  if(!curItem){ host.innerHTML='<div class="empty">Select a marker to see controls.</div>'; return; }
+  if(!curItem){ host.innerHTML='<div class="empty">Select an input to see controls.</div>'; return; }
   const q=($('#search').value||'').toLowerCase(); const wantAxis=curItem.type==='Analogue';
   let list=D.controls.filter(c => !q || c.name.toLowerCase().includes(q) || c.control.toLowerCase().includes(q) || c.group.toLowerCase().includes(q));
   list.sort((a,b)=>(isAxis(b)===wantAxis)-(isAxis(a)===wantAxis) || a.group.localeCompare(b.group) || a.order-b.order);
@@ -231,14 +272,14 @@ function setBinding(control,slot,key){ const el=ensureControl(control); const no
 function assign(c){ if(!curItem||!xmlDoc) return;
   if(isAxis(c)) setBinding(c.control,'Binding',curItem.key);
   else { const el=ensureControl(c.control); const pri=el.querySelector('Primary'); const slot=(!pri||pri.getAttribute('Device')==='{NoDevice}'||!pri.getAttribute('Device'))?'Primary':'Secondary'; setBinding(c.control,slot,curItem.key); }
-  renderAssigned(); refreshMarkers(); updateChipStates();
+  renderAssigned(); refreshMarkers(); updateChipStates(); refresh2D();
   const g=c.group, same=bindingsFor(curDevice,curItem.key).filter(b=>b.slot!=='Modifier'&&ctlByKey[b.control]?.group===g).length;
   setStatus(same>1 ? `⚠ ${c.name} bound — conflicts with another ${g} control on ${curItem.key}` : `Bound ${c.name} → ${curItem.key}`);
 }
 function removeBinding(b){
   if(b.slot==='Modifier'){ b.node.remove(); }
   else { b.node.setAttribute('Device','{NoDevice}'); b.node.setAttribute('Key',''); if(b.slot!=='Binding') b.node.removeAttribute('DeviceIndex'); }
-  renderAssigned(); refreshMarkers(); updateChipStates(); setStatus(`Removed ${ctlByKey[b.control]?.name||b.control}`); }
+  renderAssigned(); refreshMarkers(); updateChipStates(); refresh2D(); setStatus(`Removed ${ctlByKey[b.control]?.name||b.control}`); }
 $('#exportBinds').addEventListener('click', () => { if(!xmlDoc) return; const xml=new XMLSerializer().serializeToString(xmlDoc); const a=document.createElement('a'); a.href=URL.createObjectURL(new Blob([xml],{type:'application/xml'})); a.download='Custom.edited.binds'; a.click(); setStatus('Exported Custom.edited.binds — copy into ED\'s Bindings folder.'); });
 
 /* ---------------- 3D scene ---------------- */
@@ -335,7 +376,7 @@ $('#glb').addEventListener('change', ev=>{ const f=ev.target.files[0]; if(!f) re
 
 let mode='orbit';
 $('#modeOrbit').onclick=()=>setMode('orbit'); $('#modePlace').onclick=()=>setMode('place');
-function setMode(m){ mode=m; controls.enabled=(m==='orbit'); $('#modeOrbit').classList.toggle('on',m==='orbit'); $('#modePlace').classList.toggle('on',m==='place'); view.style.cursor=m==='place'?'crosshair':'grab'; }
+function setMode(m){ mode=m; controls.enabled=(m==='orbit'); $('#modeOrbit').classList.toggle('on',m==='orbit'); $('#modePlace').classList.toggle('on',m==='place'); $('#placeTools').style.display=m==='place'?'flex':'none'; view.style.cursor=m==='place'?'crosshair':'grab'; }
 $('#reset').onclick=resetView;
 $('#spin').onclick=()=>{ controls.autoRotate=!controls.autoRotate; controls.autoRotateSpeed=1.5; $('#spin').classList.toggle('on',controls.autoRotate); };
 
@@ -410,7 +451,55 @@ function drawLabels(){ const r=canvas.getBoundingClientRect();
     div.textContent=p.txt; div.style.left=p.lx+'px'; div.style.top=p.ly+'px';
     line.setAttribute('x1',p.mx); line.setAttribute('y1',p.my); line.setAttribute('x2',p.lx); line.setAttribute('y2',p.ly); }); }
 
-function resize(){ const w=view.clientWidth,h=view.clientHeight; renderer.setSize(w,h,false); camera.aspect=w/h; camera.updateProjectionMatrix(); }
+/* ---------------- theme (light / dark) ---------------- */
+function applyTheme(t){ const dark = t!=='light';
+  document.documentElement.dataset.theme = dark?'dark':'light';
+  try{ localStorage.setItem('bw-theme', dark?'dark':'light'); }catch(e){}
+  scene.background = new THREE.Color(dark?0x08090c:0xe3dccd);
+  $('#themeBtn').textContent = dark?'◐':'◑';
+}
+$('#themeBtn').onclick = ()=> applyTheme(document.documentElement.dataset.theme==='light'?'dark':'light');
+applyTheme((()=>{ try{ return localStorage.getItem('bw-theme'); }catch(e){ return null; } })() || 'dark');
+
+/* ---------------- 2D / 3D stage toggle ---------------- */
+let stageView = '3d';
+$('#to3d').onclick = ()=> setStage('3d');
+$('#to2d').onclick = ()=> setStage('2d');
+function setStage(v){ stageView=v;
+  $('#to3d').classList.toggle('on', v==='3d'); $('#to2d').classList.toggle('on', v==='2d');
+  $('#view').style.display  = v==='3d' ? 'block' : 'none';
+  $('#view2d').style.display = v==='2d' ? 'block' : 'none';
+  if(v==='3d'){ resize(); frameCamera(); } else render2D();
+}
+function buildInventory(id){ const items=[], seen=new Set(); const add=(k,t)=>{ if(!seen.has(k)){ seen.add(k); items.push({key:k,type:t}); } };
+  ['X','Y','Z','RX','RY','RZ','U','V'].forEach(a=>add('Joy_'+a+'Axis','Analogue'));
+  for(let i=1;i<=64;i++) add('Joy_'+i,'Digital');
+  for(let h=1;h<=2;h++) ['Up','Down','Left','Right'].forEach(d=>add('Joy_POV'+h+d,'Digital'));
+  ['X','Y','Z','RX','RY','RZ','U','V'].forEach(a=>{ add('Neg_Joy_'+a+'Axis','Digital'); add('Pos_Joy_'+a+'Axis','Digital'); });
+  if(xmlDoc) xmlDoc.querySelectorAll(`[Device="${id}"]`).forEach(el=>{ const k=el.getAttribute('Key'); if(k) add(k,(/Axis$/.test(k)&&!/^(Neg|Pos)_/.test(k))?'Analogue':'Digital'); });
+  return items;
+}
+function render2D(){ const host=$('#view2d'); host.innerHTML='';
+  if(!curDevice){ host.innerHTML='<div class="empty">Load a <kbd>.binds</kbd> and pick a device to see its inputs.</div>'; return; }
+  const groups={Axes:[],Buttons:[],'Hat / POV':[],'Axis as button':[]};
+  buildInventory(curDevice).forEach(it=>{ if(it.type==='Analogue')groups.Axes.push(it); else if(/^(Neg|Pos)_/.test(it.key))groups['Axis as button'].push(it); else if(/POV/.test(it.key))groups['Hat / POV'].push(it); else groups.Buttons.push(it); });
+  for(const [gn,arr] of Object.entries(groups)){ if(!arr.length) continue;
+    const h=document.createElement('div'); h.className='lv-h'; h.textContent=`${gn} (${arr.length})`; host.appendChild(h);
+    const grid=document.createElement('div'); grid.className='lv-grid';
+    arr.forEach(it=>{ const binds=bindingsFor(curDevice,it.key);
+      const d=document.createElement('div'); d.className='lv-item'+(binds.length?' bound':''); d.dataset.key=it.key;
+      const names=binds.length?binds.map(b=>ctlByKey[b.control]?.name||b.control).join(' / '):'—';
+      d.innerHTML=`<span class="lv-k">${it.key}</span><span class="lv-c">${names}</span>`;
+      d.onclick=()=>{ $('#subinputs').innerHTML=''; $('#curKey').innerHTML='<b>'+it.key+'</b>'; selectItem(it.key,it.type); mark2D(it.key); };
+      grid.appendChild(d); });
+    host.appendChild(grid); }
+  mark2D(curItem?curItem.key:null);
+}
+function mark2D(key){ const h=$('#view2d'); h.querySelectorAll('.lv-item.sel').forEach(e=>e.classList.remove('sel'));
+  if(key){ const e=h.querySelector('.lv-item[data-key="'+(window.CSS&&CSS.escape?CSS.escape(key):key)+'"]'); if(e) e.classList.add('sel'); } }
+function refresh2D(){ if(stageView==='2d') render2D(); }
+
+function resize(){ const w=view.clientWidth,h=view.clientHeight; if(!w||!h) return; renderer.setSize(w,h,false); camera.aspect=w/h; camera.updateProjectionMatrix(); }
 new ResizeObserver(resize).observe(view); resize(); setMode('orbit');
 (function loop(){ requestAnimationFrame(loop); controls.update(); renderer.render(scene,camera); drawLabels(); })();
 </script>
