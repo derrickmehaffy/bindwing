@@ -348,7 +348,7 @@
   <div class="dbg-card">
     <div class="help-h">Live input debug</div>
     <div id="dbg-body"></div>
-    <div class="dbg-actions"><button id="dbgClear">Clear log</button><button id="dbgRefresh">Refresh</button><button id="dbgClose">Close</button></div>
+    <div class="dbg-actions"><button id="dbgRescan">Rescan controllers</button><button id="dbgClear">Clear log</button><button id="dbgRefresh">Refresh</button><button id="dbgClose">Close</button></div>
   </div>
 </div>
 <script src="data/data.js"></script>
@@ -899,6 +899,11 @@ function renderDbg(){ const box=$('#dbg-body'); if(!box) return;
   Object.entries(byDev).forEach(([d,gps])=>{ const known=idInfo[d]?`<b>${idInfo[d].name}</b>`:`<b>${d}</b>`; const alias=DEVICE_ALIAS[d]?` <span class="modnote">HID→${DEVICE_ALIAS[d]}</span>`:'';
     html+=`<div class="dbg-dev">${known} <span class="mut">${d}</span>${alias} · ${gps.length} collection(s) · ${gps[0].buttons.length} btn · ${gps[0].axes.length} axis${idInfo[d]?'':' <span class="dbg-warn" style="color:var(--danger)">not in profile</span>'}</div>`;
     gps.forEach(gp=> html+=`<div class="dbg-raw">gp${gp.index}: ${gp.id.trim()}</div>`); });
+  // devices in the loaded profile that Chrome isn't exposing right now
+  const livePids=new Set(Object.keys(byDev));
+  const missing=[...$('#device').options].filter(o=>o.value&&isHwDevice(o.value)&&!livePids.has(o.value)).map(o=>o.value);
+  if(missing.length){ html+='<div class="dbg-h2" style="color:var(--danger)">In your profile — no live controller</div>';
+    missing.forEach(id=> html+=`<div class="dbg-dev"><b>${idInfo[id]?.name||id}</b> <span class="mut">${id}</span> — <span style="color:var(--danger)">not detected.</span> Press its buttons/axes to wake it; if it never appears, <b>fully restart the browser</b> or replug. (Manual click-to-bind still works.)</div>`); }
   html+='<div class="dbg-h2">Active now <span class="mut" style="text-transform:none;letter-spacing:0;font-weight:400">— live state across all devices</span></div><div id="dbg-live"></div>';
   html+='<div class="dbg-h2">Event log <span class="mut" style="text-transform:none;letter-spacing:0;font-weight:400">(newest first · press=green, axis=blue, switch=amber)</span></div><div class="dbg-log" id="dbg-loglist"></div>';
   box.innerHTML=html;
@@ -927,7 +932,16 @@ $('#dbgBtn').onclick=()=>showDbg(dbg.classList.contains('hidden'));
 $('#dbgClose').onclick=()=>showDbg(false);
 $('#dbgClear').onclick=()=>{ dbgLog=[]; renderDbg(); };
 $('#dbgRefresh').onclick=renderDbg;
+$('#dbgRescan').onclick=rescanControllers;
 dbg.onclick=e=>{ if(e.target===dbg) showDbg(false); };
+
+/* ---- controllers connecting/disconnecting (VKB banks wake on first input; can drop after reloads) ---- */
+addEventListener('gamepadconnected', e=>{ delete gpBase[e.gamepad.index]; setStatus('🎮 Controller connected: '+e.gamepad.id.trim()); if(dbg && !dbg.classList.contains('hidden')) renderDbg(); });
+addEventListener('gamepaddisconnected', e=>{ setStatus('⚠ Controller disconnected: '+e.gamepad.id.trim()+' — press it or replug to re-detect.'); if(dbg && !dbg.classList.contains('hidden')) renderDbg(); });
+function rescanControllers(){ gpBase={}; gpHats={}; prevBtns={}; captureBaseline();
+  const n=(navigator.getGamepads?[...navigator.getGamepads()].filter(Boolean):[]).length;
+  setStatus(`Rescanned — ${n} controller bank(s) detected. Press each device (buttons + axes) to wake any that are missing.`);
+  if(dbg && !dbg.classList.contains('hidden')) renderDbg(); }
 
 /* ---- focus guard: browsers only deliver gamepad input to the focused tab ---- */
 addEventListener('blur', ()=>{ $('#statusbar')?.classList.add('nofocus'); if(liveOn) setStatus('⚠ Tab not focused — the browser paused controller input. Click the page to resume live input.'); if(dbg && !dbg.classList.contains('hidden')) renderDbg(); });
