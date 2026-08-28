@@ -2,8 +2,10 @@
 
 ## Third-party code & data
 
-- **EDRefCard** — <https://github.com/richardbuckle/EDRefCard> — MIT License, Copyright (c) 2017 Richard Buckle.
-  Bindwing's Elite Dangerous control catalog and device coordinate maps (in `data/`, and any device images regenerated into `images/`) are **derived from EDRefCard's data** via `tools/extract.py`. EDRefCard's MIT license is reproduced below.
+- **EDRefCard** — <https://github.com/richardbuckle/EDRefCard> — MIT License, Copyright (c) 2017 Richard Buckle; derived with permission from code originally developed by CMDR jgm.
+  Bindwing's Elite Dangerous control catalog and device coordinate maps (in `data/`), **and the device diagram images in `images/`**, are **derived from / redistributed from EDRefCard** under its MIT license (reproduced below), which permits redistribution with attribution.
+  Device templates were contributed by the EDRefCard community, including: **VKB Gladiator** sticks (awerschlan, esabouraud), **VKB Kosmosima SCG** grips (ajhewett), **VPC Alpha** grips (Slion), controller-type search (alewando), and Gladiator binding corrections (KellyR / CMDR Analee Winston). Our thanks to all of them.
+  The templates depict manufacturer hardware for interoperability/reference. Bindwing is **not affiliated with VKB, Thrustmaster, Logitech, Virpil, or any manufacturer**; trademarks and product imagery belong to their owners. We will honor any takedown request.
 
 - **Three.js** — <https://threejs.org> — MIT License, Copyright (c) 2010–2025 three.js authors. Vendored in `vendor/`.
 

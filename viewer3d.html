@@ -231,7 +231,9 @@
   .help-card dl>div{display:flex;gap:16px;align-items:baseline;}
   .help-card dt{flex:0 0 92px;font:600 12px var(--mono);color:var(--text);}
   .help-card dd{margin:0;color:var(--muted);font-size:13px;}
-  .help-card #helpClose{margin-top:18px;width:100%;}
+  .help-credits{margin-top:16px;padding-top:12px;border-top:1px solid var(--edge);color:var(--muted);font-size:11px;line-height:1.5;}
+  .help-credits a{color:var(--hud-dim);}
+  .help-card #helpClose{margin-top:14px;width:100%;}
   #helpBtn,#dbgBtn{padding:6px 10px;font-size:12px;line-height:1;}
   /* live-input debug modal */
   #dbg{position:fixed;inset:0;z-index:50;display:flex;align-items:center;justify-content:center;background:rgba(4,5,7,.66);backdrop-filter:blur(3px);}
@@ -344,6 +346,7 @@
       <div><dt>A B U C</dt><dd>Filter: all · bound · unbound · conflicts</dd></div>
       <div><dt>?</dt><dd>Show this help</dd></div>
     </dl>
+    <div class="help-credits">Device diagrams &amp; ED control data from <a href="https://github.com/richardbuckle/EDRefCard" target="_blank" rel="noopener">EDRefCard</a> (MIT) &amp; its community. Type: Exo 2 &amp; Orbitron (OFL). Bindwing is not affiliated with VKB or Frontier Developments.</div>
     <button id="helpClose">Close</button>
   </div>
 </div>
