@@ -38,7 +38,8 @@ _Add items here as we find them; we'll check them off as we go._
 - [x] **Top-bar redesign** — flat 13-control toolbar → "MFD bezel": 3 quiet zones (brand · editing-context · tools+export), one ghost-button language, monochrome SVG line-icons (no emoji), single amber primary. Wraps to 2 rows on mobile.
 - [x] **Samples picker** — data-driven from `samples.json`, surfaced in a **Profile ▾** menu (Open file… + Samples list). Currently the "Bindwing Sample"; structured to add popular-device examples (X52 Pro, T16000M, Warthog…).
 - [x] Renamed `viewer3d.html`→`index.html` (app at site root); curated **Bindwing Sample** replaces the personal profile; **Sample** badge when the built-in demo is loaded.
-- [ ] Grow the sample library: author clean example profiles for popular devices, add to `samples.json`. (Author-our-own to avoid provenance issues.)
+- [x] **Example library batch 1** — authored starter profiles for **X52 Pro, T.16000M FCS, Warthog** (with EDRefCard diagram images copied in); all load with full diagrams. Fixed `loadBinds` to accept EDRefCard **name-based device IDs** (SaitekX52Pro, Warthog…), which unlocks every non-VKB device the data supports — not just these three.
+- [ ] Grow further: CH Fighterstick/Combatstick, X55/X56, Virpil, WinWing; and per-game examples once other-game adapters exist.
 
 ## ✨ Editor polish (near-term)
 - [x] **2D Diagram view** — EDRefCard device JPG (3840×2160) scaled to the panel with percentage-positioned hotspot `<div>`s from `coords.json`; bound/selected/live highlighting + click-to-bind, aligned to the template's own label boxes. `List ⇄ Diagram` toggle (persisted `bw-2dmode`, default diagram), falls back to List when a device has no image (T-Rudder) or the JPG 404s.
