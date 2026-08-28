@@ -485,7 +485,9 @@ function loadBinds(text, fname) {
   xmlDoc = new DOMParser().parseFromString(text, 'application/xml');
   if (xmlDoc.querySelector('parsererror')) { setStatus('❌ XML parse error'); return; }
   deviceIndex = {}; const used = new Set();
-  xmlDoc.querySelectorAll('[Device]').forEach(el => { const id=el.getAttribute('Device'); if(isHwDevice(id)||NAMED_DEVICES[id]){ used.add(id); if(el.hasAttribute('DeviceIndex')) deviceIndex[id]=el.getAttribute('DeviceIndex'); } });
+  xmlDoc.querySelectorAll('[Device]').forEach(el => { const id=el.getAttribute('Device');
+    // accept hex PIDs (VKB), Keyboard/Mouse, and any device known to EDRefCard by name (SaitekX52Pro, Warthog…) or with a coord map
+    if(id && id!=='{NoDevice}' && (isHwDevice(id)||NAMED_DEVICES[id]||idInfo[id]||coordKeyFor(id))){ used.add(id); if(el.hasAttribute('DeviceIndex')) deviceIndex[id]=el.getAttribute('DeviceIndex'); } });
   const sel=$('#device'); sel.innerHTML='';
   [...used].forEach(id => sel.add(new Option(`${idInfo[id]?.name||id} (${id})`, id)));
   $('#exportBinds').disabled=false;

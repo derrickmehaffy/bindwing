@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Root PresetName="Bindwing Example" MajorVersion="4" MinorVersion="2">
+	<KeyboardLayout>en-US</KeyboardLayout>
+	<RollAxisRaw>
+		<Binding Device="T16000MFCS" Key="Joy_XAxis"/>
+		<Inverted Value="0"/>
+		<Deadzone Value="0.00000000"/>
+	</RollAxisRaw>
+	<PitchAxisRaw>
+		<Binding Device="T16000MFCS" Key="Joy_YAxis"/>
+		<Inverted Value="0"/>
+		<Deadzone Value="0.00000000"/>
+	</PitchAxisRaw>
+	<YawAxisRaw>
+		<Binding Device="T16000MFCS" Key="Joy_RZAxis"/>
+		<Inverted Value="0"/>
+		<Deadzone Value="0.00000000"/>
+	</YawAxisRaw>
+	<PrimaryFire>
+		<Primary Device="T16000MFCS" DeviceIndex="0" Key="Joy_1"/>
+		<Secondary Device="{NoDevice}" Key=""/>
+	</PrimaryFire>
+	<SecondaryFire>
+		<Primary Device="T16000MFCS" DeviceIndex="0" Key="Joy_2"/>
+		<Secondary Device="{NoDevice}" Key=""/>
+	</SecondaryFire>
+	<UI_Up>
+		<Primary Device="T16000MFCS" DeviceIndex="0" Key="Joy_POV1Up"/>
+		<Secondary Device="{NoDevice}" Key=""/>
+	</UI_Up>
+	<UI_Down>
+		<Primary Device="T16000MFCS" DeviceIndex="0" Key="Joy_POV1Down"/>
+		<Secondary Device="{NoDevice}" Key=""/>
+	</UI_Down>
+	<UI_Left>
+		<Primary Device="T16000MFCS" DeviceIndex="0" Key="Joy_POV1Left"/>
+		<Secondary Device="{NoDevice}" Key=""/>
+	</UI_Left>
+	<UI_Right>
+		<Primary Device="T16000MFCS" DeviceIndex="0" Key="Joy_POV1Right"/>
+		<Secondary Device="{NoDevice}" Key=""/>
+	</UI_Right>
+	<UI_Select>
+		<Primary Device="T16000MFCS" DeviceIndex="0" Key="Joy_3"/>
+		<Secondary Device="{NoDevice}" Key=""/>
+	</UI_Select>
+	<UI_Back>
+		<Primary Device="T16000MFCS" DeviceIndex="0" Key="Joy_4"/>
+		<Secondary Device="{NoDevice}" Key=""/>
+	</UI_Back>
+	<UseBoostJuice>
+		<Primary Device="T16000MFCS" DeviceIndex="0" Key="Joy_5"/>
+		<Secondary Device="{NoDevice}" Key=""/>
+	</UseBoostJuice>
+	<DeployHeatSink>
+		<Primary Device="T16000MFCS" DeviceIndex="0" Key="Joy_6"/>
+		<Secondary Device="{NoDevice}" Key=""/>
+	</DeployHeatSink>
+	<ToggleFlightAssist>
+		<Primary Device="T16000MFCS" DeviceIndex="0" Key="Joy_7"/>
+		<Secondary Device="{NoDevice}" Key=""/>
+	</ToggleFlightAssist>
+	<LandingGearToggle>
+		<Primary Device="T16000MFCS" DeviceIndex="0" Key="Joy_8"/>
+		<Secondary Device="{NoDevice}" Key=""/>
+	</LandingGearToggle>
+	<ShipSpotLightToggle>
+		<Primary Device="T16000MFCS" DeviceIndex="0" Key="Joy_9"/>
+		<Secondary Device="{NoDevice}" Key=""/>
+	</ShipSpotLightToggle>
+	<SelectTarget>
+		<Primary Device="T16000MFCS" DeviceIndex="0" Key="Joy_10"/>
+		<Secondary Device="{NoDevice}" Key=""/>
+	</SelectTarget>
+	<CycleNextTarget>
+		<Primary Device="T16000MFCS" DeviceIndex="0" Key="Joy_11"/>
+		<Secondary Device="{NoDevice}" Key=""/>
+	</CycleNextTarget>
+	<CycleNextHostileTarget>
+		<Primary Device="T16000MFCS" DeviceIndex="0" Key="Joy_12"/>
+		<Secondary Device="{NoDevice}" Key=""/>
+	</CycleNextHostileTarget>
+	<ChargeECM>
+		<Primary Device="T16000MFCS" DeviceIndex="0" Key="Joy_13"/>
+		<Secondary Device="{NoDevice}" Key=""/>
+	</ChargeECM>
+	<IncreaseEnginesPower>
+		<Primary Device="T16000MFCS" DeviceIndex="0" Key="Joy_14"/>
+		<Secondary Device="{NoDevice}" Key=""/>
+	</IncreaseEnginesPower>
+	<IncreaseWeaponsPower>
+		<Primary Device="T16000MFCS" DeviceIndex="0" Key="Joy_15"/>
+		<Secondary Device="{NoDevice}" Key=""/>
+	</IncreaseWeaponsPower>
+	<IncreaseSystemsPower>
+		<Primary Device="T16000MFCS" DeviceIndex="0" Key="Joy_16"/>
+		<Secondary Device="{NoDevice}" Key=""/>
+	</IncreaseSystemsPower>
+	<ThrottleAxis>
+		<Binding Device="T16000MTHROTTLE" Key="Joy_ZAxis"/>
+		<Inverted Value="0"/>
+		<Deadzone Value="0.00000000"/>
+	</ThrottleAxis>
+	<ResetPowerDistribution>
+		<Primary Device="T16000MTHROTTLE" DeviceIndex="0" Key="Joy_1"/>
+		<Secondary Device="{NoDevice}" Key=""/>
+	</ResetPowerDistribution>
+	<SetSpeedZero>
+		<Primary Device="T16000MTHROTTLE" DeviceIndex="0" Key="Joy_2"/>
+		<Secondary Device="{NoDevice}" Key=""/>
+	</SetSpeedZero>
+	<UpThrustButton>
+		<Primary Device="T16000MTHROTTLE" DeviceIndex="0" Key="Joy_3"/>
+		<Secondary Device="{NoDevice}" Key=""/>
+	</UpThrustButton>
+	<GalaxyMapOpen>
+		<Primary Device="T16000MTHROTTLE" DeviceIndex="0" Key="Joy_4"/>
+		<Secondary Device="{NoDevice}" Key=""/>
+	</GalaxyMapOpen>
+	<SystemMapOpen>
+		<Primary Device="T16000MTHROTTLE" DeviceIndex="0" Key="Joy_5"/>
+		<Secondary Device="{NoDevice}" Key=""/>
+	</SystemMapOpen>
+	<FocusCommsPanel>
+		<Primary Device="T16000MTHROTTLE" DeviceIndex="0" Key="Joy_6"/>
+		<Secondary Device="{NoDevice}" Key=""/>
+	</FocusCommsPanel>
+	<TargetNextRouteSystem>
+		<Primary Device="T16000MTHROTTLE" DeviceIndex="0" Key="Joy_7"/>
+		<Secondary Device="{NoDevice}" Key=""/>
+	</TargetNextRouteSystem>
+	<OrbitLinesToggle>
+		<Primary Device="T16000MTHROTTLE" DeviceIndex="0" Key="Joy_8"/>
+		<Secondary Device="{NoDevice}" Key=""/>
+	</OrbitLinesToggle>
+	<SetSpeed50>
+		<Primary Device="T16000MTHROTTLE" DeviceIndex="0" Key="Joy_9"/>
+		<Secondary Device="{NoDevice}" Key=""/>
+	</SetSpeed50>
+	<SetSpeed100>
+		<Primary Device="T16000MTHROTTLE" DeviceIndex="0" Key="Joy_10"/>
+		<Secondary Device="{NoDevice}" Key=""/>
+	</SetSpeed100>
+</Root>

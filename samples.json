@@ -5,5 +5,26 @@
     "game": "Elite Dangerous",
     "device": "VKB Gladiator NXT + T-Rudder",
     "note": "Starter HOTAS layout — the built-in demo."
+  },
+  {
+    "name": "Saitek / Logitech X52 Pro",
+    "file": "sample-x52pro.binds",
+    "game": "Elite Dangerous",
+    "device": "X52 Pro HOTAS",
+    "note": "Example starting layout for the X52 Pro — flight axes, fire, UI hat, common functions."
+  },
+  {
+    "name": "Thrustmaster T.16000M FCS",
+    "file": "sample-t16000m.binds",
+    "game": "Elite Dangerous",
+    "device": "T.16000M FCS stick + throttle",
+    "note": "Example starting layout for the T.16000M FCS HOTAS."
+  },
+  {
+    "name": "Thrustmaster Warthog",
+    "file": "sample-warthog.binds",
+    "game": "Elite Dangerous",
+    "device": "Warthog stick + throttle",
+    "note": "Example starting layout for the Warthog HOTAS."
   }
 ]
