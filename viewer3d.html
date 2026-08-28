@@ -240,6 +240,13 @@
   .dbg-ev b{display:inline-block;width:48px;color:var(--muted);text-transform:uppercase;font-size:9px;font-weight:600;}
   .dbg-press{border-color:var(--bound);} .dbg-axis{border-color:var(--axis);} .dbg-switch{border-color:var(--hud);}
   .dbg-switch{color:var(--hud);}
+  .dbg-live-dev{padding:4px 0;font-size:12px;display:flex;flex-wrap:wrap;gap:5px;align-items:center;}
+  .dbg-live-dev>b{flex:0 0 auto;margin-right:4px;}
+  .dbg-tag{font:600 10px var(--mono);padding:2px 6px;border-radius:4px;border:1px solid var(--edge);color:var(--muted);white-space:nowrap;}
+  .dbg-tag.on{border-color:var(--bound);color:var(--bound);}
+  .dbg-tag.axis{border-color:var(--axis);color:var(--axis);}
+  .dbg-tag.hat{border-color:var(--hat);color:var(--hat);}
+  .dbg-tag i{font-style:normal;color:var(--muted);}
   .dbg-actions{display:flex;gap:8px;margin-top:12px;}
   .seg.sm+.mb-print,.mb-print{font-size:11px;padding:3px 9px;}
   /* print: strip the app chrome, lay out just the current sheet/list for paper or PDF */
@@ -838,7 +845,7 @@ const knownDevice = id => !!(idInfo[id] || coordKeyFor(id) || devInBinds(id));
 function ensureDeviceOption(id){ if(!id||!/^[0-9A-Fa-f]{8}$/.test(id)||!knownDevice(id)) return; const sel=$('#device');
   if(![...sel.options].some(o=>o.value===id)){ sel.add(new Option((idInfo[id]?.name||('Device '+id))+' ('+id+')', id)); renderDevRail(); } }
 let dbgLog=[]; const DBGMAX=80;
-function pushDbg(type,detail){ dbgLog.push({t:type,d:detail}); if(dbgLog.length>DBGMAX) dbgLog.shift(); if(dbg && !dbg.classList.contains('hidden')) renderDbg(); }
+function pushDbg(type,detail){ dbgLog.push({t:type,d:detail}); if(dbgLog.length>DBGMAX) dbgLog.shift(); if(dbg && !dbg.classList.contains('hidden')) renderDbgLog(); }
 function pollGamepads(){ if(!liveOn) return;
   const pads=navigator.getGamepads?[...navigator.getGamepads()].filter(Boolean):[];
   const byDev={}; pads.forEach(gp=>{ const d=gpDeviceId(gp)||curDevice; if(d)(byDev[d]=byDev[d]||[]).push(gp); });
@@ -865,6 +872,7 @@ function pollGamepads(){ if(!liveOn) return;
     if([...sel.options].some(o=>o.value===switchDev)){ sel.value=switchDev; curDevice=switchDev; refresh2D(); renderDevRail(switchDev); pushDbg('switch',`→ ${idInfo[switchDev]?.name||switchDev}`); if(switchKey){ selKey=switchKey; selDev=switchDev; } } }
   if(selKey) liveSelect(selKey);
   refreshMarkers(); updateLiveHighlights();
+  if(dbg && !dbg.classList.contains('hidden')) updateDbgLive();
 }
 function liveSelect(key){ $('#subinputs').innerHTML=''; $('#curKey').innerHTML='<b>'+key+'</b> <span class="mut">(live)</span>';
   selectItem(key, typeOfKey(key)); if(stageView==='2d') mark2D(key); setStatus('Live: '+key+' — pick a control to bind it.'); }
@@ -886,9 +894,29 @@ function renderDbg(){ const box=$('#dbg-body'); if(!box) return;
   Object.entries(byDev).forEach(([d,gps])=>{ const known=idInfo[d]?`<b>${idInfo[d].name}</b>`:`<b>${d}</b>`; const alias=DEVICE_ALIAS[d]?` <span class="modnote">HID→${DEVICE_ALIAS[d]}</span>`:'';
     html+=`<div class="dbg-dev">${known} <span class="mut">${d}</span>${alias} · ${gps.length} collection(s) · ${gps[0].buttons.length} btn · ${gps[0].axes.length} axis${idInfo[d]?'':' <span class="dbg-warn" style="color:var(--danger)">not in profile</span>'}</div>`;
     gps.forEach(gp=> html+=`<div class="dbg-raw">gp${gp.index}: ${gp.id.trim()}</div>`); });
-  html+='<div class="dbg-h2">Event log <span class="mut" style="text-transform:none;letter-spacing:0;font-weight:400">(newest first · press=green, axis=blue, switch=amber)</span></div>';
-  html+='<div class="dbg-log">'+(dbgLog.length?[...dbgLog].reverse().map(e=>`<div class="dbg-ev dbg-${e.t}"><b>${e.t}</b>${e.d}</div>`).join(''):'<div class="mut">Interact with a controller (Live on) to see events…</div>')+'</div>';
+  html+='<div class="dbg-h2">Active now <span class="mut" style="text-transform:none;letter-spacing:0;font-weight:400">— live state across all devices</span></div><div id="dbg-live"></div>';
+  html+='<div class="dbg-h2">Event log <span class="mut" style="text-transform:none;letter-spacing:0;font-weight:400">(newest first · press=green, axis=blue, switch=amber)</span></div><div class="dbg-log" id="dbg-loglist"></div>';
   box.innerHTML=html;
+  updateDbgLive(); renderDbgLog();
+}
+function renderDbgLog(){ const el=$('#dbg-loglist'); if(!el) return;
+  el.innerHTML = dbgLog.length ? [...dbgLog].reverse().map(e=>`<div class="dbg-ev dbg-${e.t}"><b>${e.t}</b>${e.d}</div>`).join('') : '<div class="mut">Interact with a controller (Live on) to see events…</div>'; }
+// live readout of every currently-active input on every device — buttons + axes (with Pos_/Neg_ direction & value) + hats
+function updateDbgLive(){ const el=$('#dbg-live'); if(!el) return;
+  const pads=navigator.getGamepads?[...navigator.getGamepads()].filter(Boolean):[];
+  if(!pads.length){ el.innerHTML='<div class="mut">No controllers — toggle 🎮 Live and touch one.</div>'; return; }
+  const byDev={}; pads.forEach(gp=>{ const d=gpDeviceId(gp)||curDevice||'(unidentified)'; (byDev[d]=byDev[d]||[]).push(gp); });
+  let html='';
+  Object.entries(byDev).forEach(([dev,gps])=>{ gps.sort((a,b)=>b.index-a.index); const tags=[];
+    gps.forEach((gp,coll)=>{ const off=coll*32; const base=gpBase[gp.index]; const hats=gpHats[gp.index]||new Set();
+      gp.buttons.forEach((b,i)=>{ if(b.pressed) tags.push(`<span class="dbg-tag on">Joy_${off+i+1}</span>`); });
+      gp.axes.forEach((v,i)=>{ if(hats.has(i)){ if(v<=1.1){ const pn=[...hats].sort((a,b)=>a-b).indexOf(i)+1; hatDirs(v).forEach(dir=> tags.push(`<span class="dbg-tag hat">Joy_POV${pn}${dir}</span>`)); } return; }
+        const d0 = v-(base?(base[i]??0):0); if(Math.abs(d0)>0.12){ const ax=AXNAME[i]||('A'+i); const half=d0>0?'Pos':'Neg';
+          tags.push(`<span class="dbg-tag axis">${half}_Joy_${ax}Axis <i>${d0>0?'+':''}${d0.toFixed(2)}</i></span>`); } });
+    });
+    html+=`<div class="dbg-live-dev"><b>${idInfo[dev]?.name||dev}</b> ${tags.length?tags.join(' '):'<span class="mut">idle</span>'}</div>`;
+  });
+  el.innerHTML=html;
 }
 $('#dbgBtn').onclick=()=>showDbg(dbg.classList.contains('hidden'));
 $('#dbgClose').onclick=()=>showDbg(false);
