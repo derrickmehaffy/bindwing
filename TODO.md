@@ -34,6 +34,12 @@ _Add items here as we find them; we'll check them off as we go._
 - [ ] Per-game **accent themes** (Elite amber / SC blue / X4 teal …) via `html[data-game=…]` token overrides — groundwork laid, wire up when each adapter lands.
 - [ ] Each game = adapter: control catalog + bind reader/writer (see DEVICES.md rollout order). Print already defaults to white bg (ink-saving) per request.
 
+## 🎨 Design pass 2 (top bar) — v0.6
+- [x] **Top-bar redesign** — flat 13-control toolbar → "MFD bezel": 3 quiet zones (brand · editing-context · tools+export), one ghost-button language, monochrome SVG line-icons (no emoji), single amber primary. Wraps to 2 rows on mobile.
+- [x] **Samples picker** — data-driven from `samples.json`, surfaced in a **Profile ▾** menu (Open file… + Samples list). Currently the "Bindwing Sample"; structured to add popular-device examples (X52 Pro, T16000M, Warthog…).
+- [x] Renamed `viewer3d.html`→`index.html` (app at site root); curated **Bindwing Sample** replaces the personal profile; **Sample** badge when the built-in demo is loaded.
+- [ ] Grow the sample library: author clean example profiles for popular devices, add to `samples.json`. (Author-our-own to avoid provenance issues.)
+
 ## ✨ Editor polish (near-term)
 - [x] **2D Diagram view** — EDRefCard device JPG (3840×2160) scaled to the panel with percentage-positioned hotspot `<div>`s from `coords.json`; bound/selected/live highlighting + click-to-bind, aligned to the template's own label boxes. `List ⇄ Diagram` toggle (persisted `bw-2dmode`, default diagram), falls back to List when a device has no image (T-Rudder) or the JPG 404s.
   - [x] Long control names — single-line ellipsis by default; box grows + text wraps on hover/select to reveal the full name.
