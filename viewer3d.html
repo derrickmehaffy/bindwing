@@ -1,14 +1,24 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>ED Bind Editor — 3D</title>
+<script>/* apply saved theme before first paint to avoid a dark→light flash */try{if(localStorage.getItem('bw-theme')==='light')document.documentElement.dataset.theme='light';}catch(e){}</script>
 <style>
+  /* Elite/aerospace typography — Exo 2 (Elite's own typeface) for UI, Orbitron for the wordmark */
+  @font-face{font-family:'Exo 2';src:url('vendor/fonts/Exo2.0-Light.otf') format('opentype');font-weight:300;font-display:swap;}
+  @font-face{font-family:'Exo 2';src:url('vendor/fonts/Exo2.0-Regular.otf') format('opentype');font-weight:400;font-display:swap;}
+  @font-face{font-family:'Exo 2';src:url('vendor/fonts/Exo2.0-Medium.otf') format('opentype');font-weight:500;font-display:swap;}
+  @font-face{font-family:'Exo 2';src:url('vendor/fonts/Exo2.0-SemiBold.otf') format('opentype');font-weight:600;font-display:swap;}
+  @font-face{font-family:'Exo 2';src:url('vendor/fonts/Exo2.0-Bold.otf') format('opentype');font-weight:700;font-display:swap;}
+  @font-face{font-family:'Orbitron';src:url('vendor/fonts/orbitron-bold.otf') format('opentype');font-weight:700;font-display:swap;}
   :root{
-    --space:#08090c; --panel:#0d1116; --panel2:#12171e;
-    --edge:#26221a; --edge-hot:#5a3512;
+    --space:#07080b; --panel:#0c1015; --panel2:#11161d;
+    --edge:#241f18; --edge-hot:#5a3512;
     --hud:#ff7a1a; --hud-dim:#b3591a; --glow:rgba(255,122,26,.28);
     --text:#f2e8d8; --muted:#8f8676;
-    --bound:#37d17a; --sel:#ffffff; --axis:#58a6ff; --hat:#c08cff;
+    --bound:#37d17a; --sel:#ffffff; --axis:#58a6ff; --hat:#c08cff; --danger:#e5484d;
     --view1:#0e1218; --view2:#08090c; --overlay:rgba(8,9,12,.86);
+    --ui:'Exo 2',system-ui,'Segoe UI',Roboto,sans-serif;
+    --display:'Orbitron','Exo 2',system-ui,sans-serif;
     --mono:ui-monospace,'Cascadia Code','Cascadia Mono',Consolas,'DejaVu Sans Mono',monospace;
   }
   html[data-theme=light]{
@@ -18,31 +28,56 @@
     --view1:#f3efe6; --view2:#e3dccd; --overlay:rgba(255,255,255,.9);
   }
   *{box-sizing:border-box;} html,body{margin:0;height:100%;}
-  body{font:14px/1.4 system-ui,'Segoe UI',Roboto,sans-serif;background:var(--space);color:var(--text);display:flex;flex-direction:column;-webkit-tap-highlight-color:transparent;}
+  body{font:14px/1.45 var(--ui);background:var(--space);color:var(--text);display:flex;flex-direction:column;-webkit-tap-highlight-color:transparent;}
   ::selection{background:var(--glow);}
   :focus-visible{outline:1px solid var(--hud);outline-offset:1px;}
   .mut{color:var(--muted);}
 
   /* top bar — HUD frame */
-  header{display:flex;gap:8px;align-items:center;padding:8px 12px;background:linear-gradient(var(--panel),var(--panel2));
-    border-top:2px solid var(--hud);border-bottom:1px solid var(--edge);flex-wrap:wrap;}
-  h1{display:flex;align-items:baseline;gap:8px;margin:0 8px 0 0;font:600 12px/1 system-ui;text-transform:uppercase;letter-spacing:.2em;color:var(--hud);}
-  h1 .dot{font-size:13px;filter:drop-shadow(0 0 5px var(--glow));}
-  h1 .ver{font:10px var(--mono);letter-spacing:0;color:var(--muted);text-transform:none;}
-  .cap{font-size:9px;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);}
+  header{display:flex;gap:8px;align-items:center;padding:9px 14px;background:linear-gradient(var(--panel),var(--panel2));
+    border-top:2px solid var(--hud);border-bottom:1px solid var(--edge);flex-wrap:wrap;box-shadow:0 1px 0 rgba(255,122,26,.10),0 6px 20px -12px #000;}
+  h1{display:flex;align-items:baseline;gap:9px;margin:0 10px 0 0;font:700 15px/1 var(--display);letter-spacing:.12em;color:var(--text);text-transform:uppercase;}
+  h1 .dot{font:400 14px/1 var(--ui);color:var(--hud);filter:drop-shadow(0 0 6px var(--glow));align-self:center;}
+  h1 .ver{font:10px var(--mono);letter-spacing:.02em;color:var(--muted);text-transform:none;}
+  .cap{font-size:9px;text-transform:uppercase;letter-spacing:.12em;color:var(--muted);}
   label.field{display:flex;align-items:center;gap:6px;}
   .sep{width:1px;align-self:stretch;background:var(--edge-hot);opacity:.6;margin:0 3px;}
 
-  button,select,input[type=text],input[type=search]{background:var(--panel2);color:var(--text);border:1px solid var(--edge);border-radius:3px;padding:6px 9px;font:inherit;transition:border-color .12s,box-shadow .12s,color .12s;}
+  button,select,input[type=text],input[type=search]{background:var(--panel2);color:var(--text);border:1px solid var(--edge);border-radius:3px;padding:6px 9px;font:inherit;font-family:var(--ui);transition:border-color .12s,box-shadow .12s,color .12s,background .12s;}
   input[type=file]{color:var(--muted);font-size:12px;max-width:148px;}
-  button{cursor:pointer;font:600 11px/1.1 system-ui;text-transform:uppercase;letter-spacing:.05em;}
+  button{cursor:pointer;font:600 11px/1.1 var(--ui);text-transform:uppercase;letter-spacing:.06em;}
   button:hover,select:hover{border-color:var(--hud-dim);}
   button.on{color:var(--hud);border-color:var(--hud);box-shadow:0 0 0 1px var(--glow),0 0 12px -3px var(--glow);}
   button.primary{background:var(--hud);color:#160a00;border-color:var(--hud);}
   button.primary:disabled{background:transparent;color:var(--muted);border-color:var(--edge);cursor:not-allowed;}
-  #status{margin-left:auto;font:11px var(--mono);color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:40ch;}
+  /* bottom status bar — the MFD status line (full-width, no more truncation) */
+  #statusbar{display:flex;align-items:center;gap:9px;padding:5px 14px;background:linear-gradient(var(--panel2),var(--panel));border-top:1px solid var(--edge);min-height:27px;flex:none;}
+  #status{font:11px var(--mono);color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0;flex:1;}
+  .live-dot{width:8px;height:8px;border-radius:50%;background:var(--edge-hot);flex:none;}
+  #statusbar.live .live-dot{background:var(--bound);box-shadow:0 0 8px var(--bound);animation:livepulse 1.4s ease-in-out infinite;}
+  @keyframes livepulse{0%,100%{opacity:1;}50%{opacity:.35;}}
 
-  #wrap{flex:1;display:grid;grid-template-columns:1fr 340px;min-height:0;}
+  /* device rail — the systems bus (left column) */
+  #devrail{display:flex;flex-direction:column;gap:8px;padding:10px;width:214px;background:var(--space);border-right:1px solid var(--edge);overflow-y:auto;scrollbar-width:thin;}
+  #devrail::before{content:"Devices";font:600 9px var(--ui);text-transform:uppercase;letter-spacing:.14em;color:var(--muted);padding:2px 2px 4px;}
+  #devrail.empty::before{display:none;}
+  #devrail.empty{justify-content:flex-start;}
+  .rail-hint{color:var(--muted);font:12px/1.5 var(--ui);}
+  .rail-hint kbd{font:inherit;background:var(--panel2);border:1px solid var(--edge);border-radius:3px;padding:0 5px;}
+  .devcard{flex:0 0 auto;width:100%;text-align:left;display:flex;flex-direction:column;gap:3px;
+    background:var(--panel);border:1px solid var(--edge);border-radius:6px;padding:8px 11px 9px;cursor:pointer;position:relative;overflow:hidden;
+    transition:border-color .14s,box-shadow .14s,transform .14s;text-transform:none;letter-spacing:0;}
+  .devcard:hover{border-color:var(--hud-dim);transform:translateY(-1px);}
+  .devcard.on{border-color:var(--hud);box-shadow:0 0 0 1px var(--glow),0 0 22px -8px var(--hud);}
+  .devcard.on::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--hud);box-shadow:0 0 10px var(--hud);}
+  .devcard.pulse{animation:cardpulse .5s ease-out;}
+  @keyframes cardpulse{0%{box-shadow:0 0 0 1px var(--hud),0 0 0 0 var(--glow);}100%{box-shadow:0 0 0 1px var(--glow),0 0 22px -8px var(--hud);}}
+  .dc-name{font:600 12px/1.2 var(--ui);color:var(--text);min-width:0;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
+  .dc-meter{height:4px;border-radius:2px;background:var(--panel2);overflow:hidden;margin:1px 0;}
+  .dc-meter>span{display:block;height:100%;background:linear-gradient(90deg,var(--hud-dim),var(--hud));border-radius:2px;transition:width .3s;}
+  .dc-stat{font:10px var(--mono);color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .dc-warn{color:var(--danger);font-weight:700;}
+  #wrap{flex:1;display:grid;grid-template-columns:auto 1fr 340px;min-height:0;}
 
   /* viewport — reticle */
   #stage{position:relative;min-height:0;}
@@ -88,6 +123,7 @@
   .bindrow.modifier{border-style:dashed;opacity:.9;}
   .bindrow .nm{display:flex;align-items:center;flex-wrap:wrap;gap:5px;}
   .warn{color:#e5484d;font:600 9px var(--mono);text-transform:uppercase;letter-spacing:.04em;}
+  .modnote{color:var(--hat);border:1px solid var(--hat);border-radius:3px;padding:0 4px;font:600 9px var(--mono);letter-spacing:.02em;white-space:nowrap;}
   .gtag{display:inline-block;font:600 9px var(--mono);text-transform:uppercase;letter-spacing:.04em;border:1px solid var(--edge);border-radius:2px;padding:1px 5px;margin-right:6px;}
   #search{margin:10px 14px 6px;}
   #picker{flex:1;overflow:auto;padding:2px 14px 40px;}
@@ -107,7 +143,11 @@
   .seg button.on{background:var(--hud);color:#160a00;box-shadow:none;}
   #themeBtn{padding:6px 9px;font-size:13px;line-height:1;}
   /* viewport control overlay (3D controls live here, not the header) */
-  #vtools{position:absolute;top:12px;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;gap:6px;align-items:center;z-index:3;pointer-events:none;max-width:calc(100% - 24px);}
+  /* 3D work-in-progress banner (hazard stripe across the top of the viewport) */
+  #wipBanner{position:absolute;top:0;left:0;right:0;z-index:4;text-align:center;padding:5px 12px;color:var(--text);font:500 11px/1.4 var(--ui);letter-spacing:.02em;
+    background:repeating-linear-gradient(45deg,rgba(255,122,26,.14),rgba(255,122,26,.14) 11px,rgba(255,122,26,.05) 11px,rgba(255,122,26,.05) 22px);border-bottom:1px solid var(--hud-dim);}
+  #wipBanner b{color:var(--hud);font-weight:700;}
+  #vtools{position:absolute;top:40px;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;gap:6px;align-items:center;z-index:3;pointer-events:none;max-width:calc(100% - 24px);}
   #vtools .vgrp{display:flex;gap:6px;align-items:center;flex-wrap:wrap;justify-content:center;background:var(--overlay);border:1px solid var(--edge);border-radius:6px;padding:6px 8px;pointer-events:auto;}
   #vtools input[type=file]{max-width:120px;}
   #placeTools{display:none;}
@@ -122,6 +162,41 @@
   .lv-item .lv-c{font-size:12px;}
   .lv-item.live{border-color:var(--hud);box-shadow:0 0 0 2px var(--glow),0 0 16px -2px var(--glow);}
   #liveBtn.on{color:var(--bound);border-color:var(--bound);box-shadow:0 0 0 1px var(--bound),0 0 12px -3px var(--bound);}
+  /* 2D mode toolbar (List / Diagram) */
+  #view2d .mode2d{position:sticky;top:-12px;z-index:6;display:flex;justify-content:flex-end;align-items:center;gap:8px;padding:2px 0 8px;background:var(--space);}
+  #view2d .mode2d .mb-read{margin-right:auto;color:var(--muted);font:11px var(--mono);}
+  #view2d .mode2d .mb-read b{color:var(--text);}
+  .seg.sm button{font-size:11px;padding:3px 9px;}
+  .seg.sm.filt button.on{background:var(--panel2);color:var(--hud);box-shadow:inset 0 -2px 0 var(--hud);}
+  /* subsystem / channel legend */
+  #view2d .channels{display:flex;flex-wrap:wrap;gap:5px;margin:0 0 10px;}
+  .chan{font:600 10px var(--ui);text-transform:none;letter-spacing:.02em;padding:3px 9px 3px 8px;border-radius:11px;border:1px solid var(--edge);background:var(--panel);color:var(--muted);cursor:pointer;display:inline-flex;align-items:center;gap:6px;}
+  .chan::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--c,var(--muted));flex:none;}
+  .chan[data-g=""]::before{display:none;}
+  .chan:hover{border-color:var(--c,var(--hud-dim));color:var(--text);}
+  .chan.on{border-color:var(--c,var(--hud));color:var(--text);background:var(--panel2);box-shadow:0 0 0 1px var(--c,var(--glow));}
+  .chan i{font-style:normal;color:var(--muted);font:9px var(--mono);}
+  /* conflict + filter states on 2D */
+  .lv-item.conflict{border-color:var(--danger);}
+  .hs.conflict{border-color:var(--danger);box-shadow:0 0 0 1px var(--danger),0 0 10px -3px var(--danger);}
+  .hs.conflict.bound{background:rgba(229,72,77,.18);}
+  .diag.filtering .hs.dim{opacity:.16;filter:grayscale(.6);pointer-events:none;}
+  /* 2D diagram view (EDRefCard image + hotspots) */
+  /* the sheet reads as a physical reference card on the dark console: light matte + shadow */
+  .diag{width:100%;max-width:1180px;margin:6px auto;background:#efe9dd;padding:12px;border-radius:8px;box-shadow:0 16px 48px -18px rgba(0,0,0,.7),0 0 0 1px var(--edge);}
+  html[data-theme=light] .diag{background:#f6f2ea;box-shadow:0 10px 30px -16px rgba(0,0,0,.35),0 0 0 1px var(--edge);}
+  .diag-frame{position:relative;width:100%;font-size:0;}   /* image + overlay share this box exactly */
+  .diag-img{display:block;width:100%;height:auto;border-radius:4px;}
+  .diag-ov{position:absolute;inset:0;}
+  /* Diagram sits on the light EDRefCard sheet, so hotspot text is always dark regardless of app theme. */
+  .hs{position:absolute;box-sizing:border-box;border:1px solid rgba(120,110,95,.38);border-radius:3px;cursor:pointer;overflow:hidden;display:flex;align-items:center;padding:1px 3px;font:600 clamp(8px,.8vw,12px)/1.15 system-ui;color:#1b1712;background:transparent;transition:border-color .1s,background .1s,box-shadow .1s;}
+  .hs .hs-t{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;width:100%;}
+  .hs.bound{border-color:var(--bound);background:rgba(46,160,67,.22);}
+  .hs.live{border-color:var(--hud);background:rgba(255,248,238,.97);box-shadow:0 0 0 2px var(--glow),0 0 14px -2px var(--glow);z-index:6;}
+  /* hover / selected: lift, brighten, and grow to reveal the full (wrapped) label */
+  .hs:hover,.hs.sel{overflow:visible;height:auto!important;min-height:1.5em;z-index:8;border-color:var(--hud);background:rgba(255,248,238,.98);box-shadow:0 2px 12px -2px rgba(0,0,0,.55);}
+  .hs.sel{box-shadow:0 0 0 1px var(--hud),0 2px 12px -2px rgba(0,0,0,.55);}
+  .hs:hover .hs-t,.hs.sel .hs-t{overflow:visible;white-space:normal;text-overflow:clip;}
 
   @media (max-width:760px){
     header{gap:6px;}
@@ -130,6 +205,9 @@
     html,body{height:auto;}
     body{min-height:100vh;}
     #wrap{display:block;}
+    #devrail{flex-direction:row;width:auto;overflow-x:auto;overflow-y:hidden;border-right:none;border-bottom:1px solid var(--edge);}
+    #devrail::before{display:none;}
+    #devrail .devcard{width:180px;}
     #stage{height:56vh;}
     #vtools .vgrp{padding:5px 6px;gap:5px;}
     #side{border-left:none;border-top:1px solid var(--edge);}
@@ -138,24 +216,70 @@
     #hint{display:none;} .corner{width:20px;height:20px;}
     .ctl,.bindrow{padding:10px 8px;}
   }
+  /* help overlay */
+  #help{position:fixed;inset:0;z-index:50;display:flex;align-items:center;justify-content:center;background:rgba(4,5,7,.66);backdrop-filter:blur(3px);}
+  #help.hidden{display:none;}
+  .help-card{background:linear-gradient(var(--panel),var(--panel2));border:1px solid var(--edge-hot);border-radius:10px;padding:20px 24px;min-width:330px;box-shadow:0 24px 70px -24px #000,0 0 0 1px var(--glow);}
+  .help-h{font:600 12px var(--ui);text-transform:uppercase;letter-spacing:.16em;color:var(--hud);margin-bottom:14px;}
+  .help-card dl{margin:0;display:grid;gap:9px;}
+  .help-card dl>div{display:flex;gap:16px;align-items:baseline;}
+  .help-card dt{flex:0 0 92px;font:600 12px var(--mono);color:var(--text);}
+  .help-card dd{margin:0;color:var(--muted);font-size:13px;}
+  .help-card #helpClose{margin-top:18px;width:100%;}
+  #helpBtn,#dbgBtn{padding:6px 10px;font-size:12px;line-height:1;}
+  /* live-input debug modal */
+  #dbg{position:fixed;inset:0;z-index:50;display:flex;align-items:center;justify-content:center;background:rgba(4,5,7,.66);backdrop-filter:blur(3px);}
+  #dbg.hidden{display:none;}
+  .dbg-card{background:linear-gradient(var(--panel),var(--panel2));border:1px solid var(--edge-hot);border-radius:10px;padding:16px 18px;width:min(700px,92vw);max-height:84vh;display:flex;flex-direction:column;box-shadow:0 24px 70px -24px #000,0 0 0 1px var(--glow);}
+  #dbg-body{overflow:auto;margin-top:4px;}
+  .dbg-h2{font:600 10px var(--ui);text-transform:uppercase;letter-spacing:.12em;color:var(--hud);margin:12px 0 6px;}
+  .dbg-dev{padding:4px 0;font-size:12px;}
+  .dbg-raw{font:10px var(--mono);color:var(--muted);padding-left:12px;word-break:break-all;}
+  .dbg-log{display:flex;flex-direction:column;gap:2px;font:11px var(--mono);}
+  .dbg-ev{padding:2px 7px;border-left:2px solid var(--edge);color:var(--text);}
+  .dbg-ev b{display:inline-block;width:48px;color:var(--muted);text-transform:uppercase;font-size:9px;font-weight:600;}
+  .dbg-press{border-color:var(--bound);} .dbg-axis{border-color:var(--axis);} .dbg-switch{border-color:var(--hud);}
+  .dbg-switch{color:var(--hud);}
+  .dbg-actions{display:flex;gap:8px;margin-top:12px;}
+  .seg.sm+.mb-print,.mb-print{font-size:11px;padding:3px 9px;}
+  /* print: strip the app chrome, lay out just the current sheet/list for paper or PDF */
+  @media print{
+    @page{ size:landscape; margin:8mm; }
+    *{ -webkit-print-color-adjust:exact!important; print-color-adjust:exact!important; }
+    header,#devrail,#side,#hint,#help,#view,.mode2d,.channels,.corner,#statusbar{ display:none!important; }
+    .hs.dim,.lv-item.dim{ display:none!important; }   /* print only the active filter/subsystem */
+    html,body{ height:auto!important; background:#fff!important; color:#000!important; }
+    #wrap{ display:block!important; }
+    #stage{ position:static!important; height:auto!important; }
+    #view2d{ position:static!important; display:block!important; overflow:visible!important; padding:0!important; background:#fff!important; }
+    .diag{ max-width:100%!important; margin:0 auto!important; background:#fff!important; box-shadow:none!important; padding:0!important; }
+    .print-title{ display:block!important; font:700 15px var(--display); letter-spacing:.06em; margin:0 0 8px; color:#000; }
+    .lv-item{ break-inside:avoid; }
+  }
+  .print-title{display:none;}
   @media (prefers-reduced-motion:reduce){ *{transition:none!important;animation:none!important;} }
 </style>
 
 <header>
-  <h1><span class="dot">⬢</span> Bindwing <span class="ver">v0.3</span></h1>
+  <h1><span class="dot">⬢</span> Bindwing <span class="ver">v0.5</span></h1>
+  <label class="field"><span class="cap">Game</span><select id="game" title="Which game's binds you're editing"></select></label>
+  <span class="sep"></span>
   <div class="seg"><button id="to3d">3D</button><button id="to2d" class="on">2D</button></div>
   <button id="liveBtn" title="Read live input from your controller (localhost only)">🎮 Live</button>
   <button id="themeBtn" title="Toggle light / dark theme">◐</button>
   <span class="sep"></span>
-  <label class="field"><span class="cap">Profile</span><input type="file" id="binds" accept=".binds"></label>
-  <label class="field"><span class="cap">Device</span><select id="device"><option value="">— load .binds —</option></select></label>
+  <label class="field"><span class="cap">Profile</span><input type="file" id="binds" accept=".binds" style="display:none"><button id="bindsBtn" type="button">Choose .binds…</button><span id="bindsName" class="mut" style="max-width:22ch;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">no file loaded</span></label>
+  <select id="device" style="display:none"><option value="">— load .binds —</option></select>
+  <button id="dbgBtn" title="Live input debug (D)">🐞</button>
+  <button id="helpBtn" title="Keyboard shortcuts (?)">?</button>
   <button id="exportBinds" class="primary" disabled>Export .binds</button>
-  <span id="status"></span>
 </header>
 
 <div id="wrap">
+  <nav id="devrail" class="empty"><span class="rail-hint">Load a <kbd>.binds</kbd> to see your devices</span></nav>
   <div id="stage">
     <div id="view">
+      <div id="wipBanner">🚧 <b>3D editor — work in progress.</b> Placeholder model; real per-device scans are coming. Use <b>2D</b> for accurate binding.</div>
       <canvas id="cv"></canvas><svg id="leaders"></svg><div id="labels"></div>
       <div class="corner tl"></div><div class="corner tr"></div><div class="corner bl"></div><div class="corner br"></div>
       <div id="vtools">
@@ -192,6 +316,30 @@
   </div>
 </div>
 
+<footer id="statusbar"><span class="live-dot" aria-hidden="true"></span><span id="status">Ready.</span></footer>
+
+<div id="help" class="hidden" role="dialog" aria-label="Keyboard shortcuts">
+  <div class="help-card">
+    <div class="help-h">Keyboard shortcuts</div>
+    <dl>
+      <div><dt>/</dt><dd>Focus control search</dd></div>
+      <div><dt>Esc</dt><dd>Clear selection · close dialogs</dd></div>
+      <div><dt>1 · 2 · 3</dt><dd>List · Diagram · 3D view</dd></div>
+      <div><dt>L</dt><dd>Toggle live controller input</dd></div>
+      <div><dt>D</dt><dd>Live input debug panel</dd></div>
+      <div><dt>A B U C</dt><dd>Filter: all · bound · unbound · conflicts</dd></div>
+      <div><dt>?</dt><dd>Show this help</dd></div>
+    </dl>
+    <button id="helpClose">Close</button>
+  </div>
+</div>
+<div id="dbg" class="hidden" role="dialog" aria-label="Live input debug">
+  <div class="dbg-card">
+    <div class="help-h">Live input debug</div>
+    <div id="dbg-body"></div>
+    <div class="dbg-actions"><button id="dbgClear">Clear log</button><button id="dbgRefresh">Refresh</button><button id="dbgClose">Close</button></div>
+  </div>
+</div>
 <script src="data/data.js"></script>
 <script type="importmap">{ "imports": { "three": "./vendor/three.module.js" } }</script>
 <script type="module">
@@ -205,7 +353,36 @@ const ctlByKey = {}; D.controls.forEach(c => ctlByKey[c.control] = c);
 const GCOL = { Ship:'#58a6ff', SRV:'#e39a2c', OnFoot:'#2ea043', Fighter:'#bc8cff', Multicrew:'#d29922',
   UI:'#8b949e', 'Galaxy map':'#f778ba', 'Head look':'#39c5cf', Camera:'#a5d6ff', Scanners:'#7ee787', Misc:'#8b949e', 'Holo-Me':'#8b949e' };
 const gcol = g => GCOL[g] || '#8b949e';
+// Multi-game architecture: Elite is live; others are scaffolded as "coming soon". Each game will bring its own
+// control catalog + bind reader/writer (and, later, its own accent theme). `accent` is reserved for that.
+const GAMES = [
+  { id:'elite', name:'Elite Dangerous',   status:'ready', accent:'#ff7a1a' },
+  { id:'sc',    name:'Star Citizen',      status:'soon',  accent:'#3aa0ff' },
+  { id:'x4',    name:'X4: Foundations',   status:'soon',  accent:'#2ee6c0' },
+  { id:'dcs',   name:'DCS World',         status:'soon',  accent:'#c8b45a' },
+  { id:'msfs',  name:'MS Flight Simulator',status:'soon', accent:'#7ea6ff' },
+];
+let curGame = 'elite';
+(function initGames(){ const g=$('#game'); if(!g) return;
+  GAMES.forEach(x=> g.add(new Option(x.name+(x.status==='soon'?' — soon':''), x.id)));
+  g.value=curGame; document.documentElement.dataset.game=curGame;
+  g.addEventListener('change', e=>{ const x=GAMES.find(v=>v.id===e.target.value);
+    if(!x || x.status!=='ready'){ setStatus(`${x?x.name:'That game'} support is coming soon — Elite Dangerous is live today.`); e.target.value=curGame; return; }
+    curGame=x.id; document.documentElement.dataset.game=curGame; setStatus(`Game: ${x.name}`); });
+})();
 const idInfo = {}; Object.values(D.devices).forEach(dev => (dev.handledDevices||[]).forEach(id => { if(!idInfo[id]) idInfo[id] = {name:dev.name, template:dev.template}; }));
+// Newer VKB firmware enumerates some devices under PIDs EDRefCard never mapped. Alias them to the closest reference coord key.
+const COORD_ALIAS = { '231D011F':'T-Rudder' };   // T-Rudder Mk.V pedals → EDRefCard "T-Rudder" (3 axes)
+const coordKeyFor = id => (D.coords && D.coords[id]) ? id : (COORD_ALIAS[id] && D.coords && D.coords[COORD_ALIAS[id]] ? COORD_ALIAS[id] : null);
+Object.entries(COORD_ALIAS).forEach(([id,ck]) => { if(!idInfo[id] && D.coords && D.coords[ck]) idInfo[id] = {name:(D.coords[ck].displayName||ck), template:ck}; });
+// Chrome's Gamepad API reports a device's raw HID PID, which can differ from the virtual-controller PID Elite binds against.
+// Map raw-HID → Elite-bind id so live presses land on the device the binds actually use.
+const DEVICE_ALIAS = { '231D012E':'231D0201' };  // EVO left grip: Chrome/HID reports 012E, Elite writes 0201. NB: STECS swaps into this slot for other games — verify its PID doesn't also collide on 012E before trusting this.
+const normDev = id => (id && DEVICE_ALIAS[id.toUpperCase()]) || id;
+// Non-hardware Elite device names (keyboard/mouse) — GameGlass and manual binds live here. List-only, no diagram.
+const NAMED_DEVICES = { Keyboard:'Keyboard', Mouse:'Mouse' };
+Object.keys(NAMED_DEVICES).forEach(id=>{ if(!idInfo[id]) idInfo[id]={name:NAMED_DEVICES[id], template:null}; });
+const isHwDevice = id => /^[0-9A-Fa-f]{8}/.test(id||'');
 const setStatus = s => $('#status').textContent = s;
 const typeOfKey = k => (/Axis$/.test(k) && !/^(Neg|Pos)_/.test(k)) ? 'Analogue' : 'Digital';
 
@@ -213,21 +390,51 @@ const typeOfKey = k => (/Axis$/.test(k) && !/^(Neg|Pos)_/.test(k)) ? 'Analogue' 
 let xmlDoc = null, curDevice = '', curItem = null, deviceIndex = {};
 let liveOn = false, liveKeys = new Set(), prevBtns = {};   // Gamepad API live input
 
-$('#binds').addEventListener('change', ev => { const f=ev.target.files[0]; if(!f) return; const r=new FileReader(); r.onload=()=>loadBinds(r.result,f.name); r.readAsText(f); });
+$('#binds').addEventListener('change', ev => { const f=ev.target.files[0]; if(!f) return; const r=new FileReader(); r.onload=()=>{ loadBinds(r.result,f.name); persistBinds(r.result,f.name); }; r.readAsText(f); });
+function persistBinds(text,name){ try{ localStorage.setItem('bw-binds',text); localStorage.setItem('bw-binds-name',name); }catch(e){} }
+$('#bindsBtn').onclick = ()=> $('#binds').click();   // proxy the hidden native file input
 
 function loadBinds(text, fname) {
   xmlDoc = new DOMParser().parseFromString(text, 'application/xml');
   if (xmlDoc.querySelector('parsererror')) { setStatus('❌ XML parse error'); return; }
   deviceIndex = {}; const used = new Set();
-  xmlDoc.querySelectorAll('[Device]').forEach(el => { const id=el.getAttribute('Device'); if(/^[0-9A-Fa-f]{8}/.test(id)){ used.add(id); if(el.hasAttribute('DeviceIndex')) deviceIndex[id]=el.getAttribute('DeviceIndex'); } });
+  xmlDoc.querySelectorAll('[Device]').forEach(el => { const id=el.getAttribute('Device'); if(isHwDevice(id)||NAMED_DEVICES[id]){ used.add(id); if(el.hasAttribute('DeviceIndex')) deviceIndex[id]=el.getAttribute('DeviceIndex'); } });
   const sel=$('#device'); sel.innerHTML='';
   [...used].forEach(id => sel.add(new Option(`${idInfo[id]?.name||id} (${id})`, id)));
   $('#exportBinds').disabled=false;
+  const bn=$('#bindsName'); if(bn){ bn.textContent=fname; bn.title=fname; }
   curDevice = sel.value || [...used][0] || '';
   setStatus(`Loaded ${fname}: ${used.size} device(s).`);
-  refreshMarkers(); refresh2D();
+  refreshMarkers(); refresh2D(); renderDevRail();
 }
-$('#device').addEventListener('change', e => { curDevice=e.target.value; refreshMarkers(); refresh2D(); setStatus(`Device: ${idInfo[curDevice]?.name||curDevice}`); });
+$('#device').addEventListener('change', e => { curDevice=e.target.value; try{ localStorage.setItem('bw-device',curDevice); }catch(_){} if(typeof clearSelection==='function') clearSelection(); refreshMarkers(); refresh2D(); renderDevRail(); setStatus(`Device: ${idInfo[curDevice]?.name||curDevice}`); });
+
+/* ---- device rail: coverage + conflict readout per device ---- */
+function mergedCells(map){ const cells=new Map();   // co-located button/hat keys share one physical cell
+  Object.keys(map).forEach(k=>{ if(k==='displayName') return; const c=map[k]; const id=Math.round(c.x)+'_'+Math.round(c.y)+'_'+Math.round(c.width);
+    let cell=cells.get(id); if(!cell){ cell={c,keys:[]}; cells.set(id,cell); } cell.keys.push(k); });
+  return cells; }
+function conflictKeysFor(id){ const set=new Set(); if(!xmlDoc||!id) return set;
+  const keys=new Set(); xmlDoc.querySelectorAll(`[Device="${id}"]`).forEach(el=>{ const k=el.getAttribute('Key'); if(k) keys.add(k); });
+  keys.forEach(k=>{ const g={}; bindingsFor(id,k).forEach(b=>{ if(b.slot==='Modifier') return; const grp=(ctlByKey[b.control]?.group||'?')+'|'+modSig(b.node); (g[grp]=g[grp]||new Set()).add(b.control); });
+    if(Object.values(g).some(s=>s.size>1)) set.add(k); });
+  return set; }
+function deviceStats(id){ const ck=coordKeyFor(id), map=ck&&D.coords[ck]; const conf=conflictKeysFor(id);
+  const boundKeys=new Set(); if(xmlDoc) xmlDoc.querySelectorAll(`[Device="${id}"]`).forEach(el=>{ const k=el.getAttribute('Key'); if(k && el.tagName!=='Modifier') boundKeys.add(k); });
+  let total, bound;
+  if(map){ const cells=mergedCells(map); total=cells.size; bound=0; cells.forEach(({keys})=>{ if(keys.some(k=>boundKeys.has(k))) bound++; }); }
+  else { total=boundKeys.size; bound=boundKeys.size; }
+  return { bound, total, conflicts:conf.size, conflictKeys:conf }; }
+function renderDevRail(pulseId){ const rail=$('#devrail'); if(!rail) return; const sel=$('#device');
+  const opts=[...sel.options].filter(o=>o.value);
+  if(!opts.length){ rail.className='empty'; rail.innerHTML='<span class="rail-hint">Load a <kbd>.binds</kbd> to see your devices</span>'; return; }
+  rail.className=''; rail.innerHTML='';
+  opts.forEach(o=>{ const id=o.value, st=deviceStats(id), pct=st.total?Math.round(st.bound/st.total*100):0;
+    const card=document.createElement('button'); card.className='devcard'+(id===curDevice?' on':'')+(id===pulseId?' pulse':''); card.dataset.id=id;
+    card.innerHTML=`<span class="dc-name">${idInfo[id]?.name||('Device '+id)}</span><span class="dc-meter"><span style="width:${pct}%"></span></span><span class="dc-stat">${id} · ${st.bound}/${st.total||'—'} bound${st.conflicts?` · <span class="dc-warn">${st.conflicts}⚠</span>`:''}</span>`;
+    card.onclick=()=>{ if(id!==curDevice){ sel.value=id; sel.dispatchEvent(new Event('change')); } };
+    rail.appendChild(card); });
+}
 
 function bindingsFor(id, key) {
   const out=[]; if(!xmlDoc||!id) return out;
@@ -239,6 +446,9 @@ function bindingsFor(id, key) {
   });
   return out;
 }
+// Signature of a binding's modifier(s): '' when unmodified. Two same-group binds only clash if their signatures match.
+const modSig = node => [...node.querySelectorAll('Modifier')].map(m=>m.getAttribute('Device')+'::'+m.getAttribute('Key')).sort().join('+');
+const modKeysOf = node => [...node.querySelectorAll('Modifier')].map(m=>m.getAttribute('Key'));
 function selectItem(key, type) {
   curItem = { key, type: type || typeOfKey(key) };
   $('#curType').textContent = curItem.type==='Analogue' ? 'Axis input' : 'Button input';
@@ -248,14 +458,17 @@ function renderAssigned() {
   const box=$('#assigned'); box.innerHTML=''; if(!curItem) return;
   const binds = bindingsFor(curDevice, curItem.key);
   if(!binds.length){ box.innerHTML='<div class="mut" style="margin-top:8px">Nothing bound here yet — pick a control below.</div>'; return; }
-  // conflict = 2+ real bindings in the same mode/group on this one input
-  const gcount={}; binds.forEach(b=>{ if(b.slot!=='Modifier'){ const g=ctlByKey[b.control]?.group||'?'; gcount[g]=(gcount[g]||0)+1; } });
+  // conflict = 2+ DISTINCT controls in the same group sharing the same modifier state on this input
+  // (a control needing a held modifier doesn't clash with an unmodified one — different modifier states)
+  const groups={}; binds.forEach(b=>{ if(b.slot==='Modifier') return; const g=ctlByKey[b.control]?.group||'?'; const k=g+'|'+modSig(b.node); (groups[k]=groups[k]||new Set()).add(b.control); });
   binds.forEach(b => {
     const c=ctlByKey[b.control]; const g=c?.group||'—';
     const isMod=b.slot==='Modifier';
-    const conflict=!isMod && gcount[g]>1;
+    const conflict=!isMod && groups[g+'|'+modSig(b.node)]?.size>1;
+    const mk=isMod?[]:modKeysOf(b.node);
+    const modNote=mk.length?` <span class="modnote" title="Only active while holding ${mk.join(' + ')}">+${mk.join('+')}</span>`:'';
     const row=document.createElement('div'); row.className='bindrow'+(conflict?' conflict':'')+(isMod?' modifier':'');
-    row.innerHTML=`<span class="nm"><span class="gtag" style="color:${gcol(g)};border-color:${gcol(g)}">${g}</span><span class="cn"><span class="nm1">${c?c.name:b.control}</span><span class="key">${b.control}</span></span><small>(${isMod?'modifier':b.slot})</small>${conflict?'<span class="warn">⚠ conflict</span>':''}</span>`;
+    row.innerHTML=`<span class="nm"><span class="gtag" style="color:${gcol(g)};border-color:${gcol(g)}">${g}</span><span class="cn"><span class="nm1">${c?c.name:b.control}</span><span class="key">${b.control}</span></span><small>(${isMod?'modifier':b.slot})</small>${modNote}${conflict?'<span class="warn">⚠ conflict</span>':''}</span>`;
     const rm=document.createElement('button'); rm.textContent='✕'; rm.title=isMod?'Remove modifier':'Unbind'; rm.onclick=()=>removeBinding(b); row.appendChild(rm); box.appendChild(row); });
 }
 const isAxis = c => c.type==='Analogue';
@@ -276,14 +489,14 @@ function setBinding(control,slot,key){ const el=ensureControl(control); const no
 function assign(c){ if(!curItem||!xmlDoc) return;
   if(isAxis(c)) setBinding(c.control,'Binding',curItem.key);
   else { const el=ensureControl(c.control); const pri=el.querySelector('Primary'); const slot=(!pri||pri.getAttribute('Device')==='{NoDevice}'||!pri.getAttribute('Device'))?'Primary':'Secondary'; setBinding(c.control,slot,curItem.key); }
-  renderAssigned(); refreshMarkers(); updateChipStates(); refresh2D();
-  const g=c.group, same=bindingsFor(curDevice,curItem.key).filter(b=>b.slot!=='Modifier'&&ctlByKey[b.control]?.group===g).length;
-  setStatus(same>1 ? `⚠ ${c.name} bound — conflicts with another ${g} control on ${curItem.key}` : `Bound ${c.name} → ${curItem.key}`);
+  renderAssigned(); refreshMarkers(); updateChipStates(); refresh2D(); renderDevRail();
+  const g=c.group, same=new Set(bindingsFor(curDevice,curItem.key).filter(b=>b.slot!=='Modifier'&&ctlByKey[b.control]?.group===g&&!modSig(b.node)).map(b=>b.control));
+  setStatus(same.size>1 ? `⚠ ${c.name} bound — conflicts with another ${g} control on ${curItem.key}` : `Bound ${c.name} → ${curItem.key}`);
 }
 function removeBinding(b){
   if(b.slot==='Modifier'){ b.node.remove(); }
   else { b.node.setAttribute('Device','{NoDevice}'); b.node.setAttribute('Key',''); if(b.slot!=='Binding') b.node.removeAttribute('DeviceIndex'); }
-  renderAssigned(); refreshMarkers(); updateChipStates(); refresh2D(); setStatus(`Removed ${ctlByKey[b.control]?.name||b.control}`); }
+  renderAssigned(); refreshMarkers(); updateChipStates(); refresh2D(); renderDevRail(); setStatus(`Removed ${ctlByKey[b.control]?.name||b.control}`); }
 $('#exportBinds').addEventListener('click', () => { if(!xmlDoc) return; const xml=new XMLSerializer().serializeToString(xmlDoc); const a=document.createElement('a'); a.href=URL.createObjectURL(new Blob([xml],{type:'application/xml'})); a.download='Custom.edited.binds'; a.click(); setStatus('Exported Custom.edited.binds — copy into ED\'s Bindings folder.'); });
 
 /* ---------------- 3D scene ---------------- */
@@ -366,13 +579,26 @@ function addDemoMarkers(){ clearMarkers();
       pos=new THREE.Vector3(Math.sin(phi)*Math.cos(th), Math.cos(phi), Math.sin(phi)*Math.sin(th)).multiplyScalar(R); }
     addMarker(k, pos, t); });
 }
-// Built-in sample profile so the app is usable with zero files loaded
-fetch('sample.binds').then(r=>r.ok?r.text():null).then(t=>{ if(!t) return;
-  loadBinds(t, 'sample.binds (built-in)');
-  const opt=[...$('#device').options].find(o=>o.value==='231D0200'); if(opt){ $('#device').value='231D0200'; curDevice='231D0200'; }
-  if(isPlaceholder) addDemoMarkers();
-  setStatus('Sample profile loaded — tap a marker to see its binding, drag to orbit.');
-}).catch(()=>{});
+// Restore last session's binds + device from localStorage; otherwise fall back to the built-in sample.
+// NB: invoked at the very end of the module — it calls refresh2D(), which reads `stageView`, so it must run after that let-binding is initialized.
+function restoreOrSample(){
+  let saved=null, savedName=null, savedDev=null;
+  try{ saved=localStorage.getItem('bw-binds'); savedName=localStorage.getItem('bw-binds-name'); savedDev=localStorage.getItem('bw-device'); }catch(e){}
+  const pickDevice=want=>{ if(want){ const opt=[...$('#device').options].find(o=>o.value===want); if(opt){ $('#device').value=want; curDevice=want; refreshMarkers(); refresh2D(); return true; } } return false; };
+  if(saved){
+    loadBinds(saved, savedName||'(restored)');
+    pickDevice(savedDev);
+    if(isPlaceholder) addDemoMarkers();
+    setStatus('Restored last session: '+(savedName||'binds')+(curDevice?(' · '+(idInfo[curDevice]?.name||curDevice)):''));
+    return;
+  }
+  fetch('sample.binds').then(r=>r.ok?r.text():null).then(t=>{ if(!t) return;
+    loadBinds(t, 'sample.binds (built-in)');
+    pickDevice(savedDev) || pickDevice('231D0200');
+    if(isPlaceholder) addDemoMarkers();
+    setStatus('Sample profile loaded — tap a marker to see its binding, drag to orbit.');
+  }).catch(()=>{});
+}
 
 const loader=new GLTFLoader();
 $('#glb').addEventListener('change', ev=>{ const f=ev.target.files[0]; if(!f) return; const r=new FileReader();
@@ -468,40 +694,124 @@ applyTheme((()=>{ try{ return localStorage.getItem('bw-theme'); }catch(e){ retur
 
 /* ---------------- 2D / 3D stage toggle ---------------- */
 let stageView = '3d';
+let mode2d = (()=>{ try{ return localStorage.getItem('bw-2dmode'); }catch(e){ return null; } })() || 'diagram';   // 2D sub-view: 'diagram' (EDRefCard image + hotspots) or 'list'
+let filter2d = 'all';   // 2D input filter: all | bound | unbound | conflict
+let channel2d = null;   // 2D subsystem filter: null = all, else an Elite control group (Ship/SRV/OnFoot/…)
 $('#to3d').onclick = ()=> setStage('3d');
 $('#to2d').onclick = ()=> setStage('2d');
 function setStage(v){ stageView=v;
+  try{ localStorage.setItem('bw-stage', v); }catch(e){}
   $('#to3d').classList.toggle('on', v==='3d'); $('#to2d').classList.toggle('on', v==='2d');
   $('#view').style.display  = v==='3d' ? 'block' : 'none';
   $('#view2d').style.display = v==='2d' ? 'block' : 'none';
   if(v==='3d'){ resize(); frameCamera(); } else render2D();
 }
-function buildInventory(id){ const items=[], seen=new Set(); const add=(k,t)=>{ if(!seen.has(k)){ seen.add(k); items.push({key:k,type:t}); } };
-  ['X','Y','Z','RX','RY','RZ','U','V'].forEach(a=>add('Joy_'+a+'Axis','Analogue'));
-  for(let i=1;i<=64;i++) add('Joy_'+i,'Digital');
-  for(let h=1;h<=2;h++) ['Up','Down','Left','Right'].forEach(d=>add('Joy_POV'+h+d,'Digital'));
-  ['X','Y','Z','RX','RY','RZ','U','V'].forEach(a=>{ add('Neg_Joy_'+a+'Axis','Digital'); add('Pos_Joy_'+a+'Axis','Digital'); });
-  if(xmlDoc) xmlDoc.querySelectorAll(`[Device="${id}"]`).forEach(el=>{ const k=el.getAttribute('Key'); if(k) add(k,(/Axis$/.test(k)&&!/^(Neg|Pos)_/.test(k))?'Analogue':'Digital'); });
+function buildInventory(id){ const items=[], seen=new Set(); const add=(k,t)=>{ if(k&&!seen.has(k)){ seen.add(k); items.push({key:k,type:t||typeOfKey(k)}); } };
+  const ck = coordKeyFor(id); const map = ck && D.coords[ck];
+  if(map){                                   // device-specific: only the inputs this device actually exposes
+    Object.keys(map).forEach(k=>{ if(k!=='displayName') add(k, map[k].Type==='Analogue'?'Analogue':typeOfKey(k)); });
+    Object.keys(map).forEach(k=>{ if(k!=='displayName' && /Axis$/.test(k) && !/^(Neg|Pos)_/.test(k)){ add('Neg_'+k,'Digital'); add('Pos_'+k,'Digital'); } });
+  } else if(isHwDevice(id)){                  // unknown hardware device — full generic set so it's still fully bindable
+    ['X','Y','Z','RX','RY','RZ','U','V'].forEach(a=>add('Joy_'+a+'Axis','Analogue'));
+    for(let i=1;i<=64;i++) add('Joy_'+i,'Digital');
+    for(let h=1;h<=2;h++) ['Up','Down','Left','Right'].forEach(d=>add('Joy_POV'+h+d,'Digital'));
+    ['X','Y','Z','RX','RY','RZ','U','V'].forEach(a=>{ add('Neg_Joy_'+a+'Axis','Digital'); add('Pos_Joy_'+a+'Axis','Digital'); });
+  }   // else (Keyboard/Mouse): only the keys actually bound, added by the loop below
+  if(xmlDoc) xmlDoc.querySelectorAll(`[Device="${id}"]`).forEach(el=>{ const k=el.getAttribute('Key'); if(k) add(k); }); // include anything actually bound, even outside the map
   return items;
 }
+const deviceImage = id => { const t=idInfo[id]?.template; return t ? 'images/'+t+'.jpg' : null; };
+function pickItem(key,type){ $('#subinputs').innerHTML=''; $('#curKey').innerHTML='<b>'+key+'</b>'; selectItem(key,type||typeOfKey(key)); mark2D(key); }
+const passesFilter = (bound,conflict) => filter2d==='all' || (filter2d==='bound'&&bound) || (filter2d==='unbound'&&!bound) || (filter2d==='conflict'&&conflict);
+// subsystems (Elite control groups) present on this device, with a binding count each
+function deviceGroups(id){ const counts={}; if(xmlDoc) xmlDoc.querySelectorAll(`[Device="${id}"]`).forEach(el=>{ if(el.tagName==='Modifier') return; if(!el.getAttribute('Key')) return; const g=ctlByKey[el.parentElement.tagName]?.group; if(g) counts[g]=(counts[g]||0)+1; }); return counts; }
+const keyGroups = (id,key) => [...new Set(bindingsFor(id,key).filter(b=>b.slot!=='Modifier').map(b=>ctlByKey[b.control]?.group).filter(Boolean))];
+const channelMatch = keys => !channel2d || keys.some(k=>keyGroups(curDevice,k).includes(channel2d));
+function buildChannelLegend(host){
+  const groups=deviceGroups(curDevice); const names=Object.keys(groups);
+  if(channel2d && !(channel2d in groups)) channel2d=null;     // reset when switching to a device without that subsystem
+  if(names.length<2) { channel2d=null; return; }              // nothing worth filtering
+  names.sort((a,b)=>groups[b]-groups[a]);
+  const bar=document.createElement('div'); bar.className='channels';
+  const chip=(g,label,n)=>`<button class="chan${(g||null)===channel2d?' on':''}" data-g="${g||''}"${g?` style="--c:${gcol(g)}"`:''}>${label}${n!=null?` <i>${n}</i>`:''}</button>`;
+  bar.innerHTML=chip(null,'All channels')+names.map(g=>chip(g,g,groups[g])).join('');
+  bar.querySelectorAll('.chan').forEach(b=> b.onclick=()=>{ const g=b.dataset.g||null; channel2d=(g===channel2d)?null:g; render2D(); });
+  host.appendChild(bar);
+}
+function buildModeBar(host){
+  const hasDiagram = !!(coordKeyFor(curDevice) && D.coords[coordKeyFor(curDevice)] && deviceImage(curDevice));
+  const st=deviceStats(curDevice);
+  const bar=document.createElement('div'); bar.className='mode2d';
+  const F=(v,label)=>`<button data-f="${v}"${filter2d===v?' class="on"':''}>${label}</button>`;
+  bar.innerHTML=`<span class="mb-read"><b>${st.bound}/${st.total||'—'}</b> bound${st.conflicts?` · <span class="dc-warn">${st.conflicts}⚠</span>`:''}</span>`
+    +`<div class="seg sm filt">${F('all','All')}${F('bound','Bound')}${F('unbound','Unbound')}${F('conflict','⚠')}</div>`
+    +'<div class="seg sm"><button data-m="diagram"'+(mode2d==='diagram'?' class="on"':'')+(hasDiagram?'':' disabled title="No diagram image for this device"')+'>Diagram</button>'
+    +'<button data-m="list"'+(mode2d==='list'?' class="on"':'')+'>List</button></div>'
+    +'<button class="mb-print" title="Print or save as PDF">⎙ Print</button>';
+  bar.querySelectorAll('button[data-m]').forEach(b=> b.onclick=()=>{ if(b.disabled) return; set2dMode(b.dataset.m); });
+  bar.querySelectorAll('button[data-f]').forEach(b=> b.onclick=()=>{ filter2d=b.dataset.f; render2D(); });
+  bar.querySelector('.mb-print').onclick=()=>window.print();
+  host.appendChild(bar);
+  return hasDiagram;
+}
+function set2dMode(m){ mode2d=m; try{ localStorage.setItem('bw-2dmode',m); }catch(e){} if(stageView!=='2d') setStage('2d'); else render2D(); }
 function render2D(){ const host=$('#view2d'); host.innerHTML='';
   if(!curDevice){ host.innerHTML='<div class="empty">Load a <kbd>.binds</kbd> and pick a device to see its inputs.</div>'; return; }
-  const groups={Axes:[],Buttons:[],'Hat / POV':[],'Axis as button':[]};
-  buildInventory(curDevice).forEach(it=>{ if(it.type==='Analogue')groups.Axes.push(it); else if(/^(Neg|Pos)_/.test(it.key))groups['Axis as button'].push(it); else if(/POV/.test(it.key))groups['Hat / POV'].push(it); else groups.Buttons.push(it); });
-  for(const [gn,arr] of Object.entries(groups)){ if(!arr.length) continue;
-    const h=document.createElement('div'); h.className='lv-h'; h.textContent=`${gn} (${arr.length})`; host.appendChild(h);
-    const grid=document.createElement('div'); grid.className='lv-grid';
-    arr.forEach(it=>{ const binds=bindingsFor(curDevice,it.key);
-      const d=document.createElement('div'); d.className='lv-item'+(binds.length?' bound':''); d.dataset.key=it.key;
-      const names=binds.length?binds.map(b=>ctlByKey[b.control]?.name||b.control).join(' / '):'—';
-      d.innerHTML=`<span class="lv-k">${it.key}</span><span class="lv-c">${names}</span>`;
-      d.onclick=()=>{ $('#subinputs').innerHTML=''; $('#curKey').innerHTML='<b>'+it.key+'</b>'; selectItem(it.key,it.type); mark2D(it.key); };
-      grid.appendChild(d); });
-    host.appendChild(grid); }
+  const hasDiagram = buildModeBar(host);
+  buildChannelLegend(host);
+  if(mode2d==='diagram' && hasDiagram) renderDiagram(host); else renderList(host);
   mark2D(curItem?curItem.key:null);
 }
-function mark2D(key){ const h=$('#view2d'); h.querySelectorAll('.lv-item.sel').forEach(e=>e.classList.remove('sel'));
-  if(key){ const e=h.querySelector('.lv-item[data-key="'+(window.CSS&&CSS.escape?CSS.escape(key):key)+'"]'); if(e) e.classList.add('sel'); } }
+function renderList(host){
+  const pt=document.createElement('div'); pt.className='print-title'; pt.textContent=(idInfo[curDevice]?.name||curDevice)+' · '+($('#bindsName')?.textContent||''); host.appendChild(pt);
+  const conf=conflictKeysFor(curDevice);
+  const groups={Axes:[],Buttons:[],'Hat / POV':[],'Axis as button':[]};
+  buildInventory(curDevice).forEach(it=>{ if(it.type==='Analogue')groups.Axes.push(it); else if(/^(Neg|Pos)_/.test(it.key))groups['Axis as button'].push(it); else if(/POV/.test(it.key))groups['Hat / POV'].push(it); else groups.Buttons.push(it); });
+  let shown=0;
+  for(const [gn,arr] of Object.entries(groups)){
+    const vis=arr.filter(it=>{ const b=bindingsFor(curDevice,it.key).length>0; return passesFilter(b, conf.has(it.key)) && channelMatch([it.key]); });
+    if(!vis.length) continue; shown+=vis.length;
+    const h=document.createElement('div'); h.className='lv-h'; h.textContent=`${gn} (${vis.length})`; host.appendChild(h);
+    const grid=document.createElement('div'); grid.className='lv-grid';
+    vis.forEach(it=>{ const binds=bindingsFor(curDevice,it.key);
+      const d=document.createElement('div'); d.className='lv-item'+(binds.length?' bound':'')+(conf.has(it.key)?' conflict':''); d.dataset.key=it.key;
+      const names=binds.length?binds.map(b=>ctlByKey[b.control]?.name||b.control).join(' / '):'—';
+      d.innerHTML=`<span class="lv-k">${it.key}</span><span class="lv-c">${names}</span>`;
+      d.onclick=()=>pickItem(it.key,it.type);
+      grid.appendChild(d); });
+    host.appendChild(grid); }
+  if(!shown){ const e=document.createElement('div'); e.className='empty'; e.textContent=`No ${filter2d} inputs on this device.`; host.appendChild(e); }
+}
+function renderDiagram(host){
+  const map = D.coords[coordKeyFor(curDevice)], W=3840, H=2160;
+  const conf=conflictKeysFor(curDevice);
+  const wrap=document.createElement('div'); wrap.className='diag'+((filter2d!=='all'||channel2d)?' filtering':'');
+  const frame=document.createElement('div'); frame.className='diag-frame';
+  const im=document.createElement('img'); im.className='diag-img'; im.src=deviceImage(curDevice); im.alt=idInfo[curDevice]?.name||'';
+  im.onerror=()=>{ setStatus('No diagram image for this device — showing list.'); mode2d='list'; render2D(); };
+  const ov=document.createElement('div'); ov.className='diag-ov';
+  // VKB hats can be a POV hat OR 4 discrete buttons, so EDRefCard maps the button-mode key (Joy_N) and
+  // hat-mode key (Joy_POVnDir) onto the SAME box. Merge co-located keys (mergedCells) so an empty twin
+  // can't sit on top and steal clicks.
+  mergedCells(map).forEach(({c,keys})=>{
+    const boundKeys=keys.filter(k=>bindingsFor(curDevice,k).length);
+    const isConflict=keys.some(k=>conf.has(k));
+    const active=boundKeys[0] || keys.find(k=>!/POV/.test(k)) || keys[0];   // prefer bound; else button-mode; else first
+    const names=keys.flatMap(k=>bindingsFor(curDevice,k).map(b=>ctlByKey[b.control]?.name||b.control));
+    const hs=document.createElement('div'); hs.className='hs'+(boundKeys.length?' bound':'')+(isConflict?' conflict':'')+((passesFilter(boundKeys.length>0,isConflict)&&channelMatch(keys))?'':' dim');
+    hs.dataset.key=active; hs.dataset.keys=keys.join(' ');
+    hs.style.cssText=`left:${c.x/W*100}%;top:${c.y/H*100}%;width:${c.width/W*100}%;height:${(c.height||54)/H*100}%`;
+    hs.innerHTML=`<span class="hs-t">${names.join(' / ')}</span>`;
+    hs.title=keys.join(' / ')+(names.length?(' — '+names.join(' / ')):' (unbound)')+(isConflict?'  ⚠ conflict':'');
+    hs.onclick=()=>pickItem(active, map[active].Type==='Analogue'?'Analogue':typeOfKey(active));
+    ov.appendChild(hs); });
+  frame.appendChild(im); frame.appendChild(ov); wrap.appendChild(frame); host.appendChild(wrap);
+}
+function mark2D(key){ const h=$('#view2d'); h.querySelectorAll('.lv-item.sel,.hs.sel').forEach(e=>e.classList.remove('sel'));
+  if(!key) return;
+  const esc=window.CSS&&CSS.escape?CSS.escape(key):key;
+  const li=h.querySelector('.lv-item[data-key="'+esc+'"]'); if(li){ li.classList.add('sel'); li.scrollIntoView({block:'nearest'}); }
+  h.querySelectorAll('.hs').forEach(e=>{ if((e.dataset.keys||'').split(' ').includes(key)){ e.classList.add('sel'); e.scrollIntoView({block:'nearest'}); } }); }
 function refresh2D(){ if(stageView==='2d') render2D(); }
 
 /* ---------------- live input (Gamepad API — localhost/https only) ---------------- */
@@ -514,46 +824,103 @@ function captureBaseline(){ gpBase={}; gpHats={};
     gp.axes.forEach((v,i)=>{ if(v>1.1) gpHats[gp.index].add(i); }); });   // neutral hat ≈ 1.286
 }
 function hatDirs(v){ if(v>1.1) return []; const s=Math.round((v+1)*3.5); return (s>=0&&s<=7)?HATDIR[s]:[]; }
-$('#liveBtn').onclick=()=>{ if(!navigator.getGamepads){ setStatus('Live input needs Chrome/Edge.'); return; }
-  liveOn=!liveOn; $('#liveBtn').classList.toggle('on',liveOn);
-  if(liveOn){ captureBaseline(); setStatus(window.isSecureContext ? 'Live on — press a button / move an axis to highlight it.' : '⚠ Live needs a secure context (use http://localhost).'); }
-  else { liveKeys.clear(); prevBtns={}; refreshMarkers(); updateLiveHighlights(); setStatus('Live input off.'); } };
+function setLive(on,quiet){ if(!navigator.getGamepads){ if(!quiet) setStatus('Live input needs Chrome/Edge.'); return; }
+  liveOn=on; $('#liveBtn').classList.toggle('on',liveOn); $('#statusbar')?.classList.toggle('live',liveOn);
+  try{ localStorage.setItem('bw-live', liveOn?'1':'0'); }catch(e){}
+  if(liveOn){ captureBaseline(); if(!quiet) setStatus(window.isSecureContext ? 'Live on — press a button / move an axis to highlight it.' : '⚠ Live needs a secure context (use http://localhost).'); }
+  else { liveKeys.clear(); prevBtns={}; refreshMarkers(); updateLiveHighlights(); if(!quiet) setStatus('Live input off.'); } }
+$('#liveBtn').onclick=()=> setLive(!liveOn);
+try{ if(localStorage.getItem('bw-live')==='1') setLive(true, true); }catch(e){}   // restore Live state from last session
 function gpDeviceId(gp){ const v=/vendor:\s*([0-9a-f]{4})/i.exec(gp.id), p=/product:\s*([0-9a-f]{4})/i.exec(gp.id);
-  return (v&&p) ? (v[1]+p[1]).toUpperCase() : null; }
-function ensureDeviceOption(id){ if(!id||!/^[0-9A-Fa-f]{8}$/.test(id)) return; const sel=$('#device');
-  if(![...sel.options].some(o=>o.value===id)) sel.add(new Option((idInfo[id]?.name||('Device '+id))+' ('+id+')', id)); }
+  return (v&&p) ? normDev((v[1]+p[1]).toUpperCase()) : null; }
+const devInBinds = id => !!(xmlDoc && xmlDoc.querySelector(`[Device="${id}"]`));
+const knownDevice = id => !!(idInfo[id] || coordKeyFor(id) || devInBinds(id));
+function ensureDeviceOption(id){ if(!id||!/^[0-9A-Fa-f]{8}$/.test(id)||!knownDevice(id)) return; const sel=$('#device');
+  if(![...sel.options].some(o=>o.value===id)){ sel.add(new Option((idInfo[id]?.name||('Device '+id))+' ('+id+')', id)); renderDevRail(); } }
+let dbgLog=[]; const DBGMAX=80;
+function pushDbg(type,detail){ dbgLog.push({t:type,d:detail}); if(dbgLog.length>DBGMAX) dbgLog.shift(); if(dbg && !dbg.classList.contains('hidden')) renderDbg(); }
 function pollGamepads(){ if(!liveOn) return;
   const pads=navigator.getGamepads?[...navigator.getGamepads()].filter(Boolean):[];
   const byDev={}; pads.forEach(gp=>{ const d=gpDeviceId(gp)||curDevice; if(d)(byDev[d]=byDev[d]||[]).push(gp); });
-  const oldLive=liveKeys, next=new Set(); let selKey=null, selDev=null;
+  const oldLive=liveKeys, next=new Set();
+  let selKey=null, selDev=null;          // highlight/select target — ANY live input
+  let switchKey=null, switchDev=null;    // device auto-switch target — DELIBERATE input only (button press or firm axis)
   Object.entries(byDev).forEach(([dev,gps])=>{ ensureDeviceOption(dev); gps.sort((a,b)=>b.index-a.index);   // VKB: primary buttons/axes live on the higher HID index
     gps.forEach((gp,coll)=>{ const off=coll*32;          // 64/128-btn virtual pad = 2/4 collections of 32 → Joy_1-32, 33-64…
       if(!gpBase[gp.index]){ gpBase[gp.index]=gp.axes.map(v=>v); gpHats[gp.index]=new Set(); gp.axes.forEach((v,i)=>{ if(v>1.1) gpHats[gp.index].add(i); }); }
       const base=gpBase[gp.index], hats=gpHats[gp.index], pk=prevBtns[gp.index]||[];
-      gp.buttons.forEach((b,i)=>{ if(b.pressed){ const k='Joy_'+(off+i+1); next.add(dev+'|'+k); if(!pk[i]){ selKey=k; selDev=dev; } } });
+      gp.buttons.forEach((b,i)=>{ if(b.pressed){ const k='Joy_'+(off+i+1); next.add(dev+'|'+k);
+        if(!pk[i]){ selKey=k; selDev=dev; switchKey=k; switchDev=dev; pushDbg('press',`${idInfo[dev]?.name||dev} · ${k} (gp${gp.index}·btn${i})`); } } });   // button rising edge → also a switch trigger
       prevBtns[gp.index]=gp.buttons.map(b=>b.pressed);
       gp.axes.forEach((v,i)=>{ if(v>1.1) hats.add(i);     // read axes/hats from every collection (baseline-relative → dead dupes don't fire)
         if(hats.has(i)){ const pn=[...hats].sort((a,b)=>a-b).indexOf(i)+1; hatDirs(v).forEach(d=> next.add(dev+'|Joy_POV'+pn+d)); }
-        else if(Math.abs(v-(base[i]??0))>0.35){ next.add(dev+'|Joy_'+(AXNAME[i]||('A'+i))+'Axis'); } });
+        else if(Math.abs(v-(base[i]??0))>0.35){ const ak='Joy_'+(AXNAME[i]||('A'+i))+'Axis'; next.add(dev+'|'+ak);
+          if(Math.abs(v-(base[i]??0))>0.55 && !oldLive.has(dev+'|'+ak) && !switchDev){ switchKey=ak; switchDev=dev; pushDbg('axis',`${idInfo[dev]?.name||dev} · ${ak} Δ${(v-(base[i]??0)).toFixed(2)}`); } } });   // firm, NEW deflection → switch trigger (covers axis-only devices like pedals)
     });
   });
   if(!selKey){ const nk=[...next].find(k=>!oldLive.has(k)); if(nk){ const j=nk.indexOf('|'); selDev=nk.slice(0,j); selKey=nk.slice(j+1); } }
   liveKeys=next;
-  if(selKey){ if(selDev && selDev!==curDevice && idInfo[selDev]){ const sel=$('#device');
-      if([...sel.options].some(o=>o.value===selDev)){ sel.value=selDev; curDevice=selDev; refresh2D(); } }
-    liveSelect(selKey); }
+  // device auto-switch: only on a deliberate trigger, and never to keyboard/mouse (would fight typing/clicking)
+  if(switchDev && switchDev!==curDevice && idInfo[switchDev] && !NAMED_DEVICES[switchDev]){ const sel=$('#device');
+    if([...sel.options].some(o=>o.value===switchDev)){ sel.value=switchDev; curDevice=switchDev; refresh2D(); renderDevRail(switchDev); pushDbg('switch',`→ ${idInfo[switchDev]?.name||switchDev}`); if(switchKey){ selKey=switchKey; selDev=switchDev; } } }
+  if(selKey) liveSelect(selKey);
   refreshMarkers(); updateLiveHighlights();
 }
 function liveSelect(key){ $('#subinputs').innerHTML=''; $('#curKey').innerHTML='<b>'+key+'</b> <span class="mut">(live)</span>';
   selectItem(key, typeOfKey(key)); if(stageView==='2d') mark2D(key); setStatus('Live: '+key+' — pick a control to bind it.'); }
 function updateLiveHighlights(){ if(stageView!=='2d') return;
-  const host=$('#view2d'); host.querySelectorAll('.lv-item.live').forEach(e=>e.classList.remove('live'));
-  liveKeys.forEach(dk=>{ const idx=dk.indexOf('|'), dev=dk.slice(0,idx), key=dk.slice(idx+1);
-    if(dev===curDevice){ const e=host.querySelector('.lv-item[data-key="'+(window.CSS&&CSS.escape?CSS.escape(key):key)+'"]'); if(e) e.classList.add('live'); } });
+  const host=$('#view2d'); host.querySelectorAll('.lv-item.live,.hs.live').forEach(e=>e.classList.remove('live'));
+  const set=new Set(); liveKeys.forEach(dk=>{ const i=dk.indexOf('|'); if(dk.slice(0,i)===curDevice) set.add(dk.slice(i+1)); });
+  if(!set.size) return;
+  set.forEach(key=>{ const esc=window.CSS&&CSS.escape?CSS.escape(key):key; const li=host.querySelector('.lv-item[data-key="'+esc+'"]'); if(li) li.classList.add('live'); });
+  host.querySelectorAll('.hs').forEach(e=>{ if((e.dataset.keys||'').split(' ').some(k=>set.has(k))) e.classList.add('live'); });
 }
 
+/* ---- live input debug modal ---- */
+const dbg=$('#dbg'), showDbg=f=>{ dbg.classList.toggle('hidden',!f); if(f) renderDbg(); };
+function renderDbg(){ const box=$('#dbg-body'); if(!box) return;
+  const pads=navigator.getGamepads?[...navigator.getGamepads()].filter(Boolean):[];
+  const byDev={}; pads.forEach(gp=>{ const d=gpDeviceId(gp)||'(unidentified)'; (byDev[d]=byDev[d]||[]).push(gp); });
+  let html=`<div class="dbg-h2">Controllers ${liveOn?'':'· ⚠ Live is OFF (toggle 🎮 Live)'}</div>`;
+  if(!pads.length) html+='<div class="mut" style="font-size:12px">None detected. With Live on, press a button or move an axis — Chrome only exposes a controller after it sends input.</div>';
+  Object.entries(byDev).forEach(([d,gps])=>{ const known=idInfo[d]?`<b>${idInfo[d].name}</b>`:`<b>${d}</b>`; const alias=DEVICE_ALIAS[d]?` <span class="modnote">HID→${DEVICE_ALIAS[d]}</span>`:'';
+    html+=`<div class="dbg-dev">${known} <span class="mut">${d}</span>${alias} · ${gps.length} collection(s) · ${gps[0].buttons.length} btn · ${gps[0].axes.length} axis${idInfo[d]?'':' <span class="dbg-warn" style="color:var(--danger)">not in profile</span>'}</div>`;
+    gps.forEach(gp=> html+=`<div class="dbg-raw">gp${gp.index}: ${gp.id.trim()}</div>`); });
+  html+='<div class="dbg-h2">Event log <span class="mut" style="text-transform:none;letter-spacing:0;font-weight:400">(newest first · press=green, axis=blue, switch=amber)</span></div>';
+  html+='<div class="dbg-log">'+(dbgLog.length?[...dbgLog].reverse().map(e=>`<div class="dbg-ev dbg-${e.t}"><b>${e.t}</b>${e.d}</div>`).join(''):'<div class="mut">Interact with a controller (Live on) to see events…</div>')+'</div>';
+  box.innerHTML=html;
+}
+$('#dbgBtn').onclick=()=>showDbg(dbg.classList.contains('hidden'));
+$('#dbgClose').onclick=()=>showDbg(false);
+$('#dbgClear').onclick=()=>{ dbgLog=[]; renderDbg(); };
+$('#dbgRefresh').onclick=renderDbg;
+dbg.onclick=e=>{ if(e.target===dbg) showDbg(false); };
+
+/* ---- help overlay + keyboard shortcuts ---- */
+const help=$('#help'), showHelp=f=>help.classList.toggle('hidden',!f);
+$('#helpBtn').onclick=()=>showHelp(help.classList.contains('hidden'));
+$('#helpClose').onclick=()=>showHelp(false);
+help.onclick=e=>{ if(e.target===help) showHelp(false); };
+function clearSelection(){ curItem=null; $('#curKey').textContent='No input selected'; $('#curType').textContent=''; $('#assigned').innerHTML=''; $('#subinputs').innerHTML=''; renderPicker(); mark2D(null); }
+addEventListener('keydown', e=>{
+  const t=e.target, typing=/^(INPUT|TEXTAREA|SELECT)$/.test(t.tagName);
+  if(e.key==='Escape'){ if(!dbg.classList.contains('hidden')){ showDbg(false); } else if(!help.classList.contains('hidden')){ showHelp(false); } else if(typing){ t.blur(); } else { clearSelection(); } return; }
+  if(typing || e.ctrlKey || e.metaKey || e.altKey) return;   // never hijack real typing / OS shortcuts
+  const k=e.key.toLowerCase();
+  if(e.key==='/'){ e.preventDefault(); $('#search').focus(); }
+  else if(e.key==='?'){ showHelp(true); }
+  else if(k==='1'){ set2dMode('list'); }
+  else if(k==='2'){ set2dMode('diagram'); }
+  else if(k==='3'){ setStage('3d'); }
+  else if(k==='l'){ setLive(!liveOn); }
+  else if(k==='d'){ showDbg(dbg.classList.contains('hidden')); }
+  else if('abuc'.includes(k) && stageView==='2d'){ filter2d={a:'all',b:'bound',u:'unbound',c:'conflict'}[k]; render2D(); }
+});
+
 function resize(){ const w=view.clientWidth,h=view.clientHeight; if(!w||!h) return; renderer.setSize(w,h,false); camera.aspect=w/h; camera.updateProjectionMatrix(); }
-new ResizeObserver(resize).observe(view); resize(); setMode('orbit'); setStage('2d');
+new ResizeObserver(resize).observe(view); resize(); setMode('orbit');
+setStage((()=>{ try{ return localStorage.getItem('bw-stage'); }catch(e){ return null; } })() || '2d');   // restore last view, default 2D
 window.addEventListener('gamepadconnected', e=>{ if(liveOn) setStatus('Connected: '+e.gamepad.id); });
+restoreOrSample();   // must run here: after stageView + setStage are initialized (it calls refresh2D → reads stageView)
 (function loop(){ requestAnimationFrame(loop); pollGamepads(); controls.update(); renderer.render(scene,camera); drawLabels(); })();
 </script>

@@ -7,6 +7,10 @@
 
 - **Three.js** — <https://threejs.org> — MIT License, Copyright (c) 2010–2025 three.js authors. Vendored in `vendor/`.
 
+- **Exo 2** — Natanael Gama — SIL Open Font License 1.1. Vendored in `vendor/fonts/`. Used for the UI (the same typeface family Elite Dangerous / EDRefCard use).
+- **Orbitron** — Matt McInerney — SIL Open Font License 1.1. Vendored in `vendor/fonts/`. Used for the wordmark.
+  > The OFL permits bundling with software. Before making the repo public, add the full `OFL.txt` license text alongside the fonts (see <https://openfontlicense.org>).
+
 ## Resources referenced (not bundled)
 
 - **Joystick Diagrams** — <https://joystick-diagrams.com/templates/> — hardware-accurate device templates; a potential 2D fallback / collaboration for devices without a 3D scan.
