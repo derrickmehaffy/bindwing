@@ -60,6 +60,8 @@
   @keyframes livepulse{0%,100%{opacity:1;}50%{opacity:.35;}}
   .dbg-focus{background:rgba(229,72,77,.14);border:1px solid var(--danger);border-radius:6px;padding:8px 10px;margin-bottom:6px;font-size:12px;color:var(--text);}
   .dbg-focus b{color:var(--danger);}
+  .dbg-cap{background:rgba(255,122,26,.12);border:1px solid var(--hud);border-radius:6px;padding:8px 10px;margin-bottom:6px;font-size:12px;color:var(--text);line-height:1.45;}
+  .dbg-cap b{color:var(--hud);}
 
   /* device rail — the systems bus (left column) */
   #devrail{display:flex;flex-direction:column;gap:8px;padding:10px;width:214px;background:var(--space);border-right:1px solid var(--edge);overflow-y:auto;scrollbar-width:thin;}
@@ -894,6 +896,8 @@ function renderDbg(){ const box=$('#dbg-body'); if(!box) return;
   const pads=navigator.getGamepads?[...navigator.getGamepads()].filter(Boolean):[];
   const byDev={}; pads.forEach(gp=>{ const d=gpDeviceId(gp)||'(unidentified)'; (byDev[d]=byDev[d]||[]).push(gp); });
   let html = document.hasFocus() ? '' : '<div class="dbg-focus">⚠ This tab is <b>not focused</b> — the browser pauses controller input until you click the page. Nothing will register (and values freeze) while another window is focused.</div>';
+  const slots = navigator.getGamepads ? navigator.getGamepads().length : 0;
+  if(slots && slots<=4 && pads.length>=slots){ html+=`<div class="dbg-cap"><b>Gamepad API limit reached.</b> Your browser exposes at most <b>${slots}</b> controllers and all ${slots} slots are full — extra VKB banks and devices (a second stick bank, pedals, etc.) are <b>invisible to live input</b>. This is a browser cap, not a Bindwing bug. Fixes: reduce banks in VKB DevCfg so the total ≤ ${slots}, or bind those inputs manually (click the box — same result). A WebHID mode without this limit is on the roadmap.</div>`; }
   html+=`<div class="dbg-h2">Controllers ${liveOn?'':'· ⚠ Live is OFF (toggle 🎮 Live)'}</div>`;
   if(!pads.length) html+='<div class="mut" style="font-size:12px">None detected. With Live on, press a button or move an axis — Chrome only exposes a controller after it sends input.</div>';
   Object.entries(byDev).forEach(([d,gps])=>{ const known=idInfo[d]?`<b>${idInfo[d].name}</b>`:`<b>${d}</b>`; const alias=DEVICE_ALIAS[d]?` <span class="modnote">HID→${DEVICE_ALIAS[d]}</span>`:'';
