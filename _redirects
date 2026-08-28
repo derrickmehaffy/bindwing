@@ -1,0 +1,3 @@
+# Cloudflare Pages redirects. The app moved from viewer3d.html to the site root.
+/viewer3d       /   301
+/viewer3d.html  /   301

@@ -20,12 +20,13 @@ Open <http://localhost:8777/> (redirects to the 3D editor). To reach it from ano
 
 | Path | What it is |
 |---|---|
-| `viewer3d.html` | Main **3D editor** (Three.js): orbit a device model, click markers to bind, export `.binds`. |
-| `editor2d.html` | Earlier **2D / list editor**. |
-| `index.html` | Redirects to the 3D editor. |
-| `serve.py` | Tiny no-cache static server (binds `0.0.0.0:8777`). |
+| `index.html` | **The app** — 2D diagram/list + 3D editor, live input (WebHID + Gamepad API), per-device coverage, conflict detection, export `.binds`. |
+| `editor2d.html` | Earlier standalone 2D/list editor (superseded by `index.html`). |
+| `serve.py` | Tiny no-cache static server for local dev (binds `0.0.0.0:8777`). |
 | `data/` | Control catalog + device coordinate maps (JSON), derived from **EDRefCard** (MIT — see `CREDITS.md`). |
-| `vendor/` | Three.js (MIT). |
+| `images/` | Device diagram images from **EDRefCard** (MIT), shipped with attribution. |
+| `vendor/` | Three.js (MIT) + Exo 2 / Orbitron fonts (SIL OFL). |
+| `sample.binds` | Built-in demo profile ("Bindwing Sample") loaded when no file is chosen. |
 | `tools/extract.py` | Regenerate `data/` (+ `images/`) from a local EDRefCard clone. |
 | `tools/verify.py` | Headless check of the bind-parsing logic against a `.binds`. |
 | `DEVICES.md` | Device wishlist + asset-sourcing plan. |
