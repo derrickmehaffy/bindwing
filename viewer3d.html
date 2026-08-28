@@ -279,6 +279,7 @@
   <span class="sep"></span>
   <div class="seg"><button id="to3d">3D</button><button id="to2d" class="on">2D</button></div>
   <button id="liveBtn" title="Read live input from your controller (localhost only)">🎮 Live</button>
+  <button id="hidBtn" hidden title="Connect controllers directly via WebHID — reads ALL banks/devices, bypassing the browser's 4-gamepad limit (Chrome/Edge only)">🔌 Connect HID</button>
   <button id="themeBtn" title="Toggle light / dark theme">◐</button>
   <span class="sep"></span>
   <label class="field"><span class="cap">Profile</span><input type="file" id="binds" accept=".binds" style="display:none"><button id="bindsBtn" type="button">Choose .binds…</button><span id="bindsName" class="mut" style="max-width:22ch;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">no file loaded</span></label>
@@ -852,7 +853,58 @@ function ensureDeviceOption(id){ if(!id||!/^[0-9A-Fa-f]{8}$/.test(id)||!knownDev
   if(![...sel.options].some(o=>o.value===id)){ sel.add(new Option((idInfo[id]?.name||('Device '+id))+' ('+id+')', id)); renderDevRail(); } }
 let dbgLog=[]; const DBGMAX=80;
 function pushDbg(type,detail){ dbgLog.push({t:type,d:detail}); if(dbgLog.length>DBGMAX) dbgLog.shift(); if(dbg && !dbg.classList.contains('hidden')) renderDbgLog(); }
-function pollGamepads(){ if(!liveOn) return;
+
+/* ===== WebHID live input — reads every bank/device directly (no Gamepad-API 4-controller cap). Chromium only; Gamepad API stays the fallback. ===== */
+const HID_AX={0x30:'XAxis',0x31:'YAxis',0x32:'ZAxis',0x33:'RXAxis',0x34:'RYAxis',0x35:'RZAxis',0x36:'UAxis',0x37:'VAxis'};
+const HAT8=[['Up'],['Up','Right'],['Right'],['Down','Right'],['Down'],['Down','Left'],['Left'],['Up','Left']];
+const HAT4=[['Up'],['Right'],['Down'],['Left']];
+let hidDevs=[];   // [{device,id,pid,fields,base,prev,active,activeByRid,lastRaw}]
+function hidBits(dv,off,size){ let v=0; for(let i=0;i<size;i++){ const bi=(off+i)>>3; if(bi>=dv.byteLength) break; v|=((dv.getUint8(bi)>>((off+i)&7))&1)<<i; } return v>>>0; }
+function hidAxisNorm(raw,f){ let v=raw; if(f.lmin<0 && v>=(1<<(f.size-1))) v-=(1<<f.size); const span=(f.lmax-f.lmin)||1; return Math.max(-1,Math.min(1,(v-f.lmin)/span*2-1)); }
+function parseHidFields(device){ const reports={}; let joy=0;   // walk report descriptor → field map; button index = Elite Joy_N in report order
+  const visit=col=>{ (col.inputReports||[]).forEach(rep=>{ const rid=rep.reportId||0; const F=reports[rid]=reports[rid]||{bit:0,list:[]};
+      (rep.items||[]).forEach(it=>{ const size=it.reportSize||0, count=it.reportCount||0, page=it.usagePage;
+        if(page===0x09){ for(let k=0;k<count;k++) F.list.push({kind:'btn',bit:F.bit+k*size,size,joy:++joy}); }
+        else if(page===0x01){ const us=(it.usages&&it.usages.length)?it.usages:(it.usageMinimum!=null?Array.from({length:count},(_,k)=>it.usageMinimum+k):[]);
+          for(let k=0;k<count;k++){ const u=us[k], bit=F.bit+k*size;
+            if(u===0x39) F.list.push({kind:'hat',bit,size,lmin:it.logicalMinimum,lmax:it.logicalMaximum});
+            else if(HID_AX[u]) F.list.push({kind:'axis',bit,size,name:HID_AX[u],lmin:it.logicalMinimum,lmax:it.logicalMaximum}); } }
+        F.bit+=size*count; }); });
+    (col.children||[]).forEach(visit); };
+  (device.collections||[]).forEach(visit); return reports; }
+async function hidConnect(){ if(!navigator.hid){ setStatus('WebHID needs Chrome/Edge on localhost/https.'); return; }
+  let granted; try{ granted=await navigator.hid.requestDevice({filters:[{vendorId:0x231D}]}); }catch(e){ setStatus('WebHID: '+e.message); return; }   // 0x231D = VKB
+  if(!granted||!granted.length){ setStatus('WebHID: no device selected.'); return; }
+  for(const d of granted){ try{ await hidAdd(d); }catch(e){ pushDbg('hid','open failed: '+e.message); } }
+  if(!liveOn) setLive(true);
+  setStatus(`🔌 WebHID: ${hidDevs.length} bank(s) connected — no 4-device limit.`);
+  $('#hidBtn').classList.add('on'); renderDevRail(); if(dbg && !dbg.classList.contains('hidden')) renderDbg(); }
+async function hidAdd(device){ if(hidDevs.find(h=>h.device===device)) return; if(!device.opened) await device.open();
+  const vid=device.vendorId.toString(16).padStart(4,'0'), pid=device.productId.toString(16).padStart(4,'0'); const id=normDev((vid+pid).toUpperCase());
+  const h={device,id,pid:(vid+pid).toUpperCase(),fields:parseHidFields(device),base:{},prev:new Set(),active:new Set(),activeByRid:{},lastRaw:''};
+  hidDevs.push(h); ensureDeviceOption(id);
+  device.addEventListener('inputreport', e=>onHidReport(h,e));
+  pushDbg('hid','connected '+(idInfo[id]?.name||id)+' ('+h.pid+')'); }
+function onHidReport(h,e){ if(!liveOn){ return; } const rid=e.reportId||0, F=h.fields[rid], dv=e.data;
+  let hex=''; for(let i=0;i<Math.min(dv.byteLength,24);i++) hex+=dv.getUint8(i).toString(16).padStart(2,'0')+' '; h.lastRaw='r'+rid+' ['+dv.byteLength+'B]: '+hex.trim();
+  if(!F){ if(dbg && !dbg.classList.contains('hidden')) renderDbg(); return; }
+  const set=new Set();
+  F.list.forEach(f=>{ if(f.kind==='btn'){ if(hidBits(dv,f.bit,1)) set.add('Joy_'+f.joy); }
+    else if(f.kind==='axis'){ const norm=hidAxisNorm(hidBits(dv,f.bit,f.size),f); if(h.base[f.name]==null) h.base[f.name]=norm; const d=norm-h.base[f.name];
+      if(Math.abs(d)>0.35){ set.add('Joy_'+f.name); set.add((d>0?'Pos_':'Neg_')+'Joy_'+f.name); } }
+    else if(f.kind==='hat'){ const raw=hidBits(dv,f.bit,f.size), n=(f.lmax-f.lmin+1); if(raw>=f.lmin&&raw<=f.lmax){ const dirs=(n>=8?HAT8[raw-f.lmin]:HAT4[raw-f.lmin])||[]; dirs.forEach(dir=>set.add('Joy_POV1'+dir)); } } });
+  h.activeByRid[rid]=set; h.active=new Set(); Object.values(h.activeByRid).forEach(s=>s.forEach(k=>h.active.add(k)));
+  const next=new Set(); hidDevs.forEach(hd=>hd.active.forEach(k=>next.add(hd.id+'|'+k)));
+  const pressKey=[...h.active].find(k=>!h.prev.has(k)); h.prev=new Set(h.active);
+  liveKeys=next;
+  if(pressKey){ if(h.id!==curDevice && idInfo[h.id] && !NAMED_DEVICES[h.id]){ const sel=$('#device'); if([...sel.options].some(o=>o.value===h.id)){ sel.value=h.id; curDevice=h.id; refresh2D(); renderDevRail(h.id); } }
+    pushDbg('press',(idInfo[h.id]?.name||h.id)+' · '+pressKey+' (HID)'); liveSelect(pressKey); }
+  refreshMarkers(); updateLiveHighlights(); if(dbg && !dbg.classList.contains('hidden')) updateDbgLive(); }
+function initHid(){ if(!navigator.hid){ return; } $('#hidBtn').hidden=false; $('#hidBtn').onclick=hidConnect;
+  navigator.hid.getDevices().then(ds=>{ ds.filter(d=>d.vendorId===0x231D).forEach(d=>hidAdd(d).catch(()=>{})); if(hidDevs.length) $('#hidBtn').classList.add('on'); renderDevRail(); }).catch(()=>{});
+  navigator.hid.addEventListener('disconnect', e=>{ hidDevs=hidDevs.filter(h=>h.device!==e.device); if(!hidDevs.length) $('#hidBtn').classList.remove('on'); setStatus('🔌 HID disconnected: '+(e.device.productName||'device')); renderDevRail(); }); }
+
+function pollGamepads(){ if(!liveOn || hidDevs.length) return;   // WebHID (when connected) supersedes the Gamepad API
   const pads=navigator.getGamepads?[...navigator.getGamepads()].filter(Boolean):[];
   const byDev={}; pads.forEach(gp=>{ const d=gpDeviceId(gp)||curDevice; if(d)(byDev[d]=byDev[d]||[]).push(gp); });
   const oldLive=liveKeys, next=new Set();
@@ -897,14 +949,18 @@ function renderDbg(){ const box=$('#dbg-body'); if(!box) return;
   const byDev={}; pads.forEach(gp=>{ const d=gpDeviceId(gp)||'(unidentified)'; (byDev[d]=byDev[d]||[]).push(gp); });
   let html = document.hasFocus() ? '' : '<div class="dbg-focus">⚠ This tab is <b>not focused</b> — the browser pauses controller input until you click the page. Nothing will register (and values freeze) while another window is focused.</div>';
   const slots = navigator.getGamepads ? navigator.getGamepads().length : 0;
-  if(slots && slots<=4 && pads.length>=slots){ html+=`<div class="dbg-cap"><b>Gamepad API limit reached.</b> Your browser exposes at most <b>${slots}</b> controllers and all ${slots} slots are full — extra VKB banks and devices (a second stick bank, pedals, etc.) are <b>invisible to live input</b>. This is a browser cap, not a Bindwing bug. Fixes: reduce banks in VKB DevCfg so the total ≤ ${slots}, or bind those inputs manually (click the box — same result). A WebHID mode without this limit is on the roadmap.</div>`; }
+  if(slots && slots<=4 && pads.length>=slots && !hidDevs.length){ html+=`<div class="dbg-cap"><b>Gamepad API limit reached.</b> Your browser exposes at most <b>${slots}</b> controllers and all ${slots} slots are full — extra VKB banks and devices (a second stick bank, pedals, etc.) are <b>invisible to live input</b>. <b>Fix: click 🔌 Connect HID</b> — WebHID reads every device with no limit. (Or reduce banks in VKB DevCfg, or bind manually.)</div>`; }
+  if(hidDevs.length){ html+='<div class="dbg-h2">WebHID controllers <span class="mut" style="text-transform:none;letter-spacing:0;font-weight:400">— direct HID, no 4-cap</span></div>';
+    hidDevs.forEach(h=>{ const cnt=k=>Object.values(h.fields).reduce((a,F)=>a+F.list.filter(x=>x.kind===k).length,0);
+      html+=`<div class="dbg-dev"><b>${idInfo[h.id]?.name||h.id}</b> <span class="mut">${h.pid}</span> · ${h.device.productName||''} · ${cnt('btn')} btns · ${cnt('axis')} axes · ${cnt('hat')} hat(s)</div>`;
+      if(h.lastRaw) html+=`<div class="dbg-raw">${h.lastRaw}</div>`; }); }
   html+=`<div class="dbg-h2">Controllers ${liveOn?'':'· ⚠ Live is OFF (toggle 🎮 Live)'}</div>`;
   if(!pads.length) html+='<div class="mut" style="font-size:12px">None detected. With Live on, press a button or move an axis — Chrome only exposes a controller after it sends input.</div>';
   Object.entries(byDev).forEach(([d,gps])=>{ const known=idInfo[d]?`<b>${idInfo[d].name}</b>`:`<b>${d}</b>`; const alias=DEVICE_ALIAS[d]?` <span class="modnote">HID→${DEVICE_ALIAS[d]}</span>`:'';
     html+=`<div class="dbg-dev">${known} <span class="mut">${d}</span>${alias} · ${gps.length} collection(s) · ${gps[0].buttons.length} btn · ${gps[0].axes.length} axis${idInfo[d]?'':' <span class="dbg-warn" style="color:var(--danger)">not in profile</span>'}</div>`;
     gps.forEach(gp=> html+=`<div class="dbg-raw">gp${gp.index}: ${gp.id.trim()}</div>`); });
-  // devices in the loaded profile that Chrome isn't exposing right now
-  const livePids=new Set(Object.keys(byDev));
+  // devices in the loaded profile that neither the Gamepad API nor WebHID is exposing right now
+  const livePids=new Set([...Object.keys(byDev), ...hidDevs.map(h=>h.id)]);
   const missing=[...$('#device').options].filter(o=>o.value&&isHwDevice(o.value)&&!livePids.has(o.value)).map(o=>o.value);
   if(missing.length){ html+='<div class="dbg-h2" style="color:var(--danger)">In your profile — no live controller</div>';
     missing.forEach(id=> html+=`<div class="dbg-dev"><b>${idInfo[id]?.name||id}</b> <span class="mut">${id}</span> — <span style="color:var(--danger)">not detected.</span> Press its buttons/axes to wake it; if it never appears, <b>fully restart the browser</b> or replug. (Manual click-to-bind still works.)</div>`); }
@@ -917,10 +973,13 @@ function renderDbgLog(){ const el=$('#dbg-loglist'); if(!el) return;
   el.innerHTML = dbgLog.length ? [...dbgLog].reverse().map(e=>`<div class="dbg-ev dbg-${e.t}"><b>${e.t}</b>${e.d}</div>`).join('') : '<div class="mut">Interact with a controller (Live on) to see events…</div>'; }
 // live readout of every currently-active input on every device — buttons + axes (with Pos_/Neg_ direction & value) + hats
 function updateDbgLive(){ const el=$('#dbg-live'); if(!el) return;
-  const pads=navigator.getGamepads?[...navigator.getGamepads()].filter(Boolean):[];
-  if(!pads.length){ el.innerHTML='<div class="mut">No controllers — toggle 🎮 Live and touch one.</div>'; return; }
-  const byDev={}; pads.forEach(gp=>{ const d=gpDeviceId(gp)||curDevice||'(unidentified)'; (byDev[d]=byDev[d]||[]).push(gp); });
+  const pads=(hidDevs.length?[]:(navigator.getGamepads?[...navigator.getGamepads()].filter(Boolean):[]));   // HID supersedes gamepads
   let html='';
+  // WebHID devices first (when connected)
+  hidDevs.forEach(h=>{ const tags=[...h.active].map(k=>`<span class="dbg-tag ${/Axis$/.test(k)&&!/^(Pos|Neg)_/.test(k)?'axis':(/POV/.test(k)?'hat':(/^(Pos|Neg)_/.test(k)?'axis':'on'))}">${k}</span>`);
+    html+=`<div class="dbg-live-dev"><b>${idInfo[h.id]?.name||h.id}</b> <span class="mut">HID</span> ${tags.length?tags.join(' '):'<span class="mut">idle</span>'}</div>`; });
+  if(!pads.length && !hidDevs.length){ el.innerHTML='<div class="mut">No controllers — toggle 🎮 Live and touch one, or click 🔌 Connect HID.</div>'; return; }
+  const byDev={}; pads.forEach(gp=>{ const d=gpDeviceId(gp)||curDevice||'(unidentified)'; (byDev[d]=byDev[d]||[]).push(gp); });
   Object.entries(byDev).forEach(([dev,gps])=>{ gps.sort((a,b)=>b.index-a.index); const tags=[];
     gps.forEach((gp,coll)=>{ const off=coll*32; const base=gpBase[gp.index]; const hats=gpHats[gp.index]||new Set();
       gp.buttons.forEach((b,i)=>{ if(b.pressed) tags.push(`<span class="dbg-tag on">Joy_${off+i+1}</span>`); });
@@ -977,5 +1036,6 @@ new ResizeObserver(resize).observe(view); resize(); setMode('orbit');
 setStage((()=>{ try{ return localStorage.getItem('bw-stage'); }catch(e){ return null; } })() || '2d');   // restore last view, default 2D
 window.addEventListener('gamepadconnected', e=>{ if(liveOn) setStatus('Connected: '+e.gamepad.id); });
 restoreOrSample();   // must run here: after stageView + setStage are initialized (it calls refresh2D → reads stageView)
+initHid();           // enable WebHID button (Chromium) + reconnect previously-granted devices
 (function loop(){ requestAnimationFrame(loop); pollGamepads(); controls.update(); renderer.render(scene,camera); drawLabels(); })();
 </script>
